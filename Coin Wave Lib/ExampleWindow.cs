@@ -52,16 +52,23 @@ namespace Coin_Wave_Lib
 
         uint[] map_indexes = new uint[]
         {
-            1, 2, 3,
-            3, 1, 4
+            0, 1, 2, 
+            0, 2, 3,
+            4, 5, 7,
+            5, 6, 7
         };
 
         double[] map = new double[]
         {
-            -0.8, 0.6, 1.0f, 0.0f, 0.0f, 1.0f,
-            -0.8, 0.4, 0.0f, 1.0f, 0.0f, 1.0f,
-            -0.6, 0.4, 0.0f, 0.0f, 1.0f, 1.0f,
-            -0.6, 0.6, 0.8f, 0.6f, 0.2f, 1.0f
+            -0.8, 0.6, 0.0, 0.1f, 0.0f, 0.0f, 1.0f,
+            -0.8, 0.4, 0.0, 0.0f, 1.0f, 0.0f, 1.0f,
+            -0.6, 0.4, 0.0, 0.0f, 0.0f, 1.0f, 1.0f,
+            -0.6, 0.6, 0.0, 0.8f, 0.6f, 0.2f, 1.0f,
+
+            -1.0, 0.4, 0.0, 0.1f, 0.0f, 0.0f, 1.0f,
+            -1.0, 0.2, 0.0, 0.0f, 1.0f, 0.0f, 1.0f,
+            -1.0, 0.0, 0.0, 0.0f, 0.0f, 1.0f, 1.0f,
+            -0.8, 0.2, 0.0, 0.8f, 0.6f, 0.2f, 1.0f,
         };
 
         private ShaderProgram shaderProgram;
@@ -98,6 +105,8 @@ namespace Coin_Wave_Lib
             shaderProgram = new ShaderProgram(@"Assets\shaders\shader_base.vert", @"Assets\shaders\shader_base.frag");
             double velocity = 0.003f;
             player = new(player_position, 12, velocity, velocity);
+            //CreateVAO(map, map_indexes);
+            CreateVAO(map, map_indexes);
         }
 
         protected override void OnResize(ResizeEventArgs e)
@@ -124,7 +133,6 @@ namespace Coin_Wave_Lib
             
             Click(currentKeyboardState);
             
-            CreateVAO(player.GetPosition(), player_indexes);
             //CreateVAO(map, map_indexes);
 
             base.OnUpdateFrame(args);
@@ -158,8 +166,16 @@ namespace Coin_Wave_Lib
         {
             shaderProgram.ActiveProgram();
             vao.Activate();
+            CreateVAO(map, map_indexes);
             vao.DrawElements(0, player_indexes.Length, ElementType.UnsignedInt);
+            vao.Dispose();
+            shaderProgram.DeactiveProgram();
 
+
+            shaderProgram.ActiveProgram();
+            vao.Activate();
+            CreateVAO(player.GetPosition(), player_indexes);
+            vao.DrawElements(0, player_indexes.Length, ElementType.UnsignedInt);
             vao.Dispose();
             shaderProgram.DeactiveProgram();
         }
