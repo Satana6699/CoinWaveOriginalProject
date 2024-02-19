@@ -16,7 +16,7 @@ namespace Coin_Wave_Lib
         private int fps = 0;
         Player player;
 
-        uint[] indexes = new uint[] {
+        uint[] player_indexes = new uint[] {
                 0, 1, 2,
                 0, 2, 3,
                 3, 2, 4,
@@ -50,22 +50,18 @@ namespace Coin_Wave_Lib
                  0.8f,  -0.6f, 0.0f,   0.8f, 0.6f, 0.2f, 1.0f
         };
 
-        float[] vert_colors = new float[]
+        uint[] map_indexes = new uint[]
         {
-                // vertices           // colosrs 
-                -0.8f,  0.6f, 0.0f,   1.0f, 0.0f, 0.0f, 1.0f,
-                -0.8f,  0.0f, 0.0f,   0.0f, 1.0f, 0.0f, 1.0f,
-                -0.2f,  0.0f, 0.0f,   0.0f, 0.0f, 1.0f, 1.0f,
-                -0.2f,  0.6f, 0.0f,   0.8f, 0.6f, 0.2f, 1.0f,
-                 0.2f,  0.0f, 0.0f,   0.8f, 0.6f, 0.2f, 1.0f,
-                 0.2f,  0.6f, 0.0f,   0.8f, 0.6f, 0.2f, 1.0f,
-                 0.8f,  0.0f, 0.0f,   0.8f, 0.6f, 0.2f, 1.0f,
-                 0.8f,  0.6f, 0.0f,   0.8f, 0.6f, 0.2f, 1.0f,
+            1, 2, 3,
+            3, 1, 4
+        };
 
-                -0.8f,  -0.6f, 0.0f,   0.8f, 0.6f, 0.2f, 1.0f,
-                -0.2f,  -0.6f, 0.0f,   0.8f, 0.6f, 0.2f, 1.0f,
-                 0.2f,  -0.6f, 0.0f,   0.8f, 0.6f, 0.2f, 1.0f,
-                 0.8f,  -0.6f, 0.0f,   0.8f, 0.6f, 0.2f, 1.0f
+        double[] map = new double[]
+        {
+            -0.8, 0.6, 1.0f, 0.0f, 0.0f, 1.0f,
+            -0.8, 0.4, 0.0f, 1.0f, 0.0f, 1.0f,
+            -0.6, 0.4, 0.0f, 0.0f, 1.0f, 1.0f,
+            -0.6, 0.6, 0.8f, 0.6f, 0.2f, 1.0f
         };
 
         private ShaderProgram shaderProgram;
@@ -128,7 +124,8 @@ namespace Coin_Wave_Lib
             
             Click(currentKeyboardState);
             
-            CreateVAO(player.GetPosition(), indexes);
+            CreateVAO(player.GetPosition(), player_indexes);
+            //CreateVAO(map, map_indexes);
 
             base.OnUpdateFrame(args);
         }
@@ -137,7 +134,6 @@ namespace Coin_Wave_Lib
         {
             vboVC = new BufferObject(BufferType.ArrayBuffer);
             vboVC.SetData(vert_colors, BufferHint.StaticDraw);
-            //vboVC.SetData(player_position, BufferHint.StaticDraw);
 
             ebo = new BufferObject(BufferType.ElementBuffer);
             ebo.SetData(indexes, BufferHint.StaticDraw);
@@ -162,7 +158,7 @@ namespace Coin_Wave_Lib
         {
             shaderProgram.ActiveProgram();
             vao.Activate();
-            vao.DrawElements(0, indexes.Length, ElementType.UnsignedInt);
+            vao.DrawElements(0, player_indexes.Length, ElementType.UnsignedInt);
 
             vao.Dispose();
             shaderProgram.DeactiveProgram();
