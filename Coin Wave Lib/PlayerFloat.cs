@@ -7,9 +7,9 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Coin_Wave_Lib
 {
-    internal class Player
+    internal class PlayerFloat
     {
-        public enum direction
+        public enum directionFloat
         {
             Up, 
             Down, 
@@ -17,30 +17,30 @@ namespace Coin_Wave_Lib
             Right,
         }
 
-        private double[] _position;
+        private float[] _position;
         /// <summary>
         /// Смещение. Через какой шаг в массиве будет та же характеристика в массиве _position
         /// </summary>
         private int _offset;
-        private double[] _unitOfMovementX;
-        private double[] _unitOfMovementY;
-        private double _velocityX;
-        private double _velocityY;
+        private float[] _unitOfMovementX;
+        private float[] _unitOfMovementY;
+        private float _velocityX;
+        private float _velocityY;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="position">Массив позиций вершин игрока и дополнительных характеристик вершин</param>
         /// <param name="numberOfPoints">Колличество вершин у персонажа</param>
-        public Player(double[] position, int numberOfPoints, double velocityX, double velocityY)
+        public PlayerFloat(float[] position, int numberOfPoints, float velocityX, float velocityY)
         {
             _position = position;
             _velocityY = velocityY;
             _velocityX = velocityX;
             _offset = _position.Length / numberOfPoints;
-            _unitOfMovementX = new double[_position.Length];
+            _unitOfMovementX = new float[_position.Length];
             Array.Clear(_unitOfMovementX, 0, _unitOfMovementX.Length);
-            _unitOfMovementY = new double[_position.Length];
+            _unitOfMovementY = new float[_position.Length];
             Array.Clear(_unitOfMovementY, 0, _unitOfMovementY.Length);
             for (int i = 0; i < _position.Length; i += _offset)
             {
@@ -50,25 +50,25 @@ namespace Coin_Wave_Lib
 
         }
 
-        public double[] GetPosition()
+        public float[] GetPosition()
         {
             return _position;
         }
 
-        public double[] Movement(direction direction)
+        public float[] Movement(directionFloat direction)
         {
             switch (direction)
             {
-                case direction.Up:
+                case directionFloat.Up:
                     _position = _position.Zip(_unitOfMovementY, (a,b) => a+b).ToArray();
                     break;
-                case direction.Down:
+                case directionFloat.Down:
                     _position = _position.Zip(_unitOfMovementY, (a, b) => a - b).ToArray();
                     break;
-                case direction.Left:
+                case directionFloat.Left:
                     _position = _position.Zip(_unitOfMovementX, (a, b) => a - b).ToArray();
                     break;
-                case direction.Right:
+                case directionFloat.Right:
                     _position = _position.Zip(_unitOfMovementX, (a, b) => a + b).ToArray();
                     break;
                 default:

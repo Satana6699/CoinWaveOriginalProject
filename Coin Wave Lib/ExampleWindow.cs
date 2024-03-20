@@ -5,7 +5,7 @@ using OpenTK.Windowing.Desktop;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
-using static Coin_Wave_Lib.Player;
+using static Coin_Wave_Lib.PlayerDouble;
 using System;
 using System.Collections.Generic;
 
@@ -13,82 +13,75 @@ using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 using System.IO;
+using static Coin_Wave_Lib.PlayerFloat;
 
 namespace Coin_Wave_Lib
 {
     public class ExampleWindow : GameWindow
     {
-        float[] vertices =
-        {
-            //Position    Texture coordinates
-             0.5f,  0.5f, 0.0f, 1.0f, 1.0f, // top right
-             0.5f, -0.5f, 0.0f, 1.0f, 0.0f, // bottom right
-            -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, // bottom left
-            -0.5f,  0.5f, 0.0f, 0.0f, 1.0f  // top left
-        };
         KeyboardState lastKeyboardState, currentKeyboardState;
         private float frameTime = 0.0f;
         private int fps = 0;
-        Player player;
-        uint[] player_indexes = new uint[] {
-                0, 1, 2,
-                0, 2, 3,
-                3, 2, 4,
-                3, 4, 5,
-                5, 4, 6,
-                5, 6, 7,
-
-                1, 8, 9,
-                1, 9, 2,
-                2, 9, 10,
-                2, 10, 4,
-                4, 10, 11,
-                4, 11, 6
+        PlayerFloat player;
+        // Because we're adding a texture, we modify the vertex array to include texture coordinates.
+        // Texture coordinates range from 0.0 to 1.0, with (0.0, 0.0) representing the bottom left, and (1.0, 1.0) representing the top right.
+        // The new layout is three floats to create a vertex, then two floats to create the coordinates.
+        private readonly float[] _vertices =
+        {
+            // Position         Texture coordinates
+             0.1f,  0.1f, 0.0f, 1.0f, 1.0f, // top right
+             0.1f, -0.1f, 0.0f, 1.0f, 0.0f, // bottom right
+            -0.1f, -0.1f, 0.0f, 0.0f, 0.0f, // bottom left
+            -0.1f,  0.1f, 0.0f, 0.0f, 1.0f  // top left
         };
 
-        double[] player_position = new double[]
+        private readonly float[] _vertices2 =
         {
-                // vertices           // colosrs 
-                -0.8f,  0.6f, 0.0f,   1.0f, 0.0f, 0.0f, 1.0f,
-                -0.8f,  0.0f, 0.0f,   0.0f, 1.0f, 0.0f, 1.0f,
-                -0.2f,  0.0f, 0.0f,   0.0f, 0.0f, 1.0f, 1.0f,
-                -0.2f,  0.6f, 0.0f,   0.8f, 0.6f, 0.2f, 1.0f,
-                 0.2f,  0.0f, 0.0f,   0.8f, 0.6f, 0.2f, 1.0f,
-                 0.2f,  0.6f, 0.0f,   0.8f, 0.6f, 0.2f, 1.0f,
-                 0.8f,  0.0f, 0.0f,   0.8f, 0.6f, 0.2f, 1.0f,
-                 0.8f,  0.6f, 0.0f,   0.8f, 0.6f, 0.2f, 1.0f,
-
-                -0.8f,  -0.6f, 0.0f,   0.8f, 0.6f, 0.2f, 1.0f,
-                -0.2f,  -0.6f, 0.0f,   0.8f, 0.6f, 0.2f, 1.0f,
-                 0.2f,  -0.6f, 0.0f,   0.8f, 0.6f, 0.2f, 1.0f,
-                 0.8f,  -0.6f, 0.0f,   0.8f, 0.6f, 0.2f, 1.0f
+            // Position         Texture coordinates
+            -0.7f,  0.1f, 0.0f, 1.0f, 1.0f, // top right
+            -0.7f, -0.1f, 0.0f, 1.0f, 0.0f, // bottom right
+            -0.9f, -0.1f, 0.0f, 0.0f, 0.0f, // bottom left
+            -0.9f,  0.1f, 0.0f, 0.0f, 1.0f,  // top left
+            // Position         Texture coordinates
+             0.1f,  0.1f, 0.0f, 1.0f, 1.0f, // top right
+             0.1f, -0.1f, 0.0f, 1.0f, 0.0f, // bottom right
+            -0.1f, -0.1f, 0.0f, 0.0f, 0.0f, // bottom left
+            -0.1f,  0.1f, 0.0f, 0.0f, 1.0f  // top left
         };
 
-        uint[] map_indexes = new uint[]
+        private readonly uint[] _indices2 =
         {
-            0, 1, 2, 
-            0, 2, 3,
+            0, 1, 3,
+            1, 2, 3,
             4, 5, 7,
             5, 6, 7
         };
-
-        double[] map = new double[]
+        private readonly uint[] _indices =
         {
-            -0.8, 0.6, 0.0, 0.1f, 0.0f, 0.0f, 1.0f,
-            -0.8, 0.4, 0.0, 0.0f, 1.0f, 0.0f, 1.0f,
-            -0.6, 0.4, 0.0, 0.0f, 0.0f, 1.0f, 1.0f,
-            -0.6, 0.6, 0.0, 0.8f, 0.6f, 0.2f, 1.0f,
-
-            -1.0, 0.4, 0.0, 0.1f, 0.0f, 0.0f, 1.0f,
-            -1.0, 0.2, 0.0, 0.0f, 1.0f, 0.0f, 1.0f,
-            -1.0, 0.0, 0.0, 0.0f, 0.0f, 1.0f, 1.0f,
-            -0.8, 0.2, 0.0, 0.8f, 0.6f, 0.2f, 1.0f,
+            0, 1, 3,
+            1, 2, 3
         };
 
-        private ShaderProgram shaderProgram;
-        private ArrayObject vao;
-        private BufferObject vboVC;
-        private BufferObject ebo;
+        private int _elementBufferObject;
+
+        private int _vertexBufferObject;
+
+        private int _vertexArrayObject;
+
+        private Shader _shader;
+
+        // For documentation on this, check Texture.cs.
+        private Texture _texture;
+        private int _elementBufferObject2;
+
+        private int _vertexBufferObject2;
+
+        private int _vertexArrayObject2;
+
+        private Shader _shader2;
+
+        // For documentation on this, check Texture.cs.
+        private Texture _texture2;
 
         public ExampleWindow(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings)
             : base(gameWindowSettings, nativeWindowSettings)
@@ -109,43 +102,14 @@ namespace Coin_Wave_Lib
         protected override void OnLoad()
         {
             base.OnLoad();
+            player = new(_vertices, 5, 0.1f, 0.1f);
 
-            GL.ClearColor(173 / 255.0f, 216 / 255.0f, 230 / 255.0f, 255 / 255.0f);
-            GL.Enable(EnableCap.CullFace);
-            GL.CullFace(CullFaceMode.Back);
-            // GL.PolygonMode(MaterialFace.Front, PolygonMode.Line);
-            // GL.PolygonMode(MaterialFace.Back, PolygonMode.Point);
+            GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 
-            shaderProgram = new ShaderProgram(@"Assets\shaders\shader_base.vert", @"Assets\shaders\shader_base.frag");
-            double velocity = 0.003f;
-            player = new(player_position, 12, velocity, velocity);
-            //CreateVAO(map, map_indexes);
-            CreateVAO(map, map_indexes);
-
-            string path = @"Assets\data\trava.jpg";
-            //Load the image
-            Image<Rgba32> image = SixLabors.ImageSharp.Image.Load<Rgba32>(path);
-
-            //ImageSharp loads from the top-left pixel, whereas OpenGL loads from the bottom-left, causing the texture to be flipped vertically.
-            //This will correct that, making the texture display properly.
-            image.Mutate(x => x.Flip(FlipMode.Vertical));
-
-            //Use the CopyPixelDataTo function from ImageSharp to copy all of the bytes from the image into an array that we can give to OpenGL.
-            var pixels = new byte[4 * image.Width * image.Height];
-            image.CopyPixelDataTo(pixels);
-            GL.TexImage2D(TextureTarget.Texture2D, 0,
-                PixelInternalFormat.Rgba, image.Width,
-                image.Height, 0, PixelFormat.Rgba,
-                PixelType.UnsignedByte, pixels);
-            // генерация мап карт
-            //GL.GenerateMipmap(GenerateMipmapTarget.Texture2D);
-
+            AllLoad();
         }
 
-        protected override void OnResize(ResizeEventArgs e)
-        {
-            base.OnResize(e);
-        }
+        
 
         protected override void OnUpdateFrame(FrameEventArgs args)
         {
@@ -163,98 +127,139 @@ namespace Coin_Wave_Lib
                 frameTime = 0.0f;
                 fps = 0;
             }
-            
+            player.GetPosition()[0] += 0.001f;
+            player.GetPosition()[5] += 0.001f;
+            player.GetPosition()[10] += 0.001f;
+            player.GetPosition()[15] += 0.001f;
             Click(currentKeyboardState);
-            
-            //CreateVAO(map, map_indexes);
-
-            base.OnUpdateFrame(args);
         }
-
-        private void CreateVAO(double[] vert_colors, uint[] indexes)
-        {
-            vboVC = new BufferObject(BufferType.ArrayBuffer);
-            vboVC.SetData(vert_colors, BufferHint.StaticDraw);
-
-            ebo = new BufferObject(BufferType.ElementBuffer);
-            ebo.SetData(indexes, BufferHint.StaticDraw);
-
-            int VertexArray = shaderProgram.GetAttribProgram("aPosition");
-            int ColorArray = shaderProgram.GetAttribProgram("aColor");
-
-            vao = new ArrayObject();
-            vao.Activate();
-
-            vao.AttachBuffer(ebo);
-            vao.AttachBuffer(vboVC);
-
-            vao.AttribPointer(VertexArray, 3, AttribType.Double, 7 * sizeof(double), 0);
-            vao.AttribPointer(ColorArray, 4, AttribType.Double, 7 * sizeof(double), 3 * sizeof(double));
-
-            vao.Deactivate();
-            vao.DisableAttribAll();
-        }
-
-        private void Draw()
-        {
-            shaderProgram.ActiveProgram();
-            vao.Activate();
-            CreateVAO(map, map_indexes);
-            vao.DrawElements(0, player_indexes.Length, ElementType.UnsignedInt);
-            vao.Dispose();
-            shaderProgram.DeactiveProgram();
-
-
-            shaderProgram.ActiveProgram();
-            vao.Activate();
-            CreateVAO(player.GetPosition(), player_indexes);
-            vao.DrawElements(0, player_indexes.Length, ElementType.UnsignedInt);
-            vao.Dispose();
-            shaderProgram.DeactiveProgram();
-        }
-
-        //-----------------------------------------------------------------------
-
         protected override void OnRenderFrame(FrameEventArgs args)
         {
-            GL.Clear(ClearBufferMask.ColorBufferBit);
+            base.OnRenderFrame(args);
 
-            Draw();
+            GL.Clear(ClearBufferMask.ColorBufferBit);
+            GL.BufferData(BufferTarget.ArrayBuffer, player.GetPosition().Length * sizeof(float), player.GetPosition(), BufferUsageHint.DynamicDraw);
+
+            GL.BindVertexArray(_vertexArrayObject);
+
+            _texture.Use(TextureUnit.Texture0);
+            _shader.Use();
+
+            GL.DrawElements(PrimitiveType.Triangles, _indices.Length, DrawElementsType.UnsignedInt, 0);
+
+            //-------
+
+            GL.BindVertexArray(_vertexArrayObject2);
+
+            _texture2.Use(TextureUnit.Texture0);
+            _shader2.Use();
+
+            GL.DrawElements(PrimitiveType.Triangles, _indices2.Length, DrawElementsType.UnsignedInt, 0);
 
             SwapBuffers();
-            base.OnRenderFrame(args);
         }
 
         protected override void OnUnload()
         {
-            shaderProgram.DeleteProgram();
             base.OnUnload();
         }
-        public void Click(KeyboardState currentKeyboardState)
+        protected override void OnResize(ResizeEventArgs e)
+        {
+            base.OnResize(e);
+            GL.Viewport(0, 0, Size.X, Size.Y);
+        }
+        private void Click(KeyboardState currentKeyboardState)
         {
             var key = KeyboardState;
             switch (true)
             {
                 case var _ when currentKeyboardState.IsKeyDown(Keys.W):
-                    Console.WriteLine("Нажата клавиша W");
-                    player.Movement(direction.Up);
+                    player.Movement(directionFloat.Up);
                     break;
                 case var _ when currentKeyboardState.IsKeyDown(Keys.A):
-                    Console.WriteLine("Нажата клавиша A");
-                    player.Movement(direction.Left);
+                    player.Movement(directionFloat.Left);
                     break;
                 case var _ when currentKeyboardState.IsKeyDown(Keys.S):
-                    Console.WriteLine("Нажата клавиша S");
-                    player.Movement(direction.Down);
+                    player.Movement(directionFloat.Down);
                     break;
                 case var _ when currentKeyboardState.IsKeyDown(Keys.D):
-                    Console.WriteLine("Нажата клавиша D");
-                    player.Movement(direction.Right);
+                    player.Movement(directionFloat.Right);
                     break;
                 default:
-                    Console.WriteLine("Нажата другая клавиша");
                     break;
             }
+        }
+
+        private void AllLoad()
+        {
+            _vertexArrayObject = GL.GenVertexArray();
+            GL.BindVertexArray(_vertexArrayObject);
+
+            _vertexBufferObject = GL.GenBuffer();
+            GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
+            GL.BufferData(BufferTarget.ArrayBuffer, player.GetPosition().Length * sizeof(float), player.GetPosition(), BufferUsageHint.DynamicDraw);
+
+            _elementBufferObject = GL.GenBuffer();
+            GL.BindBuffer(BufferTarget.ElementArrayBuffer, _elementBufferObject);
+            GL.BufferData(BufferTarget.ElementArrayBuffer, _indices.Length * sizeof(uint), _indices, BufferUsageHint.DynamicDraw);
+
+            // The shaders have been modified to include the texture coordinates, check them out after finishing the OnLoad function.
+            _shader = new Shader(@"data\shaders\shader.vert", @"data\shaders\shader.frag");
+            _shader.Use();
+
+            // Because there's now 5 floats between the start of the first vertex and the start of the second,
+            // we modify the stride from 3 * sizeof(float) to 5 * sizeof(float).
+            // This will now pass the new vertex array to the buffer.
+            var vertexLocation = _shader.GetAttribLocation("aPosition");
+            GL.EnableVertexAttribArray(vertexLocation);
+            GL.VertexAttribPointer(vertexLocation, 3, VertexAttribPointerType.Float, false, 5 * sizeof(float), 0);
+
+            // Next, we also setup texture coordinates. It works in much the same way.
+            // We add an offset of 3, since the texture coordinates comes after the position data.
+            // We also change the amount of data to 2 because there's only 2 floats for texture coordinates.
+            var texCoordLocation = _shader.GetAttribLocation("aTexCoord");
+            GL.EnableVertexAttribArray(texCoordLocation);
+            GL.VertexAttribPointer(texCoordLocation, 2, VertexAttribPointerType.Float, false, 5 * sizeof(float), 3 * sizeof(float));
+
+            _texture = Texture.LoadFromFile(@"data\image\trava.png");
+            _texture.Use(TextureUnit.Texture0);
+
+
+            //////////////////////////////////////////
+
+
+
+            _vertexArrayObject2 = GL.GenVertexArray();
+            GL.BindVertexArray(_vertexArrayObject2);
+
+            _vertexBufferObject2 = GL.GenBuffer();
+            GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject2);
+            GL.BufferData(BufferTarget.ArrayBuffer, _vertices2.Length * sizeof(float), _vertices2, BufferUsageHint.DynamicDraw);
+
+            _elementBufferObject2 = GL.GenBuffer();
+            GL.BindBuffer(BufferTarget.ElementArrayBuffer, _elementBufferObject2);
+            GL.BufferData(BufferTarget.ElementArrayBuffer, _indices2.Length * sizeof(uint), _indices2, BufferUsageHint.DynamicDraw);
+
+            // The shaders have been modified to include the texture coordinates, check them out after finishing the OnLoad function.
+            _shader2 = new Shader(@"data\shaders\shader.vert", @"data\shaders\shader.frag");
+            _shader2.Use();
+
+            // Because there's now 5 floats between the start of the first vertex and the start of the second,
+            // we modify the stride from 3 * sizeof(float) to 5 * sizeof(float).
+            // This will now pass the new vertex array to the buffer.
+            var vertexLocation2 = _shader2.GetAttribLocation("aPosition");
+            GL.EnableVertexAttribArray(vertexLocation);
+            GL.VertexAttribPointer(vertexLocation, 3, VertexAttribPointerType.Float, false, 5 * sizeof(float), 0);
+
+            // Next, we also setup texture coordinates. It works in much the same way.
+            // We add an offset of 3, since the texture coordinates comes after the position data.
+            // We also change the amount of data to 2 because there's only 2 floats for texture coordinates.
+            var texCoordLocation2 = _shader2.GetAttribLocation("aTexCoord");
+            GL.EnableVertexAttribArray(texCoordLocation);
+            GL.VertexAttribPointer(texCoordLocation, 2, VertexAttribPointerType.Float, false, 5 * sizeof(float), 3 * sizeof(float));
+
+            _texture2 = Texture.LoadFromFile(@"data\image\gamer.png");
+            _texture2.Use(TextureUnit.Texture0);
         }
     }
 }
