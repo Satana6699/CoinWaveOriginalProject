@@ -31,12 +31,9 @@ namespace Coin_Wave_Lib
         private double[] _emptyElement;
         private float _time = 0.0f;
         private float timeOfMoment;
+        BufferManager emptyElements;
+        BufferManager currentElement;
 
-        private uint[] _indicesEmptyElement;
-        /*{
-            0, 1, 3,
-            1, 2, 3
-        };*/
 
         private readonly double[] _currentPosition =
         {
@@ -100,57 +97,11 @@ namespace Coin_Wave_Lib
             MapGenerate mg = new(_width, _height);
             mg.GeneratePoints();
             _emptyElement = mg.GetPoints();
-            
-            AllLoad();
-        }
 
-        void LoadEmptyMap()
-        {
-            int wertexes = 4;
-            int pointsOfWertex = 5;
-            int offset = wertexes * pointsOfWertex;
-            /*double sizeX = (double)2 / _width;
-            double sizeY = (double)2 / _height;*/
-            double sizeX = (double)2 / _width*20;
-            double sizeY = (double)2 / _height*20;
-            double x = -1.0;
-            double y =  1.0;
-            _emptyElement = new double[_width * _height * wertexes * pointsOfWertex];
-            for (int i = 0; i < _emptyElement.Length; i += offset)
-            {
-                if (i == 0)
-                {
-
-                }
-                else
-                {
-
-                }
-                // Point 0
-                _emptyElement[i+5]  = x + sizeX;
-                _emptyElement[i+6]  = y;
-                _emptyElement[i+7]  = 0.0;
-                _emptyElement[i+8]  = 1.0;
-                _emptyElement[i+9]  = 0.0;
-                // Point 1
-                _emptyElement[i+10] = x + sizeX;
-                _emptyElement[i+11] = y - sizeY;
-                _emptyElement[i+12] = 0.0;
-                _emptyElement[i+13] = 0.0;
-                _emptyElement[i+14] = 0.0;
-                // Point 2
-                _emptyElement[i+15] = x;
-                _emptyElement[i+16] = y - sizeY;
-                _emptyElement[i+17] = 0.0;
-                _emptyElement[i+18] = 0.0;
-                _emptyElement[i+19] = 1.0;
-                // Point 3
-                _emptyElement[i]    = x;
-                _emptyElement[i+1]  = y;
-                _emptyElement[i+2]  = 0.0;
-                _emptyElement[i+3]  = 1.0;
-                _emptyElement[i+4]  = 1.0;
-            }
+            emptyElements = new(_emptyElement,
+                @"D:\Семестр 4 (полигон)\Курсовая работа\coin wave\Coin Wave (sln)\Coin Wave Lib\data\image\sqrt.png");
+            currentElement = new(_currentPosition,
+                @"D:\Семестр 4 (полигон)\Курсовая работа\coin wave\Coin Wave (sln)\Coin Wave Lib\data\image\redsqrt.png");
         }
 
         protected override void OnUpdateFrame(FrameEventArgs args)
@@ -169,7 +120,7 @@ namespace Coin_Wave_Lib
                 fps = 0;
             }
             Click(currentKeyboardState);
-            GL.BufferData(BufferTarget.ArrayBuffer, _currentPosition.Length * sizeof(double), _currentPosition, BufferUsageHint.DynamicDraw);
+            currentElement.UpdateDate(_currentPosition);
             if (currentKeyboardState.IsKeyDown(Keys.Escape)) Close();
             if (lastKeyboardState != null && lastKeyboardState.IsKeyDown(Keys.LeftControl) && currentKeyboardState.IsKeyDown(Keys.S)) Close();
             
@@ -178,19 +129,8 @@ namespace Coin_Wave_Lib
         {
             base.OnRenderFrame(args);
             GL.Clear(ClearBufferMask.DepthBufferBit | ClearBufferMask.ColorBufferBit);
-
-            GL.BindVertexArray(_vertexArrayObject);
-            _texture.Use(TextureUnit.Texture0);
-            _shader.Use();
-            GL.DrawArrays(PrimitiveType.Quads, 0, _emptyElement.Length);
-
-            //-------
-
-            GL.BindVertexArray(_vertexArrayObject2);
-            _texture2.Use(TextureUnit.Texture0);
-            _shader.Use();
-            GL.DrawArrays(PrimitiveType.Quads, 0, _currentPosition.Length);
-
+            emptyElements.Render();
+            currentElement.Render();
             SwapBuffers();
         }
 
@@ -203,53 +143,6 @@ namespace Coin_Wave_Lib
             base.OnResize(e);
             GL.Viewport(0, 0, Size.X, Size.Y);
         }
-        private void AllLoad()
-        {
-            _vertexArrayObject = GL.GenVertexArray();
-            GL.BindVertexArray(_vertexArrayObject);
-
-            _vertexBufferObject = GL.GenBuffer();
-            GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
-            GL.BufferData(BufferTarget.ArrayBuffer, _emptyElement.Length * sizeof(double), _emptyElement, BufferUsageHint.DynamicDraw);
-            
-            _shader = new Shader(@"data\shaders\shader.vert", @"data\shaders\shader.frag");
-            _shader.Use();
-            var vertexLocation = _shader.GetAttribLocation("aPosition");
-            GL.EnableVertexAttribArray(vertexLocation);
-            GL.VertexAttribPointer(vertexLocation, 3, VertexAttribPointerType.Double, false, 5 * sizeof(double), 0);
-
-            var texCoordLocation = _shader.GetAttribLocation("aTexCoord");
-            GL.EnableVertexAttribArray(texCoordLocation);
-            GL.VertexAttribPointer(texCoordLocation, 2, VertexAttribPointerType.Double, false, 5 * sizeof(double), 3 * sizeof(double));
-
-            _texture = Texture.LoadFromFile(@"D:\Семестр 4 (полигон)\Курсовая работа\coin wave\Coin Wave (sln)\Coin Wave Lib\data\image\sqrt.png");
-            _texture.Use(TextureUnit.Texture0);
-
-
-            //////////////////////////////////////////
-
-
-            _vertexArrayObject2 = GL.GenVertexArray();
-            GL.BindVertexArray(_vertexArrayObject2);
-
-            _vertexBufferObject2 = GL.GenBuffer();
-            GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject2);
-            GL.BufferData(BufferTarget.ArrayBuffer, _currentPosition.Length * sizeof(double), _currentPosition, BufferUsageHint.DynamicDraw);
-
-            _shader.Use();
-
-            var vertexLocation2 = _shader.GetAttribLocation("aPosition");
-            GL.EnableVertexAttribArray(vertexLocation);
-            GL.VertexAttribPointer(vertexLocation, 3, VertexAttribPointerType.Double, false, 5 * sizeof(double), 0);
-
-            var texCoordLocation2 = _shader.GetAttribLocation("aTexCoord");
-            GL.EnableVertexAttribArray(texCoordLocation);
-            GL.VertexAttribPointer(texCoordLocation, 2, VertexAttribPointerType.Double, false, 5 * sizeof(double), 3 * sizeof(double));
-
-            _texture2 = Texture.LoadFromFile(@"D:\Семестр 4 (полигон)\Курсовая работа\coin wave\Coin Wave (sln)\Coin Wave Lib\data\image\redsqrt.png");
-            _texture2.Use(TextureUnit.Texture0);
-        }
-
         private void Click(KeyboardState keyboardState)
         {
             float pressingTime = 0.6f;

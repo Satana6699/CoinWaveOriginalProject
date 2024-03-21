@@ -46,8 +46,9 @@ namespace Coin_Wave_Lib
             this.texture = texture;
             GenerateBuffers(texturePath);
         }
-        public BufferManager(string texturePath)
+        public BufferManager(double[] vertices, string texturePath)
         {
+            this.vertices = vertices;
             GenerateBuffers(texturePath);
         }
 
@@ -70,8 +71,22 @@ namespace Coin_Wave_Lib
             GL.EnableVertexAttribArray(texCoordLocation);
             GL.VertexAttribPointer(texCoordLocation, 2, VertexAttribPointerType.Double, false, 5 * sizeof(double), 3 * sizeof(double));
 
-            texture = Texture.LoadFromFile(@"D:\Семестр 4 (полигон)\Курсовая работа\coin wave\Coin Wave (sln)\Coin Wave Lib\data\image\sqrt.png");
+            texture = Texture.LoadFromFile(texturePath);
             texture.Use(TextureUnit.Texture0);
         }
+
+        public void UpdateDate(double[] vertices)
+        {
+            GL.BindBuffer(BufferTarget.ArrayBuffer, vertexBufferObject);
+            GL.BufferData(BufferTarget.ArrayBuffer, vertices.Length * sizeof(double), vertices, BufferUsageHint.DynamicDraw);
+        }
+
+        public void Render()
+        {
+            GL.BindVertexArray(vertexArrayObject);
+            texture.Use(TextureUnit.Texture0);
+            shader.Use();
+            GL.DrawArrays(PrimitiveType.Quads, 0, vertices.Length);
         }
     }
+}
