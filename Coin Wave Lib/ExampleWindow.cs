@@ -19,42 +19,36 @@ namespace Coin_Wave_Lib
 {
     public class ExampleWindow : GameWindow
     {
+        // размер карты 34 на 15
         KeyboardState lastKeyboardState, currentKeyboardState;
         private float frameTime = 0.0f;
         private int fps = 0;
-        PlayerFloat player;
+        PlayerDouble player;
         // Because we're adding a texture, we modify the vertex array to include texture coordinates.
         // Texture coordinates range from 0.0 to 1.0, with (0.0, 0.0) representing the bottom left, and (1.0, 1.0) representing the top right.
         // The new layout is three floats to create a vertex, then two floats to create the coordinates.
-        private readonly float[] _vertices =
+        private readonly double[] _vertices =
         {
-            // Position         Texture coordinates
-             0.1f,  0.1f, 0.0f, 1.0f, 1.0f, // top right
-             0.1f, -0.1f, 0.0f, 1.0f, 0.0f, // bottom right
-            -0.1f, -0.1f, 0.0f, 0.0f, 0.0f, // bottom left
-            -0.1f,  0.1f, 0.0f, 0.0f, 1.0f  // top left
+            // Position         Texture coordinatesя
+             0.1,  0.1, 0.0, 1.0, 1.0, // top right
+             0.1, -0.1, 0.0, 1.0, 0.0, // bottom right
+            -0.1, -0.1, 0.0, 0.0, 0.0, // bottom left
+            -0.1,  0.1, 0.0, 0.0, 1.0  // top left
         };
 
-        private readonly float[] _vertices2 =
+        private readonly double[] _vertices2 =
         {
             // Position         Texture coordinates
-            -0.7f,  0.1f, 0.0f, 1.0f, 1.0f, // top right
-            -0.7f, -0.1f, 0.0f, 1.0f, 0.0f, // bottom right
-            -0.9f, -0.1f, 0.0f, 0.0f, 0.0f, // bottom left
-            -0.9f,  0.1f, 0.0f, 0.0f, 1.0f,  // top left
-            // Position         Texture coordinates
-             0.1f,  0.1f, 0.0f, 1.0f, 1.0f, // top right
-             0.1f, -0.1f, 0.0f, 1.0f, 0.0f, // bottom right
-            -0.1f, -0.1f, 0.0f, 0.0f, 0.0f, // bottom left
-            -0.1f,  0.1f, 0.0f, 0.0f, 1.0f  // top left
+             0.9,  0.9, 0.0, 1.0, 1.0, // top right
+             0.9, -0.9, 0.0, 1.0, 0.0, // bottom right
+            -0.9, -0.9, 0.0, 0.0, 0.0, // bottom left
+            -0.9,  0.9, 0.0, 0.0, 1.0,  // top left
         };
 
         private readonly uint[] _indices2 =
         {
             0, 1, 3,
-            1, 2, 3,
-            4, 5, 7,
-            5, 6, 7
+            1, 2, 3
         };
         private readonly uint[] _indices =
         {
@@ -102,7 +96,7 @@ namespace Coin_Wave_Lib
         protected override void OnLoad()
         {
             base.OnLoad();
-            player = new(_vertices, 5, 0.1f, 0.1f);
+            player = new(_vertices, 4, 0.02f, 0.02f);
 
             GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 
@@ -127,35 +121,35 @@ namespace Coin_Wave_Lib
                 frameTime = 0.0f;
                 fps = 0;
             }
-            player.GetPosition()[0] += 0.001f;
+            /*player.GetPosition()[0] += 0.001f;
             player.GetPosition()[5] += 0.001f;
             player.GetPosition()[10] += 0.001f;
-            player.GetPosition()[15] += 0.001f;
+            player.GetPosition()[15] += 0.001f;*/
+
             Click(currentKeyboardState);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
+            GL.BufferData(BufferTarget.ArrayBuffer, player.GetPosition().Length * sizeof(double), player.GetPosition(), BufferUsageHint.DynamicDraw);
+
         }
         protected override void OnRenderFrame(FrameEventArgs args)
         {
             base.OnRenderFrame(args);
 
-            GL.Clear(ClearBufferMask.ColorBufferBit);
-            GL.BufferData(BufferTarget.ArrayBuffer, player.GetPosition().Length * sizeof(float), player.GetPosition(), BufferUsageHint.DynamicDraw);
+            GL.Clear(ClearBufferMask.DepthBufferBit | ClearBufferMask.ColorBufferBit);
 
-            GL.BindVertexArray(_vertexArrayObject);
-
-            _texture.Use(TextureUnit.Texture0);
-            _shader.Use();
-
-            GL.DrawElements(PrimitiveType.Triangles, _indices.Length, DrawElementsType.UnsignedInt, 0);
+            GL.BindVertexArray(_vertexArrayObject2);
+            _texture2.Use(TextureUnit.Texture0);
+            _shader2.Use();
+             GL.DrawElements(PrimitiveType.Triangles, _indices2.Length, DrawElementsType.UnsignedInt, 0);
+            
 
             //-------
 
-            GL.BindVertexArray(_vertexArrayObject2);
-
-            _texture2.Use(TextureUnit.Texture0);
-            _shader2.Use();
-
-            GL.DrawElements(PrimitiveType.Triangles, _indices2.Length, DrawElementsType.UnsignedInt, 0);
-
+            GL.BindVertexArray(_vertexArrayObject);
+            _texture.Use(TextureUnit.Texture0);
+            _shader.Use();
+            //GL.DrawElements(PrimitiveType.Triangles, _indices.Length, DrawElementsType.UnsignedInt, 0);
+            GL.DrawArrays(PrimitiveType.Quads, 0, player.GetPosition().Length);
             SwapBuffers();
         }
 
@@ -170,20 +164,19 @@ namespace Coin_Wave_Lib
         }
         private void Click(KeyboardState currentKeyboardState)
         {
-            var key = KeyboardState;
             switch (true)
             {
                 case var _ when currentKeyboardState.IsKeyDown(Keys.W):
-                    player.Movement(directionFloat.Up);
+                    player.Movement(direction.Up);
                     break;
                 case var _ when currentKeyboardState.IsKeyDown(Keys.A):
-                    player.Movement(directionFloat.Left);
+                    player.Movement(direction.Left);
                     break;
                 case var _ when currentKeyboardState.IsKeyDown(Keys.S):
-                    player.Movement(directionFloat.Down);
+                    player.Movement(direction.Down);
                     break;
                 case var _ when currentKeyboardState.IsKeyDown(Keys.D):
-                    player.Movement(directionFloat.Right);
+                    player.Movement(direction.Right);
                     break;
                 default:
                     break;
@@ -197,7 +190,7 @@ namespace Coin_Wave_Lib
 
             _vertexBufferObject = GL.GenBuffer();
             GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
-            GL.BufferData(BufferTarget.ArrayBuffer, player.GetPosition().Length * sizeof(float), player.GetPosition(), BufferUsageHint.DynamicDraw);
+            GL.BufferData(BufferTarget.ArrayBuffer, player.GetPosition().Length * sizeof(double), player.GetPosition(), BufferUsageHint.DynamicDraw);
 
             _elementBufferObject = GL.GenBuffer();
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, _elementBufferObject);
@@ -212,16 +205,16 @@ namespace Coin_Wave_Lib
             // This will now pass the new vertex array to the buffer.
             var vertexLocation = _shader.GetAttribLocation("aPosition");
             GL.EnableVertexAttribArray(vertexLocation);
-            GL.VertexAttribPointer(vertexLocation, 3, VertexAttribPointerType.Float, false, 5 * sizeof(float), 0);
+            GL.VertexAttribPointer(vertexLocation, 3, VertexAttribPointerType.Double, false, 5 * sizeof(double), 0);
 
             // Next, we also setup texture coordinates. It works in much the same way.
             // We add an offset of 3, since the texture coordinates comes after the position data.
             // We also change the amount of data to 2 because there's only 2 floats for texture coordinates.
             var texCoordLocation = _shader.GetAttribLocation("aTexCoord");
             GL.EnableVertexAttribArray(texCoordLocation);
-            GL.VertexAttribPointer(texCoordLocation, 2, VertexAttribPointerType.Float, false, 5 * sizeof(float), 3 * sizeof(float));
+            GL.VertexAttribPointer(texCoordLocation, 2, VertexAttribPointerType.Double, false, 5 * sizeof(double), 3 * sizeof(double));
 
-            _texture = Texture.LoadFromFile(@"data\image\trava.png");
+            _texture = Texture.LoadFromFile(@"data\image\gamer.png");
             _texture.Use(TextureUnit.Texture0);
 
 
@@ -234,7 +227,7 @@ namespace Coin_Wave_Lib
 
             _vertexBufferObject2 = GL.GenBuffer();
             GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject2);
-            GL.BufferData(BufferTarget.ArrayBuffer, _vertices2.Length * sizeof(float), _vertices2, BufferUsageHint.DynamicDraw);
+            GL.BufferData(BufferTarget.ArrayBuffer, _vertices2.Length * sizeof(double), _vertices2, BufferUsageHint.DynamicDraw);
 
             _elementBufferObject2 = GL.GenBuffer();
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, _elementBufferObject2);
@@ -249,16 +242,16 @@ namespace Coin_Wave_Lib
             // This will now pass the new vertex array to the buffer.
             var vertexLocation2 = _shader2.GetAttribLocation("aPosition");
             GL.EnableVertexAttribArray(vertexLocation);
-            GL.VertexAttribPointer(vertexLocation, 3, VertexAttribPointerType.Float, false, 5 * sizeof(float), 0);
+            GL.VertexAttribPointer(vertexLocation, 3, VertexAttribPointerType.Double, false, 5 * sizeof(double), 0);
 
             // Next, we also setup texture coordinates. It works in much the same way.
             // We add an offset of 3, since the texture coordinates comes after the position data.
             // We also change the amount of data to 2 because there's only 2 floats for texture coordinates.
             var texCoordLocation2 = _shader2.GetAttribLocation("aTexCoord");
             GL.EnableVertexAttribArray(texCoordLocation);
-            GL.VertexAttribPointer(texCoordLocation, 2, VertexAttribPointerType.Float, false, 5 * sizeof(float), 3 * sizeof(float));
+            GL.VertexAttribPointer(texCoordLocation, 2, VertexAttribPointerType.Double, false, 5 * sizeof(double), 3 * sizeof(double));
 
-            _texture2 = Texture.LoadFromFile(@"data\image\gamer.png");
+            _texture2 = Texture.LoadFromFile(@"data\image\trava.png");
             _texture2.Use(TextureUnit.Texture0);
         }
     }

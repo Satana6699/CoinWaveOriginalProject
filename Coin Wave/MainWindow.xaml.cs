@@ -23,6 +23,11 @@ namespace Coin_Wave
     /// </summary>
     public partial class MainWindow : Window
     {
+        private int _windowSize = 50;
+        // размер карты 34 на 15
+        private int _windowSizeX = 34;
+        private int _windowSizeY = 15;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -32,8 +37,8 @@ namespace Coin_Wave
         {
             var nativeWinSettings = new NativeWindowSettings()
             {
-                Size = new Vector2i(800, 600),
-                Location = new Vector2i(370, 300),
+                Size = new Vector2i(_windowSizeX * _windowSize, _windowSizeY * _windowSize),
+                Location = new Vector2i(100, 100),
                 WindowBorder = WindowBorder.Resizable,
 
 
@@ -48,6 +53,29 @@ namespace Coin_Wave
 
 
             using (ExampleWindow game = new ExampleWindow(GameWindowSettings.Default, nativeWinSettings))
+            {
+                game.Run();
+            }
+        }
+
+        private void MapGenerator_Click(object sender, RoutedEventArgs e)
+        {
+            var nativeWinSettings = new NativeWindowSettings()
+            {
+                Size = new Vector2i(Convert.ToInt32(1920/1.1), Convert.ToInt32(1080 / 1.1)),
+                Location = new Vector2i(10, 10),
+                WindowBorder = WindowBorder.Hidden,
+
+
+                Flags = ContextFlags.Default,
+                APIVersion = new Version(3, 3),
+                Profile = ContextProfile.Compatability,
+                API = ContextAPI.OpenGL,
+                NumberOfSamples = 0
+            };
+
+
+            using (MapGenerateWindow game = new MapGenerateWindow(GameWindowSettings.Default, nativeWinSettings))
             {
                 game.Run();
             }
