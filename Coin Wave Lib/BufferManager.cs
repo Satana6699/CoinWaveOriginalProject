@@ -1,5 +1,4 @@
-﻿using Coin_Wave_Lib.ObjCS;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -35,16 +34,6 @@ namespace Coin_Wave_Lib
         static BufferManager()
         {
             shader = new Shader(@"data\shaders\shader.vert", @"data\shaders\shader.frag");
-        }
-        public BufferManager(int vertexArrayObject, int vertexBufferObject,
-                             double[] vertices, Texture texture,
-                             string texturePath)
-        {
-            this.vertexArrayObject = vertexArrayObject;
-            this.vertexBufferObject = vertexBufferObject;
-            this.vertices = vertices;
-            this.texture = texture;
-            GenerateBuffers(texturePath);
         }
         public BufferManager(double[] vertices, string texturePath)
         {
