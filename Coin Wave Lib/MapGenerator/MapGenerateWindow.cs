@@ -20,6 +20,34 @@ using Coin_Wave_Lib.ObjCS;
 
 namespace Coin_Wave_Lib
 {
+    struct IndexObject
+    {
+        public int index;
+        public GameObject gameObject;
+        public IndexObject(int index, GameObject gameObject)
+        {
+            this.index = index;
+            this.gameObject = gameObject;
+        }
+    }
+    struct ThisElement
+    {
+        public int index;
+        private bool element;
+        public ThisElement(int index)
+        {
+            this.index = index;
+            element = false;
+        }
+        public bool Get()
+        {
+            return element;
+        }
+        public void Set(bool value)
+        {
+            element = value;
+        }
+    }
     public class MapGenerateWindow : GameWindow
     {
         // размер карты 34 на 15 и разрешение экрана 1920 на 1080
@@ -38,8 +66,12 @@ namespace Coin_Wave_Lib
         BlocksPanel blocksPanel;
         BufferManager viborPanel;
         BufferManager[] bufs = new BufferManager[8];
-
+        List<BufferManager> mapBufs = new List<BufferManager>(0);
+        List<IndexObject> indexObjects = new List<IndexObject>(0);
+        List<ThisElement> thisElements = new List<ThisElement>(0);
         int index = 0;
+        int currentIndex = 0;
+        MapGenerate mg;
 
         private double[] _currentPosition;
         private double[] _vertBlocksPanel;
@@ -65,7 +97,8 @@ namespace Coin_Wave_Lib
         {
             base.OnLoad();
             GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-            MapGenerate mg = new(_width, _height);
+            for(int i = 0; i < _height * _width; i++) thisElements.Add(new ThisElement(i));
+            mg = new(_width, _height);
             mg.GeneratePoints();
             _emptyElement = mg.GetPoints();
             _currentPosition = new double[20]; //20 так в 4 вершинах по 5 позиций
@@ -123,12 +156,43 @@ namespace Coin_Wave_Lib
                 frameTime = 0.0f;
                 fps = 0;
             }
-            if (currentKeyboardState.IsKeyPressed(Keys.Tab) && index < blocksPanel.gameObjects.Count-1) index++;
-            else if (!currentKeyboardState.IsKeyPressed(Keys.LeftShift) && 
-                     index >= blocksPanel.gameObjects.Count - 1 &&
-                     currentKeyboardState.IsKeyPressed(Keys.Tab)) index = 0;
+            if (
+                    currentKeyboardState.IsKeyPressed(Keys.Tab) &&
+                    lastKeyboardState.IsKeyDown(Keys.LeftShift) &&
+                    index < blocksPanel.gameObjects.Count - 1
+                    )
+            {
+                index++;
+
+                currentIndex = index;
+            }
+            else if (
+                    (!currentKeyboardState.IsKeyPressed(Keys.LeftShift) &&
+                    index >= blocksPanel.gameObjects.Count - 1 &&
+                    currentKeyboardState.IsKeyPressed(Keys.Tab)) ||
+                    !currentKeyboardState.IsKeyDown(Keys.LeftShift)
+                    )
+            {
+                index = 0;
+            }
             blocksPanel.ObjVibor(index);
             viborPanel.UpdateDate(blocksPanel.viborObj.GetVertices());
+
+            if (currentKeyboardState.IsKeyDown(Keys.Enter) && thisElements[_numObj].Get() == false)
+            {
+                indexObjects.Add(new IndexObject(_numObj,
+                    new Coin(mg.mainPoints[_numObj], mg._sizeX, mg._sizeY, blocksPanel.gameObjects[currentIndex].path)));
+                thisElements[_numObj].Set(true);
+                mapBufs.Add(new BufferManager(indexObjects[indexObjects.Count - 1].gameObject.GetVertices(),
+                    indexObjects[indexObjects.Count - 1].gameObject.path));
+            }
+            if (currentKeyboardState.IsKeyDown(Keys.Delete) && thisElements[_numObj].Get() == true)
+            {
+
+            }
+
+
+
             Click(currentKeyboardState);
             currentElement.UpdateDate(_currentPosition);
             if (currentKeyboardState.IsKeyDown(Keys.Escape)) Close();
@@ -141,6 +205,10 @@ namespace Coin_Wave_Lib
             base.OnRenderFrame(args);
             GL.Clear(ClearBufferMask.DepthBufferBit | ClearBufferMask.ColorBufferBit);
             emptyElements.Render();
+            foreach(var buf in mapBufs)
+            {
+                buf.Render();
+            }
             currentElement.Render();
             if (currentKeyboardState.IsKeyDown(Keys.LeftShift))
             {

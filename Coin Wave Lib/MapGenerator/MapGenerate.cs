@@ -10,9 +10,10 @@ namespace Coin_Wave_Lib.MapGenerator
     {
         private int _width;
         private int _height;
-        private double _sizeX;
-        private double _sizeY;
+        public double _sizeX;
+        public double _sizeY;
         private List<double> _points;
+        public List<Pnt> mainPoints;
         public MapGenerate(int width, int heidth)
         {
             _width = width;
@@ -25,7 +26,8 @@ namespace Coin_Wave_Lib.MapGenerator
             double x = -1.0;
             double y =  1.0;
             double z = 0.0;
-            _points = new List<double>();
+            _points = new List<double>(0);
+            mainPoints = new List<Pnt>(0);
             for (int i = 0; i < _width * _height; i++)
             {   
                 if (i%34 == 0 && i != 0)
@@ -43,6 +45,7 @@ namespace Coin_Wave_Lib.MapGenerator
                 _points.Add(z);
                 _points.Add(1.0);
                 _points.Add(1.0);
+                mainPoints.Add(new Pnt(x, y, z, 0, 0));
                 // 2
                 _points.Add(x + _sizeX);
                 _points.Add(y);
