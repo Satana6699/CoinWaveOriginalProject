@@ -20,20 +20,25 @@ using Coin_Wave_Lib.ObjCS;
 
 namespace Coin_Wave_Lib
 {
-    struct IndexObject
+    class IndexObject
     {
         public int index;
         public GameObject gameObject;
+        public BufferManager bufferManager;
         public IndexObject(int index, GameObject gameObject)
         {
             this.index = index;
             this.gameObject = gameObject;
         }
+        public void CreateBuffer(double[] vertices, string texturePath)
+        {
+            this.bufferManager = new BufferManager(vertices, texturePath);
+        }
     }
-    struct ThisElement
+    class ThisElement
     {
         public int index;
-        private bool element;
+        public bool element;
         public ThisElement(int index)
         {
             this.index = index;
@@ -42,10 +47,6 @@ namespace Coin_Wave_Lib
         public bool Get()
         {
             return element;
-        }
-        public void Set(bool value)
-        {
-            element = value;
         }
     }
     public class MapGenerateWindow : GameWindow
@@ -66,7 +67,6 @@ namespace Coin_Wave_Lib
         BlocksPanel blocksPanel;
         BufferManager viborPanel;
         BufferManager[] bufs = new BufferManager[8];
-        List<BufferManager> mapBufs = new List<BufferManager>(0);
         List<IndexObject> indexObjects = new List<IndexObject>(0);
         List<ThisElement> thisElements = new List<ThisElement>(0);
         int index = 0;
@@ -114,7 +114,7 @@ namespace Coin_Wave_Lib
             };
             Pnt pntPoh = new(0.0, 0.0, 0.0, 0.0,0.0);
             List<GameObject> pnts = new List<GameObject>(0);
-            pnts.Add(new BackWall(pntPoh, 0, 0, @"data\image\sqrt.png"));
+            pnts.Add(new BackWall(pntPoh, 0, 0, @"data\image\bluesqrt.png"));
             pnts.Add(new Coin(pntPoh, 0, 0, @"data\image\gamer.png"));
             pnts.Add(new EnterDoor(pntPoh, 0, 0, @"data\image\redsqrt.png"));
             pnts.Add(new ExitDoor(pntPoh, 0, 0, @"data\image\stone.png"));
@@ -163,7 +163,6 @@ namespace Coin_Wave_Lib
                     )
             {
                 index++;
-
                 currentIndex = index;
             }
             else if (
@@ -175,20 +174,45 @@ namespace Coin_Wave_Lib
             {
                 index = 0;
             }
+            else if (currentKeyboardState.IsKeyPressed(Keys.LeftShift))
+            {
+                index = 0;
+                currentIndex = index;
+            }
             blocksPanel.ObjVibor(index);
             viborPanel.UpdateDate(blocksPanel.viborObj.GetVertices());
 
-            if (currentKeyboardState.IsKeyDown(Keys.Enter) && thisElements[_numObj].Get() == false)
+            if (currentKeyboardState.IsKeyDown(Keys.Enter))
             {
-                indexObjects.Add(new IndexObject(_numObj,
-                    new Coin(mg.mainPoints[_numObj], mg._sizeX, mg._sizeY, blocksPanel.gameObjects[currentIndex].path)));
-                thisElements[_numObj].Set(true);
-                mapBufs.Add(new BufferManager(indexObjects[indexObjects.Count - 1].gameObject.GetVertices(),
-                    indexObjects[indexObjects.Count - 1].gameObject.path));
+                for (int i = 0; i < indexObjects.Count && thisElements[_numObj].Get() == true; i++)
+                {
+                    if (indexObjects[i].index == _numObj)
+                    {
+                        indexObjects.RemoveAt(i);
+                        thisElements[_numObj].element = false;
+                        break;
+                    }
+                }
+                if (thisElements[_numObj].Get() == false)
+                {
+                    indexObjects.Add(new IndexObject(_numObj,
+                        new Coin(mg.mainPoints[_numObj], mg._sizeX, mg._sizeY, blocksPanel.gameObjects[currentIndex].path)));
+                    thisElements[_numObj].element = true;
+                    indexObjects[indexObjects.Count - 1].CreateBuffer(indexObjects[indexObjects.Count - 1].gameObject.GetVertices(),
+                        indexObjects[indexObjects.Count - 1].gameObject.path);
+                }
             }
             if (currentKeyboardState.IsKeyDown(Keys.Delete) && thisElements[_numObj].Get() == true)
             {
-
+                for(int i = 0; i < indexObjects.Count; i++)
+                {
+                    if (indexObjects[i].index == _numObj)
+                    {
+                        indexObjects.RemoveAt(i);
+                        thisElements[_numObj].element = false;
+                        break;
+                    }
+                }
             }
 
 
@@ -205,9 +229,9 @@ namespace Coin_Wave_Lib
             base.OnRenderFrame(args);
             GL.Clear(ClearBufferMask.DepthBufferBit | ClearBufferMask.ColorBufferBit);
             emptyElements.Render();
-            foreach(var buf in mapBufs)
+            foreach(var buf in indexObjects)
             {
-                buf.Render();
+                buf.bufferManager.Render();
             }
             currentElement.Render();
             if (currentKeyboardState.IsKeyDown(Keys.LeftShift))
