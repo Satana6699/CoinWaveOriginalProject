@@ -28,7 +28,7 @@ namespace Coin_Wave_Lib
             Z = z;
         }
 
-        public void NewTexturCoords(double s, double t)
+        public void NewTextureCoords(double s, double t)
         {
             S = s;
             T = t;

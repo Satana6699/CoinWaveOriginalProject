@@ -8,7 +8,11 @@ namespace Coin_Wave_Lib.ObjCS
 {
     public class EmptyElement : GameObject
     {
-        public EmptyElement(Rctngl rectangle, string path) : base(rectangle, path)
+        public EmptyElement(Rctngl rectangle) : base(rectangle)
+        {
+        }
+
+        public EmptyElement(int index, Rctngl rectangle) : base(index, rectangle)
         {
         }
     }

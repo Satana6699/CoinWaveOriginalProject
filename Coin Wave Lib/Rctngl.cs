@@ -17,14 +17,10 @@ namespace Coin_Wave_Lib
         public Rctngl(Pnt topLeft, Pnt topRight, Pnt bottomRight, Pnt bottomLeft)
         {
             SetPnts(topLeft, topRight, bottomRight, bottomLeft);
-
-            DefaultTextureCootds(); //ВРЕМЕННО, ПОТОМ НЕОБХОДИМО УБРАТЬ
         }
         public Rctngl(Pnt topLeft, double width, double hidth)
         {
             SetPnts(topLeft, width, hidth);
-
-            DefaultTextureCootds(); //ВРЕМЕННО, ПОТОМ НЕОБХОДИМО УБРАТЬ
         }
         public void SetPnts(Pnt topLeft, Pnt topRight, Pnt bottomRight, Pnt bottomLeft)
         {
@@ -72,11 +68,11 @@ namespace Coin_Wave_Lib
 
         public void DefaultTextureCootds()
         {
-            TopLeft.NewTexturCoords(0, 1);
-            TopRight.NewTexturCoords(1, 1);
-            BottomRight.NewTexturCoords(1, 0);
-            BottomLeft.NewTexturCoords(0, 0);
-            _vertices = new double[0];
+            TopLeft.NewTextureCoords(0, 1);
+            TopRight.NewTextureCoords(1, 1);
+            BottomRight.NewTextureCoords(1, 0);
+            BottomLeft.NewTextureCoords(0, 0);
+            _vertices = Array.Empty<double>();
         }
         public double[] GetVertieces()
         {
@@ -95,6 +91,13 @@ namespace Coin_Wave_Lib
             }
             return _vertices.ToArray();
         }
-
+        public Rctngl CopyTextureCoords(Rctngl rctngl)
+        {
+            TopLeft.NewTextureCoords(rctngl.TopLeft.S, rctngl.TopLeft.T);
+            TopRight.NewTextureCoords(rctngl.TopRight.S, rctngl.TopRight.T);
+            BottomRight.NewTextureCoords(rctngl.BottomRight.S, rctngl.BottomRight.T);
+            BottomLeft.NewTextureCoords(rctngl.BottomLeft.S, rctngl.BottomLeft.T);
+            return this;
+        }
     }
 }

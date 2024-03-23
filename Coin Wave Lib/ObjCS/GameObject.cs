@@ -8,16 +8,23 @@ namespace Coin_Wave_Lib
 {
     public abstract class GameObject
     {
+        public int Index { get; set; }
         public string path;
         public Rctngl Rectangle {  get; set; }
-        public GameObject(Rctngl rectangle, string path)
+        public GameObject(Rctngl rectangle)
         {
             Rectangle = rectangle;
             this.path = path;
         }
-        public void NewPoints(Rctngl sqrt)
+        public GameObject(int index, Rctngl rectangle)
         {
-            Rectangle = sqrt;
+            Index = index;
+            Rectangle = rectangle;
+            this.path = path;
+        }
+        public void NewPoints(Rctngl rctng)
+        {
+            Rectangle = rctng;
         }
         public void NewPoints(Pnt leftTop, double width, double heidth)
         {
@@ -28,14 +35,22 @@ namespace Coin_Wave_Lib
             return Rectangle.GetVertieces();
         }
 
-        public static double[] GetVertices(Rctngl[] rctngls)
+        public static double[] GetVertices(GameObject[] gameObjects)
         {
-            List<double> vertices = new List<double>();
-            return vertices.ToArray();
+            int offset = 5;
+            double[] vertices = new double[gameObjects.Length * 4 * offset];
+            for (int i = 0; i < gameObjects.Length; i++)
+            {
+                for (int j = 0; j < gameObjects[i].Rectangle.GetVertieces().Length; j++)
+                {
+                    vertices[i * 4 * offset + j] = gameObjects[i].Rectangle.GetVertieces()[j];
+                }
+            }
+            return vertices;
         }
-        public static double[] GetVertices(List<Rctngl> rctngls)
+        public static double[] GetVertices(List<GameObject> gameObjects)
         {
-            return GetVertices(rctngls.ToArray());
+            return GetVertices(gameObjects.ToArray());
         }
     }
 }

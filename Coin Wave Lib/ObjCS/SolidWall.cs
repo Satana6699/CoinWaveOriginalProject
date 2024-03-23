@@ -8,7 +8,11 @@ namespace Coin_Wave_Lib.ObjCS
 {
     public class SolidWall : GameObject
     {
-        public SolidWall(Rctngl rectangle, string path) : base(rectangle, path)
+        public SolidWall(Rctngl rectangle) : base(rectangle)
+        {
+        }
+
+        public SolidWall(int index, Rctngl rectangle) : base(index, rectangle)
         {
         }
     }

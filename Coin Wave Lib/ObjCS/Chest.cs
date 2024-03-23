@@ -8,7 +8,11 @@ namespace Coin_Wave_Lib.ObjCS
 {
     public class Chest : GameObject
     {
-        public Chest(Rctngl rectangle, string path) : base(rectangle, path)
+        public Chest(Rctngl rectangle) : base(rectangle)
+        {
+        }
+
+        public Chest(int index, Rctngl rectangle) : base(index, rectangle)
         {
         }
     }

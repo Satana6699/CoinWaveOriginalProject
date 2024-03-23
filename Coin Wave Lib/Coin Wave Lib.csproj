@@ -29,6 +29,9 @@
     <None Update="data\image\stone.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="data\image\texMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="data\image\trava.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -38,6 +41,10 @@
     <None Update="data\shaders\shader.vert">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Папка для теста\" />
   </ItemGroup>
 
 </Project>
