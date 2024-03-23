@@ -5,7 +5,7 @@ using OpenTK.Windowing.Desktop;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
-using static Coin_Wave_Lib.PlayerDouble;
+using Coin_Wave_Lib;
 using System;
 using System.Collections.Generic;
 
@@ -13,7 +13,6 @@ using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 using System.IO;
-using static Coin_Wave_Lib.PlayerFloat;
 using Coin_Wave_Lib.MapGenerator;
 using System.Numerics;
 using Coin_Wave_Lib.ObjCS;
@@ -74,7 +73,7 @@ namespace Coin_Wave_Lib
         MapGenerate mg;
 
         private double[] _currentPosition;
-        private double[] _vertBlocksPanel;
+        //private double[] _vertBlocksPanel;
         
 
         public MapGenerateWindow(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings)
@@ -106,24 +105,25 @@ namespace Coin_Wave_Lib
             {
                 _currentPosition[i] = _emptyElement[j];
             }
+            /*
             _vertBlocksPanel = new[]{
              0.8, -0.6, 0.0, 1.0, 0.0,
             -0.8, -0.6, 0.0, 0.0, 0.0,
             -0.8,  0.6, 0.0, 0.0, 1.0,
              0.8,  0.6, 0.0, 1.0, 1.0,
-            };
+            };*/
             Pnt pntPoh = new(0.0, 0.0, 0.0, 0.0,0.0);
             List<GameObject> pnts = new List<GameObject>(0);
-            pnts.Add(new BackWall(pntPoh, 0, 0, @"data\image\bluesqrt.png"));
-            pnts.Add(new Coin(pntPoh, 0, 0, @"data\image\gamer.png"));
-            pnts.Add(new EnterDoor(pntPoh, 0, 0, @"data\image\redsqrt.png"));
-            pnts.Add(new ExitDoor(pntPoh, 0, 0, @"data\image\stone.png"));
-            pnts.Add(new SolidWall(pntPoh, 0, 0, @"data\image\trava.png"));
-            pnts.Add(new EnterDoor(pntPoh, 0, 0, @"data\image\redsqrt.png"));
-            pnts.Add(new ExitDoor(pntPoh, 0, 0, @"data\image\stone.png"));
-            pnts.Add(new SolidWall(pntPoh, 0, 0, @"data\image\trava.png"));
-            blocksPanel = new(new Pnt(-0.8, 0.6, 0.0, 1.0, 0.0),
-                              1.6, 1.2, @"data\image\bluesqrt.png", 10);
+            pnts.Add(new BackWall(new Rctngl(pntPoh, 0, 0), @"data\image\bluesqrt.png"));
+            pnts.Add(new Coin(new Rctngl(pntPoh, 0, 0), @"data\image\gamer.png"));
+            pnts.Add(new EnterDoor(new Rctngl(pntPoh, 0, 0), @"data\image\redsqrt.png"));
+            pnts.Add(new ExitDoor(new Rctngl(pntPoh, 0, 0), @"data\image\stone.png"));
+            pnts.Add(new SolidWall(new Rctngl(pntPoh, 0, 0), @"data\image\trava.png"));
+            pnts.Add(new EnterDoor(new Rctngl(pntPoh, 0, 0), @"data\image\redsqrt.png"));
+            pnts.Add(new ExitDoor(new Rctngl(pntPoh, 0, 0), @"data\image\stone.png"));
+            pnts.Add(new SolidWall(new Rctngl(pntPoh, 0, 0), @"data\image\trava.png"));
+            blocksPanel = new(new Rctngl(new Pnt(-0.8, 0.6, 0.0, 1.0, 0.0),
+                              1.6, 1.2), @"data\image\bluesqrt.png", 10);
             blocksPanel.AddGameObject(pnts);
             blocksPanel.GenerateTexturViborObj(@"data\image\redsqrt.png");
             emptyElements = new(_emptyElement,
@@ -196,7 +196,7 @@ namespace Coin_Wave_Lib
                 if (thisElements[_numObj].Get() == false)
                 {
                     indexObjects.Add(new IndexObject(_numObj,
-                        new Coin(mg.mainPoints[_numObj], mg._sizeX, mg._sizeY, blocksPanel.gameObjects[currentIndex].path)));
+                        new Coin(new Rctngl(mg.mainPoints[_numObj], mg._sizeX, mg._sizeY), blocksPanel.gameObjects[currentIndex].path)));
                     thisElements[_numObj].element = true;
                     indexObjects[indexObjects.Count - 1].CreateBuffer(indexObjects[indexObjects.Count - 1].gameObject.GetVertices(),
                         indexObjects[indexObjects.Count - 1].gameObject.path);
@@ -228,6 +228,9 @@ namespace Coin_Wave_Lib
         {
             base.OnRenderFrame(args);
             GL.Clear(ClearBufferMask.DepthBufferBit | ClearBufferMask.ColorBufferBit);
+            // Alpha-chanal support
+            GL.Enable(EnableCap.Blend);
+            GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
             emptyElements.Render();
             foreach(var buf in indexObjects)
             {

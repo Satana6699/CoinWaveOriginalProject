@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Coin_Wave_Lib.ObjCS
 {
-    public class Coin : GameObject
+    public class EmptyElement : GameObject
     {
-        public Coin(Rctngl rectangle, string path) : base(rectangle, path)
+        public EmptyElement(Rctngl rectangle, string path) : base(rectangle, path)
         {
         }
     }

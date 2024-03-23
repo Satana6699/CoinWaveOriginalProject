@@ -12,30 +12,24 @@ namespace Coin_Wave_Lib.MapGenerator
         public List<GameObject> gameObjects = new List<GameObject>(0);
         int numberOfSeats;
         public ViborObj viborObj;
-        public BlocksPanel(Pnt pnt, double width, double hidth, string path, int numberOfSeats) : base(pnt, width, hidth, path)
+        public BlocksPanel(Rctngl rectangle, string path, int numberOfSeats) : base(rectangle, path)
         {
             if (numberOfSeats%2 != 0) numberOfSeats++;
             this.numberOfSeats = numberOfSeats;
         }
         public void GenerateTexturViborObj(string path)
         {
-            viborObj = new ViborObj(pnt, 0, 0, path);
+            viborObj = new ViborObj(new Rctngl(Rectangle.TopLeft, 0, 0), path);
         }
         public void ObjVibor(int index)
         {
             double percanteX = 0.03;
             double percanteY = 0.08;
-            double xPos = gameObjects[index].pnts[0].X - Math.Abs(gameObjects[index].pnts[0].X * percanteX);
-            double yPos = gameObjects[index].pnts[0].Y + Math.Abs(gameObjects[index].pnts[0].Y * percanteY);
-            double width = Math.Abs(gameObjects[index].pnts[1].X + Math.Abs(gameObjects[index].pnts[1].X * percanteX) - xPos);
-            double hidth = Math.Abs(gameObjects[index].pnts[2].Y - Math.Abs(gameObjects[index].pnts[2].Y * 0.1) - yPos);
-            viborObj.NewPoints(new Pnt(xPos,
-                yPos,
-                gameObjects[index].pnts[0].Z,
-                gameObjects[index].pnts[0].S,
-                gameObjects[index].pnts[0].T),
-                width,
-                hidth);
+            double xPos = gameObjects[index].Rectangle.TopLeft.X - Math.Abs(gameObjects[index].Rectangle.TopLeft.X * percanteX);
+            double yPos = gameObjects[index].Rectangle.TopLeft.Y + Math.Abs(gameObjects[index].Rectangle.TopLeft.Y * percanteY);
+            double width = gameObjects[index].Rectangle.GetWidth() * 1.1;
+            double hidth = gameObjects[index].Rectangle.GetHeight() * 1.1;
+            viborObj.NewPoints(new Rctngl(new Pnt(xPos, yPos, 0,0,0), width, hidth));
             }
         public void AddGameObject(List<GameObject> gameObjects)
         {
@@ -53,17 +47,17 @@ namespace Coin_Wave_Lib.MapGenerator
         public void PlacingObjectsInPanel()
         {
             int row = numberOfSeats + 1;
-            double unitX = width / row; //ширина одного контейнра
-            double unitY = hidth / 5;
-            double xPos = pnt.X + unitX;
-            double yPos = pnt.Y - unitY;
+            double unitX = Rectangle.GetWidth() / row; //ширина одного контейнра
+            double unitY = Rectangle.GetHeight() / 5;
+            double xPos = Rectangle.TopLeft.X + unitX;
+            double yPos = Rectangle.TopLeft.Y - unitY;
             for (int i = 0;i < gameObjects.Count;i++)
             {
                 gameObjects[i].NewPoints(new Pnt(xPos, yPos, 0.0, 0.0, 0.0), unitX, unitY);
                 xPos = xPos + 2 * unitX;
                 if (i+1 == numberOfSeats / 2)
                 {
-                    xPos = pnt.X + unitX;
+                    xPos = Rectangle.TopLeft.X + unitX;
                     yPos = yPos - 2 * unitY;
                 }
             }

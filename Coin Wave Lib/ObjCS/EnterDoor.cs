@@ -8,7 +8,7 @@ namespace Coin_Wave_Lib.ObjCS
 {
     public class EnterDoor : GameObject
     {
-        public EnterDoor(Pnt pnt, double width, double hidth, string path) : base(pnt, width, hidth, path)
+        public EnterDoor(Rctngl rectangle, string path) : base(rectangle, path)
         {
         }
     }

@@ -5,7 +5,7 @@ using OpenTK.Windowing.Desktop;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
-using static Coin_Wave_Lib.PlayerDouble;
+using static Coin_Wave_Lib.Player;
 using System;
 using System.Collections.Generic;
 
@@ -13,7 +13,6 @@ using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 using System.IO;
-using static Coin_Wave_Lib.PlayerFloat;
 
 namespace Coin_Wave_Lib
 {
@@ -23,7 +22,7 @@ namespace Coin_Wave_Lib
         KeyboardState lastKeyboardState, currentKeyboardState;
         private float frameTime = 0.0f;
         private int fps = 0;
-        PlayerDouble player;
+        Player player;
         // Because we're adding a texture, we modify the vertex array to include texture coordinates.
         // Texture coordinates range from 0.0 to 1.0, with (0.0, 0.0) representing the bottom left, and (1.0, 1.0) representing the top right.
         // The new layout is three floats to create a vertex, then two floats to create the coordinates.

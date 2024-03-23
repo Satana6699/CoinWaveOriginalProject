@@ -10,15 +10,13 @@ using OpenTK.Windowing.Desktop;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
-using static Coin_Wave_Lib.PlayerDouble;
+using Coin_Wave_Lib;
 using System;
 using System.Collections.Generic;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 using System.IO;
-using static Coin_Wave_Lib.PlayerFloat;
-using Coin_Wave_Lib.MapGenerator;
 using System.Numerics;
 
 namespace Coin_Wave_Lib

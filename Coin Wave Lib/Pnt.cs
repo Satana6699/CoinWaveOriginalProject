@@ -15,8 +15,11 @@ namespace Coin_Wave_Lib
         public double T {  get; private set; } // координата текстуры Y
         public Pnt(double x, double y, double z, double s, double t)
         {
-            X = x; Y = y; Z = z;
-            S = s; T = t;
+            X = x; 
+            Y = y; 
+            Z = z;
+            S = s;
+            T = t;
         }
         public void NewCoords(double x, double y, double z)
         {

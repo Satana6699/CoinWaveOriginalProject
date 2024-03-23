@@ -8,7 +8,7 @@ namespace Coin_Wave_Lib.ObjCS
 {
     public class BackWall : GameObject
     {
-        public BackWall(Pnt pnt, double width, double hidth, string path) : base(pnt, width, hidth, path)
+        public BackWall(Rctngl rectangle, string path) : base(rectangle, path)
         {
         }
     }
