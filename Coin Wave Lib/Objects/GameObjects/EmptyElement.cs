@@ -4,15 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Coin_Wave_Lib.ObjCS
+namespace Coin_Wave_Lib
 {
     public class EmptyElement : GameObject
     {
-        public EmptyElement(Rctngl rectangle) : base(rectangle)
-        {
-        }
-
-        public EmptyElement(int index, Rctngl rectangle) : base(index, rectangle)
+        public EmptyElement(Rectangle rectangle, TexturePoint[] texturePoints, IGetVertices getVertices, int index) : base(rectangle, texturePoints, getVertices, index)
         {
         }
     }

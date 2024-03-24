@@ -64,8 +64,9 @@ namespace Coin_Wave_Lib
 
         public void UpdateDate(double[] vertices)
         {
+            this.vertices = vertices;
             GL.BindBuffer(BufferTarget.ArrayBuffer, vertexBufferObject);
-            GL.BufferData(BufferTarget.ArrayBuffer, vertices.Length * sizeof(double), vertices, BufferUsageHint.DynamicDraw);
+            GL.BufferData(BufferTarget.ArrayBuffer, this.vertices.Length * sizeof(double), this.vertices, BufferUsageHint.DynamicDraw);
         }
 
         public void Render()

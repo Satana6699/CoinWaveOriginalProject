@@ -35,16 +35,6 @@ namespace Coin_Wave_Lib
     }
     public class MapGenerateWindow : GameWindow
     {
-        /*void ЗаполнитьВсеПоле()
-        {
-            for (int i = 0; i < _width * _height; i++)
-            {
-                gameObjects.Add(new Coin(
-                _numObj, new Rctngl(mg.mainPoints[_numObj],
-                        mg._sizeX, mg._sizeY).CopyTextureCoords(blocksPanel.gameObjects[currentIndex].Rectangle)));
-                thisElements[_numObj].element = true;
-            }
-        }*/
         KeyboardState lastKeyboardState, currentKeyboardState;
         private float frameTime = 0.0f;
         private float _time = 0.0f;
@@ -75,7 +65,7 @@ namespace Coin_Wave_Lib
         MapGenerate mg;
         BlocksPanel blocksPanel;
         TextureMap textureMap;
-
+        DoublePoints doublePoints = new DoublePoints();
 
         public MapGenerateWindow(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings)
             : base(gameWindowSettings, nativeWindowSettings)
@@ -98,7 +88,7 @@ namespace Coin_Wave_Lib
             
             base.OnLoad();
             GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-            textureMap = new TextureMap(6, 6, @"data\image\texMap.png");
+            textureMap = new TextureMap(6, 6, 4, @"data\image\texMap.png");
             thisElements = new ThisElement[_height * _width];
             for(int i = 0; i < thisElements.Length; i++) thisElements[i] = new ThisElement(i);
             mg = new(_width, _height);
@@ -109,25 +99,32 @@ namespace Coin_Wave_Lib
             {
                 _currentPosition[i] = _emptyElement[j];
             }
-            Pnt НеИмеетХначенияЧтоТут = new(0.0, 0.0, 0.0, 0.0, 0.0);
-            blocksPanel = new(new Rctngl(new Pnt(-0.8, 0.6, 0.0, 1.0, 0.0), 1.6, 1.2), 10);
-            blocksPanel.AddGameObject(new BackWall(textureMap.NewTextureCoords(new Rctngl(new(0.0, 0.0, 0.0, 0.0, 0.0), 0, 0), 8)));
-            blocksPanel.AddGameObject((new Coin(textureMap.NewTextureCoords(new Rctngl(new(0.0, 0.0, 0.0, 0.0, 0.0), 0, 0), 22))));
-            blocksPanel.AddGameObject((new EnterDoor(textureMap.NewTextureCoords(new Rctngl(new(0.0, 0.0, 0.0, 0.0, 0.0), 0, 0), 19))));
-            blocksPanel.AddGameObject(new ExitDoor(textureMap.NewTextureCoords(new Rctngl(new(0.0, 0.0, 0.0, 0.0, 0.0), 0, 0), 19)));
-            blocksPanel.AddGameObject(new SolidWall(textureMap.NewTextureCoords(new Rctngl(new(0.0, 0.0, 0.0, 0.0, 0.0), 0, 0), 1)));
-            blocksPanel.AddGameObject(new EnterDoor(textureMap.NewTextureCoords(new Rctngl(new(0.0, 0.0, 0.0, 0.0, 0.0), 0, 0), 2)));
-            blocksPanel.AddGameObject(new ExitDoor(textureMap.NewTextureCoords(new Rctngl(new(0.0, 0.0, 0.0, 0.0, 0.0), 0, 0), 4)));
-            blocksPanel.AddGameObject(new SolidWall(textureMap.NewTextureCoords(new Rctngl(new(0.0, 0.0, 0.0, 0.0, 0.0), 0, 0), 5)));
-            blocksPanel.PlacingObjectsInPanel();
+                
+            blocksPanel = new(new Rectangle
+                (
+                    new Point(-0.8, 0.6), 1.6, 1.2),
+                    new TexturePoint[] { new TexturePoint(0, 1), new TexturePoint(1, 1), new TexturePoint(1, 0), new TexturePoint(0, 0)}, 
+                    doublePoints,
+                    10,
+                    textureMap
+                );
+            blocksPanel.GenerateMenuElement("Coin", 8);
+            blocksPanel.GenerateMenuElement("Coin", 7);
+            blocksPanel.GenerateMenuElement("Coin", 9);
+            /*blocksPanel.GenerateMenuElement("Coin", 1);
+            blocksPanel.GenerateMenuElement("Coin", 19);
+            blocksPanel.GenerateMenuElement("Coin", 23);
+            blocksPanel.GenerateMenuElement("Coin", 20);
+            blocksPanel.GenerateMenuElement("Coin", 21);
+            blocksPanel.GenerateMenuElement("Coin", 22);*/
             blocksPanel.GenerateTexturViborObj(@"data\image\redsqrt.png");
             bufferEmptyElements = new(_emptyElement, @"data\image\sqrt.png");
             bufferCurrentElement = new(_currentPosition, @"data\image\redsqrt.png");
             bufferWindowBlocksPanel = new(blocksPanel.GetVertices(), @"data\image\bluesqrt.png");
             bufferViborPanel = new(blocksPanel.viborObj.GetVertices(), @"data\image\redsqrt.png");
-            bufferGameObj = new(GameObject.GetVertices(gameObjects), textureMap.TexturePath);
-            //ЗаполнитьВсеПоле();/////////////////////////////
-            bufferBlockPanel = new(GameObject.GetVertices(blocksPanel.gameObjects), textureMap.TexturePath);
+           
+            bufferGameObj = new(Obj.GetVertices(gameObjects.ToArray(), 5), textureMap.TexturePath);
+            bufferBlockPanel = new(Obj.GetVertices(blocksPanel.MenuElements.ToArray(), 5), textureMap.TexturePath);
         }
 
         protected override void OnUpdateFrame(FrameEventArgs args)
@@ -145,10 +142,11 @@ namespace Coin_Wave_Lib
                 frameTime = 0.0f;
                 fps = 0;
             }
+
             if (
                     currentKeyboardState.IsKeyPressed(Keys.Tab) &&
                     lastKeyboardState.IsKeyDown(Keys.LeftShift) &&
-                    index < blocksPanel.gameObjects.Count - 1
+                    index < blocksPanel.MenuElements.Count - 1
                     )
             {
                 index++;
@@ -156,7 +154,7 @@ namespace Coin_Wave_Lib
             }
             else if (
                     (!currentKeyboardState.IsKeyPressed(Keys.LeftShift) &&
-                    index >= blocksPanel.gameObjects.Count - 1 &&
+                    index >= blocksPanel.MenuElements.Count - 1 &&
                     currentKeyboardState.IsKeyPressed(Keys.Tab)) ||
                     !currentKeyboardState.IsKeyDown(Keys.LeftShift)
                     )
@@ -174,19 +172,16 @@ namespace Coin_Wave_Lib
             
             if (currentKeyboardState.IsKeyDown(Keys.Delete) && thisElements[_numObj].Get() == true)
             {
-            
-                if (gameObjects.Count == 1) bufferGameObj = new(GameObject.GetVertices(gameObjects), textureMap.TexturePath);
-                else
-                    for (int i = 0; i < gameObjects.Count; i++)
+                for (int i = 0; i < gameObjects.Count; i++)
+                {
+                    if (gameObjects[i].Index == _numObj)
                     {
-                        if (gameObjects[i].Index == _numObj)
-                        {
-                            gameObjects.RemoveAt(i);
-                            thisElements[_numObj].element = false;
-                            bufferGameObj.UpdateDate(GameObject.GetVertices(gameObjects));
-                            break;
-                        }
+                        gameObjects.RemoveAt(i);
+                        thisElements[_numObj].element = false;
+                        bufferGameObj.UpdateDate(Obj.GetVertices(gameObjects.ToArray(), 5));
+                        break;
                     }
+                }
             }
 
 
@@ -204,9 +199,11 @@ namespace Coin_Wave_Lib
         {
             base.OnRenderFrame(args);
             GL.Clear(ClearBufferMask.DepthBufferBit | ClearBufferMask.ColorBufferBit);
+
             // Alpha-chanal support
             GL.Enable(EnableCap.Blend);
             GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+
             bufferEmptyElements.Render();
             bufferGameObj.Render();
             bufferCurrentElement.Render();
@@ -285,11 +282,15 @@ namespace Coin_Wave_Lib
             }*/
             if (thisElements[_numObj].Get() == false)
             {
-                gameObjects.Add(new Coin(
-                    _numObj, new Rctngl(mg.mainPoints[_numObj],
-                    mg._sizeX, mg._sizeY).CopyTextureCoords(blocksPanel.gameObjects[currentIndex].Rectangle)));
+                gameObjects.Add(new Coin
+                    (
+                        new Rectangle(mg.mainPoints[_numObj], mg._sizeX, mg._sizeY),
+                        textureMap.GetTexturePoints(blocksPanel.MenuElements[currentIndex].IndexTexture),
+                        doublePoints,
+                        _numObj
+                    ));
                 thisElements[_numObj].element = true;
-                bufferGameObj = new(GameObject.GetVertices(gameObjects), textureMap.TexturePath);
+                bufferGameObj.UpdateDate(Obj.GetVertices(gameObjects.ToArray(), 5));
             }
         }
     }

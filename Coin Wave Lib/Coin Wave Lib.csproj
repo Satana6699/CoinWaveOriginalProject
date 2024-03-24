@@ -44,6 +44,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Decorators\" />
     <Folder Include="Папка для теста\" />
   </ItemGroup>
 

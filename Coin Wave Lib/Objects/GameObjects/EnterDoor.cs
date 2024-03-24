@@ -4,15 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Coin_Wave_Lib.ObjCS
+namespace Coin_Wave_Lib
 {
     public class EnterDoor : GameObject
     {
-        public EnterDoor(Rctngl rectangle) : base(rectangle)
-        {
-        }
-
-        public EnterDoor(int index, Rctngl rectangle) : base(index, rectangle)
+        public EnterDoor(Rectangle rectangle, TexturePoint[] texturePoints, IGetVertices getVertices, int index) : base(rectangle, texturePoints, getVertices, index)
         {
         }
     }

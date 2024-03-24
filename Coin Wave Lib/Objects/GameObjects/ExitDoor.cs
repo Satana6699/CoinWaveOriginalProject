@@ -4,15 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Coin_Wave_Lib.ObjCS
+namespace Coin_Wave_Lib
 {
     public class ExitDoor : GameObject
     {
-        public ExitDoor(Rctngl rectangle) : base(rectangle)
-        {
-        }
-
-        public ExitDoor(int index, Rctngl rectangle) : base(index, rectangle)
+        public ExitDoor(Rectangle rectangle, TexturePoint[] texturePoints, IGetVertices getVertices, int index) : base(rectangle, texturePoints, getVertices, index)
         {
         }
     }
