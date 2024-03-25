@@ -54,9 +54,10 @@ namespace Coin_Wave_Lib
         private double[] _currentPosition;
         private double[] _emptyElement;
 
-        // размер карты 34 на 15 и разрешение экрана 1920 на 1080
+        // размер карты 34 на 18 и разрешение экрана 1920 на 1080
         private readonly int _width = 34;
         private readonly int _height = 18;
+        private bool IsTherePlayer = false;
 
         private float timeOfMoment;
         private int _numObj = 0;
@@ -111,12 +112,12 @@ namespace Coin_Wave_Lib
             blocksPanel.GenerateMenuElement("Coin", 8);
             blocksPanel.GenerateMenuElement("Coin", 7);
             blocksPanel.GenerateMenuElement("Coin", 9);
-            /*blocksPanel.GenerateMenuElement("Coin", 1);
+            blocksPanel.GenerateMenuElement("Coin", 1);
             blocksPanel.GenerateMenuElement("Coin", 19);
-            blocksPanel.GenerateMenuElement("Coin", 23);
+            blocksPanel.GenerateMenuElement("Coin", 4);
             blocksPanel.GenerateMenuElement("Coin", 20);
             blocksPanel.GenerateMenuElement("Coin", 21);
-            blocksPanel.GenerateMenuElement("Coin", 22);*/
+            blocksPanel.GenerateMenuElement("Coin", 22);
             blocksPanel.GenerateTexturViborObj(@"data\image\redsqrt.png");
             bufferEmptyElements = new(_emptyElement, @"data\image\sqrt.png");
             bufferCurrentElement = new(_currentPosition, @"data\image\redsqrt.png");
@@ -187,13 +188,15 @@ namespace Coin_Wave_Lib
 
 
             ClickWASD(currentKeyboardState);
-            if (currentKeyboardState.IsKeyDown(Keys.Enter))  ClickEnter();
+            if (currentKeyboardState.IsKeyDown(Keys.Enter)) ClickEnter();
             
             if (currentKeyboardState.IsKeyDown(Keys.Escape)) Close();
             if (lastKeyboardState != null &&
                 lastKeyboardState.IsKeyDown(Keys.LeftControl) &&
                 currentKeyboardState.IsKeyDown(Keys.S))
-                    Close();
+            { 
+                // Логика сохранения файла с картой
+            }
         }
         protected override void OnRenderFrame(FrameEventArgs args)
         {
@@ -271,18 +274,9 @@ namespace Coin_Wave_Lib
 
         private void ClickEnter()
         {
-            /*for (int i = 0; i < gameObjects.Count && thisElements[_numObj].Get() == true; i++)
-            {
-                if (gameObjects[i].Index == _numObj)
-                {
-                    gameObjects.RemoveAt(i);
-                    thisElements[_numObj].element = false;
-                    break;
-                }
-            }*/
             if (thisElements[_numObj].Get() == false)
             {
-                gameObjects.Add(new Coin
+                GameObject ob = (new Coin
                     (
                         new Rectangle(mg.mainPoints[_numObj], mg._sizeX, mg._sizeY),
                         textureMap.GetTexturePoints(blocksPanel.MenuElements[currentIndex].IndexTexture),
@@ -290,7 +284,11 @@ namespace Coin_Wave_Lib
                         _numObj
                     ));
                 thisElements[_numObj].element = true;
-                bufferGameObj.UpdateDate(Obj.GetVertices(gameObjects.ToArray(), 5));
+
+                // Добавление обьектов методом конкатенации массивов с целью оптимизации программы,
+                // Так как конвертировать массив игровых обьектов каждый раз не выгодно
+                bufferGameObj.UpdateDate(bufferGameObj.vertices.Concat(ob.GetVertices()).ToArray());
+                gameObjects.Add(ob);
             }
         }
     }

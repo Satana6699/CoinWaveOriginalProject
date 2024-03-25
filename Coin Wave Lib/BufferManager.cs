@@ -25,7 +25,7 @@ namespace Coin_Wave_Lib
     {
         int vertexArrayObject = 0;
         int vertexBufferObject = 0;
-        double[] vertices;
+        public double[] vertices;
         static Shader shader;
         Texture texture;
 

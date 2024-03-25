@@ -8,9 +8,9 @@ namespace Coin_Wave_Lib
 {
     public abstract class Obj
     {
-        public string Name
+        public static string Name
         {
-            get { return GetType().Name; }
+            get { return typeof(Obj).Name; }
         }
         public Rectangle Rectangle { get; private set; }
         public TexturePoint[] TexturePoints { get; private set; }
