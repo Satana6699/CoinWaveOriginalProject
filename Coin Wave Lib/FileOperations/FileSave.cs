@@ -15,7 +15,7 @@ namespace Coin_Wave_Lib
             XmlSerializer serializer = new XmlSerializer(typeof(T));
 
             // Создаем поток для записи в файл
-            using (FileStream stream = new FileStream(filePath, FileMode.OpenOrCreate))
+            using (FileStream stream = new FileStream(filePath, FileMode.Create))
             {
                 try
                 {

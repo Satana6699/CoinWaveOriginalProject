@@ -9,7 +9,7 @@ namespace Coin_Wave_Lib.Objects.InterfaceObjects
     public class InterfaceConcreteObj : InterfaceObject
     {
         public float frameTimeLive {get; private set;} = 2f;
-        public InterfaceConcreteObj(Rectangle rectangle, TexturePoint[] texturePoints, IGetVertices getVertices) : base(rectangle, texturePoints, getVertices)
+        public InterfaceConcreteObj(Rectangle rectangle, TexturePoint[] texturePoints) : base(rectangle, texturePoints)
         {
         }
 

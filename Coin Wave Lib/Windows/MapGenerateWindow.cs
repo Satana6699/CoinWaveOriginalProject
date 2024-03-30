@@ -12,9 +12,7 @@ using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 using System.IO;
-using Coin_Wave_Lib.MapGenerator;
 using System.Numerics;
-using Coin_Wave_Lib.ObjCS;
 using Coin_Wave_Lib.Objects.InterfaceObjects;
    
 namespace Coin_Wave_Lib
@@ -50,7 +48,7 @@ namespace Coin_Wave_Lib
         BufferManager bufferSave;
 
         // Создание всех списков и массивов тут
-        List<GameObject> gameObjects = new List<GameObject>(0);
+        List<GameObjectData> gameObjectDataList = new List<GameObjectData>(0);
         ThisElement[] thisElements;
         private double[] _currentPosition;
         private double[] _emptyElement;
@@ -92,8 +90,8 @@ namespace Coin_Wave_Lib
             
             base.OnLoad();
             GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-            textureMap = new TextureMap(6, 6, 4, @"data\image\texMap.png");
-            save = new InterfaceConcreteObj(new Rectangle(new Point(-1,1), 0.3, 0.1), TexturePoint.Default(), doublePoints);
+            textureMap = new TextureMap(6, 6, 4, @"data\textureForGame\texMap.png");
+            save = new InterfaceConcreteObj(new Rectangle(new Point(-1,1), 0.3, 0.1), TexturePoint.Default());
             thisElements = new ThisElement[_height * _width];
             for(int i = 0; i < thisElements.Length; i++) thisElements[i] = new ThisElement(i);
             mg = new(_width, _height);
@@ -108,28 +106,27 @@ namespace Coin_Wave_Lib
             blocksPanel = new(new Rectangle
                 (
                     new Point(-0.8, 0.6), 1.6, 1.2),
-                    new TexturePoint[] { new TexturePoint(0, 1), new TexturePoint(1, 1), new TexturePoint(1, 0), new TexturePoint(0, 0)}, 
-                    doublePoints,
+                    new TexturePoint[] { new TexturePoint(0, 1), new TexturePoint(1, 1), new TexturePoint(1, 0), new TexturePoint(0, 0)},
                     10,
                     textureMap
                 );
-            blocksPanel.GenerateMenuElement("Coin", 8);
-            blocksPanel.GenerateMenuElement("Coin", 7);
-            blocksPanel.GenerateMenuElement("Coin", 9);
-            blocksPanel.GenerateMenuElement("Coin", 1);
-            blocksPanel.GenerateMenuElement("Coin", 19);
-            blocksPanel.GenerateMenuElement("Coin", 4);
-            blocksPanel.GenerateMenuElement("Coin", 20);
-            blocksPanel.GenerateMenuElement("Coin", 21);
-            blocksPanel.GenerateMenuElement("Coin", 22);
-            blocksPanel.GenerateTexturViborObj(@"data\image\redsqry.png");
-            bufferSave = new(save.GetVertices(), @"data\image\save.png");
-            bufferEmptyElements = new(_emptyElement, @"data\image\empty.png");
-            bufferCurrentElement = new(_currentPosition, @"data\image\redsqrt.png");
-            bufferWindowBlocksPanel = new(blocksPanel.GetVertices(), @"data\image\bluesqrt.png");
-            bufferViborPanel = new(blocksPanel.viborObj.GetVertices(), @"data\image\redsqrt.png");
+            blocksPanel.GenerateMenuElement(typeof(StartDoor).Name, 18);
+            blocksPanel.GenerateMenuElement(typeof(ExitDoor).Name, 18);
+            blocksPanel.GenerateMenuElement(typeof(SolidWall).Name, 20);
+            blocksPanel.GenerateMenuElement(typeof(Chest).Name, 22);
+            blocksPanel.GenerateMenuElement(typeof(Coin).Name, 19);
+            blocksPanel.GenerateMenuElement(typeof(Coin).Name, 4);
+            blocksPanel.GenerateMenuElement(typeof(Coin).Name, 20);
+            blocksPanel.GenerateMenuElement(typeof(Coin).Name, 21);
+            blocksPanel.GenerateMenuElement(typeof(Coin).Name, 22);
+            blocksPanel.GenerateTexturViborObj(@"data\textureForInterface\redsqry.png");
+            bufferSave = new(save.GetVertices(), @"data\textureForInterface\save.png");
+            bufferEmptyElements = new(_emptyElement, @"data\textureForInterface\empty.png");
+            bufferCurrentElement = new(_currentPosition, @"data\textureForInterface\redsqrt.png");
+            bufferWindowBlocksPanel = new(blocksPanel.GetVertices(), @"data\textureForInterface\bluesqrt.png");
+            bufferViborPanel = new(blocksPanel.viborObj.GetVertices(), @"data\textureForInterface\redsqrt.png");
            
-            bufferGameObj = new(Obj.GetVertices(gameObjects.ToArray(), 5), textureMap.TexturePath);
+            bufferGameObj = new(Obj.GetVertices(gameObjectDataList.ToArray(), 5), textureMap.TexturePath);
             bufferBlockPanel = new(Obj.GetVertices(blocksPanel.MenuElements.ToArray(), 5), textureMap.TexturePath);
         }
 
@@ -162,8 +159,7 @@ namespace Coin_Wave_Lib
                 lastKeyboardState.IsKeyDown(Keys.LeftControl) &&
                 currentKeyboardState.IsKeyDown(Keys.S))
             {
-                ifSaved = FileSave.SerializeObjectsToXml(gameObjects, @"data\maps\lvl1.xml");
-                //ifSaved = true;
+                ifSaved = FileSave.SerializeObjectsToXml(gameObjectDataList, @"data\maps\lvl1.xml");
             }
             if (ifSaved) ifSaved = save.IsLive((float)args.Time);
         }
@@ -252,30 +248,30 @@ namespace Coin_Wave_Lib
         {
             if (thisElements[_numObj].Get() == false)
             {
-                Coin ob = (new Coin
-                    (
-                        new Rectangle(mg.mainPoints[_numObj], mg._sizeX, mg._sizeY),
-                        textureMap.GetTexturePoints(blocksPanel.MenuElements[currentIndex].IndexTexture),
-                        doublePoints,
-                        _numObj
-                    ));
+                GameObjectData ob = new GameObjectData
+                {
+                    Name = blocksPanel.MenuElements[currentIndex].Name,
+                    Index = _numObj,
+                    Rectangle = new Rectangle(mg.mainPoints[_numObj], mg._sizeX, mg._sizeY),
+                    TexturePoints = textureMap.GetTexturePoints(blocksPanel.MenuElements[currentIndex].IndexTexture),
+                };
                 thisElements[_numObj].element = true;
 
                 // Добавление обьектов методом конкатенации массивов с целью оптимизации программы,
                 // Так как конвертировать массив игровых обьектов каждый раз не выгодно
                 bufferGameObj.UpdateDate(bufferGameObj.vertices.Concat(ob.GetVertices()).ToArray());
-                gameObjects.Add(ob);
+                gameObjectDataList.Add(ob);
             }
         }
         private void ClickDelete()
         {
-            for (int i = 0; i < gameObjects.Count; i++)
+            for (int i = 0; i < gameObjectDataList.Count; i++)
             {
-                if (gameObjects[i].Index == _numObj)
+                if (gameObjectDataList[i].Index == _numObj)
                 {
-                    gameObjects.RemoveAt(i);
+                    gameObjectDataList.RemoveAt(i);
                     thisElements[_numObj].element = false;
-                    bufferGameObj.UpdateDate(Obj.GetVertices(gameObjects.ToArray(), 5));
+                    bufferGameObj.UpdateDate(Obj.GetVertices(gameObjectDataList.ToArray(), 5));
                     break;
                 }
             }

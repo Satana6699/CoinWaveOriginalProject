@@ -9,21 +9,17 @@ namespace Coin_Wave_Lib
 {
     public abstract class Obj
     {
-        public static string Name
-        {
-            get { return typeof(Obj).Name; }
-        }
+        public string Name{ get; set; }
         public double[] Vertices { get; set; }
         [XmlElement(ElementName = nameof(Rectangle))]
         public Rectangle Rectangle { get; set; } = new Rectangle(new Point(0, 0), 0, 0);
         [XmlElement(ElementName = nameof(Point))]
         public TexturePoint[] TexturePoints { get; set; } = { new TexturePoint(0, 0), new TexturePoint(0, 0), new TexturePoint(0, 0), new TexturePoint(0, 0) };
-        protected IGetVertices _getVertices;
-        public Obj(Rectangle rectangle, TexturePoint[] texturePoints, IGetVertices getVertices)
+        public Obj(Rectangle rectangle, TexturePoint[] texturePoints)
         {
             Rectangle = rectangle;
             TexturePoints = texturePoints;
-            _getVertices = getVertices;
+            Name = typeof(Obj).Name;
         }
         public Obj() { }
         public void NewPoints(Rectangle rctng)
@@ -40,7 +36,18 @@ namespace Coin_Wave_Lib
         }
         public double[] GetVertices()
         {
-            return _getVertices.GetVertices(Rectangle.Points, TexturePoints, 5);
+            int offset = 5;
+            double[] vertices = new double[offset * Rectangle.Points.Length];
+            for (int i = 0, j = 0; i < vertices.Length || j < this.Rectangle.Points.Length || j < TexturePoints.Length; i += offset, j++)
+            {
+                vertices[i] = Rectangle.Points[j].X;
+                vertices[i + 1] = Rectangle.Points[j].Y;
+                vertices[i + 2] = 0.0;
+                vertices[i + 3] = TexturePoints[j].S;
+                vertices[i + 4] = TexturePoints[j].T;
+            }
+            Vertices = vertices;
+            return vertices;
         }
         public static double[] GetVertices(Obj[] objects, int offset)
         {

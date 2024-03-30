@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace Coin_Wave_Lib
 {
-    public class BackWall : GameObject
+    public class StartDoor : GameObject
     {
-        public BackWall()
+        public StartDoor()
         {
         }
 
-        public BackWall(Rectangle rectangle, TexturePoint[] texturePoints, int index) : base(rectangle, texturePoints, index)
+        public StartDoor(Rectangle rectangle, TexturePoint[] texturePoints, int index) : base(rectangle, texturePoints, index)
         {
         }
     }

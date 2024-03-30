@@ -12,7 +12,7 @@ namespace Coin_Wave_Lib
         {
         }
 
-        public Chest(Rectangle rectangle, TexturePoint[] texturePoints, IGetVertices getVertices, int index) : base(rectangle, texturePoints, getVertices, index)
+        public Chest(Rectangle rectangle, TexturePoint[] texturePoints, int index) : base(rectangle, texturePoints, index)
         {
         }
     }

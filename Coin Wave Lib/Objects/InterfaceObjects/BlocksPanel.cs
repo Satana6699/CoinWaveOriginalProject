@@ -1,5 +1,4 @@
-﻿using Coin_Wave_Lib.ObjCS;
-using Coin_Wave_Lib.Objects.InterfaceObjects;
+﻿using Coin_Wave_Lib.Objects.InterfaceObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,10 +21,9 @@ namespace Coin_Wave_Lib
             (
                 Rectangle rectangle,
                 TexturePoint[] texturePoints,
-                IGetVertices getVertices,
                 int numberOfSeats,
                 TextureMap textureMap
-            ) : base(rectangle, texturePoints, getVertices)
+            ) : base(rectangle, texturePoints)
         {
             if (numberOfSeats % 2 != 0) numberOfSeats++;
             this.numberOfSeats = numberOfSeats;
@@ -63,7 +61,6 @@ namespace Coin_Wave_Lib
                         )
                     ),
                     _textureMap.GetTexturePoints(texture),
-                    _getVertices,
                     name,
                     texture
                 ));
@@ -78,8 +75,7 @@ namespace Coin_Wave_Lib
         public void GenerateTexturViborObj(string path)
         {
             viborObj = new ViborObj(new Rectangle(Rectangle.TopLeft, 0, 0), 
-                new TexturePoint[] {new TexturePoint(0,1), new TexturePoint(1, 1), new TexturePoint(1, 0), new TexturePoint(0, 0)},
-                _getVertices);
+                new TexturePoint[] {new TexturePoint(0,1), new TexturePoint(1, 1), new TexturePoint(1, 0), new TexturePoint(0, 0)});
         }
         public void ObjVibor(int index)
         {

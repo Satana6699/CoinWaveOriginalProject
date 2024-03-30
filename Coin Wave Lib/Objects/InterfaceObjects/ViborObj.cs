@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Coin_Wave_Lib.ObjCS
+namespace Coin_Wave_Lib
 {
     public class ViborObj : InterfaceObject
     {
@@ -12,7 +12,7 @@ namespace Coin_Wave_Lib.ObjCS
         {
         }
 
-        public ViborObj(Rectangle rectangle, TexturePoint[] texturePoints, IGetVertices getVertices) : base(rectangle, texturePoints, getVertices)
+        public ViborObj(Rectangle rectangle, TexturePoint[] texturePoints) : base(rectangle, texturePoints)
         {
         }
     }

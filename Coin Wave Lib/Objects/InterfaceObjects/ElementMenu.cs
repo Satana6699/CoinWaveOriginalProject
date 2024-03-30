@@ -8,15 +8,15 @@ namespace Coin_Wave_Lib.Objects.InterfaceObjects
 {
     public class ElementMenu : InterfaceObject
     {
-        public static string Name { get; private set; }
+        public string Name { get; private set; }
         public int IndexTexture { get; set; }
-        public ElementMenu(Rectangle rectangle, TexturePoint[] texturePoints, IGetVertices getVertices, string name, int indexTexture) :
-            base(rectangle, texturePoints, getVertices)
+        public ElementMenu(Rectangle rectangle, TexturePoint[] texturePoints, string name, int indexTexture) :
+            base(rectangle, texturePoints)
         {
             Name = name;
             IndexTexture = indexTexture;
         }
 
-        public ElementMenu() { }
+        public ElementMenu() {  }
     }
 }

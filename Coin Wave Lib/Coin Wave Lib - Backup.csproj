@@ -20,9 +20,6 @@
     <None Update="data\image\gamer.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="data\textureForInterface\empty.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Update="data\textureForInterface\redsqrt.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -30,6 +27,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="data\textureForGame\texMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="data\maps\lvl1.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="data\shaders\shader.frag">
@@ -41,7 +41,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="data\maps\" />
     <Folder Include="Decorators\" />
   </ItemGroup>
 
