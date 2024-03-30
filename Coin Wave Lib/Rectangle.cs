@@ -8,11 +8,11 @@ namespace Coin_Wave_Lib
 {
     public class Rectangle
     {
-        public Point TopLeft { get; private set; }
-        public Point TopRight { get; private set; }
-        public Point BottomRight { get; private set; }
-        public Point BottomLeft { get; private set; }
-        public Point[] Points { get; private set; }
+        public Point TopLeft { get; set; }
+        public Point TopRight { get; set; }
+        public Point BottomRight { get; set; }
+        public Point BottomLeft { get; set; }
+        public Point[] Points { get; set; }
         public Rectangle(Point topLeft, Point topRight, Point bottomRight, Point bottomLeft)
         {
             SetPnts(topLeft, topRight, bottomRight, bottomLeft);
@@ -20,6 +20,10 @@ namespace Coin_Wave_Lib
         public Rectangle(Point topLeft, double width, double hidth)
         {
             SetPnts(topLeft, width, hidth);
+        }
+        public Rectangle()
+        {
+            
         }
         public void SetPnts(Point topLeft, Point topRight, Point bottomRight, Point bottomLeft)
         {

@@ -8,7 +8,11 @@ namespace Coin_Wave_Lib
 {
     public abstract class InterfaceObject : Obj
     {
-        public InterfaceObject(Rectangle rectangle, TexturePoint[] texturePoints, IGetVertices getVertices) : base(rectangle, texturePoints, getVertices)
+        protected InterfaceObject()
+        {
+        }
+
+        protected InterfaceObject(Rectangle rectangle, TexturePoint[] texturePoints, IGetVertices getVertices) : base(rectangle, texturePoints, getVertices)
         {
         }
     }

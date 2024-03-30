@@ -8,8 +8,11 @@ namespace Coin_Wave_Lib.ObjCS
 {
     public class ViborObj : InterfaceObject
     {
-        public ViborObj(Rectangle rectangle, TexturePoint[] texturePoints, IGetVertices getVertices) :
-            base(rectangle, texturePoints, getVertices)
+        public ViborObj()
+        {
+        }
+
+        public ViborObj(Rectangle rectangle, TexturePoint[] texturePoints, IGetVertices getVertices) : base(rectangle, texturePoints, getVertices)
         {
         }
     }

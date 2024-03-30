@@ -27,7 +27,7 @@ namespace Coin_Wave_Lib
             double[] vertices = new double[offset * (objects.Length)];
             for (int j = 0; j < objects.Length; j++)
             {
-                vertices = vertices.Concat(GetVertices(objects[j].Rectangle.Points, objects[j].TexturePoints, offset)).ToArray();
+                vertices = vertices.Concat(GetVertices(objects[j].GetRectangle().Points, objects[j].GetTexturePoints(), offset)).ToArray();
             }
             return vertices;
         }

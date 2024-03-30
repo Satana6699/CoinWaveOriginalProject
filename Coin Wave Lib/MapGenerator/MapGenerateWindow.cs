@@ -8,7 +8,6 @@ using OpenTK.Windowing.GraphicsLibraryFramework;
 using Coin_Wave_Lib;
 using System;
 using System.Collections.Generic;
-
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
@@ -16,7 +15,8 @@ using System.IO;
 using Coin_Wave_Lib.MapGenerator;
 using System.Numerics;
 using Coin_Wave_Lib.ObjCS;
-
+using Coin_Wave_Lib.Objects.InterfaceObjects;
+   
 namespace Coin_Wave_Lib
 {
     class ThisElement
@@ -47,6 +47,7 @@ namespace Coin_Wave_Lib
         BufferManager bufferGameObj;
         BufferManager bufferBlockPanel;
         BufferManager bufferViborPanel;
+        BufferManager bufferSave;
 
         // Создание всех списков и массивов тут
         List<GameObject> gameObjects = new List<GameObject>(0);
@@ -67,6 +68,8 @@ namespace Coin_Wave_Lib
         BlocksPanel blocksPanel;
         TextureMap textureMap;
         DoublePoints doublePoints = new DoublePoints();
+        InterfaceConcreteObj save;
+        bool ifSaved;
 
         public MapGenerateWindow(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings)
             : base(gameWindowSettings, nativeWindowSettings)
@@ -90,6 +93,7 @@ namespace Coin_Wave_Lib
             base.OnLoad();
             GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
             textureMap = new TextureMap(6, 6, 4, @"data\image\texMap.png");
+            save = new InterfaceConcreteObj(new Rectangle(new Point(-1,1), 0.3, 0.1), TexturePoint.Default(), doublePoints);
             thisElements = new ThisElement[_height * _width];
             for(int i = 0; i < thisElements.Length; i++) thisElements[i] = new ThisElement(i);
             mg = new(_width, _height);
@@ -118,8 +122,9 @@ namespace Coin_Wave_Lib
             blocksPanel.GenerateMenuElement("Coin", 20);
             blocksPanel.GenerateMenuElement("Coin", 21);
             blocksPanel.GenerateMenuElement("Coin", 22);
-            blocksPanel.GenerateTexturViborObj(@"data\image\redsqrt.png");
-            bufferEmptyElements = new(_emptyElement, @"data\image\sqrt.png");
+            blocksPanel.GenerateTexturViborObj(@"data\image\redsqry.png");
+            bufferSave = new(save.GetVertices(), @"data\image\save.png");
+            bufferEmptyElements = new(_emptyElement, @"data\image\empty.png");
             bufferCurrentElement = new(_currentPosition, @"data\image\redsqrt.png");
             bufferWindowBlocksPanel = new(blocksPanel.GetVertices(), @"data\image\bluesqrt.png");
             bufferViborPanel = new(blocksPanel.viborObj.GetVertices(), @"data\image\redsqrt.png");
@@ -144,60 +149,26 @@ namespace Coin_Wave_Lib
                 fps = 0;
             }
 
-            if (
-                    currentKeyboardState.IsKeyPressed(Keys.Tab) &&
-                    lastKeyboardState.IsKeyDown(Keys.LeftShift) &&
-                    index < blocksPanel.MenuElements.Count - 1
-                    )
-            {
-                index++;
-                currentIndex = index;
-            }
-            else if (
-                    (!currentKeyboardState.IsKeyPressed(Keys.LeftShift) &&
-                    index >= blocksPanel.MenuElements.Count - 1 &&
-                    currentKeyboardState.IsKeyPressed(Keys.Tab)) ||
-                    !currentKeyboardState.IsKeyDown(Keys.LeftShift)
-                    )
-            {
-                index = 0;
-            }
-            else if (currentKeyboardState.IsKeyPressed(Keys.LeftShift))
-            {
-                index = 0;
-                currentIndex = index;
-            }
+            
             blocksPanel.ObjVibor(index);
             bufferViborPanel.UpdateDate(blocksPanel.viborObj.GetVertices());
 
-            
-            if (currentKeyboardState.IsKeyDown(Keys.Delete) && thisElements[_numObj].Get() == true)
-            {
-                for (int i = 0; i < gameObjects.Count; i++)
-                {
-                    if (gameObjects[i].Index == _numObj)
-                    {
-                        gameObjects.RemoveAt(i);
-                        thisElements[_numObj].element = false;
-                        bufferGameObj.UpdateDate(Obj.GetVertices(gameObjects.ToArray(), 5));
-                        break;
-                    }
-                }
-            }
-
-
-
+            if (currentKeyboardState.IsKeyDown(Keys.Delete) && thisElements[_numObj].Get()) ClickDelete();
             ClickWASD(currentKeyboardState);
+            ClickShift();
             if (currentKeyboardState.IsKeyDown(Keys.Enter)) ClickEnter();
-            
             if (currentKeyboardState.IsKeyDown(Keys.Escape)) Close();
             if (lastKeyboardState != null &&
                 lastKeyboardState.IsKeyDown(Keys.LeftControl) &&
                 currentKeyboardState.IsKeyDown(Keys.S))
-            { 
-                // Логика сохранения файла с картой
+            {
+                ifSaved = FileSave.SerializeObjectsToXml(gameObjects, @"data\maps\lvl1.xml");
+                //ifSaved = true;
             }
+            if (ifSaved) ifSaved = save.IsLive((float)args.Time);
         }
+
+
         protected override void OnRenderFrame(FrameEventArgs args)
         {
             base.OnRenderFrame(args);
@@ -216,6 +187,11 @@ namespace Coin_Wave_Lib
                 bufferViborPanel.Render();
                 bufferBlockPanel.Render();
             }
+            if (ifSaved)
+            {
+                bufferSave.Render();
+            }
+
             SwapBuffers();
         }
 
@@ -228,7 +204,7 @@ namespace Coin_Wave_Lib
             base.OnResize(e);
             GL.Viewport(0, 0, Size.X, Size.Y);
         }
-        private void ClickWASD(KeyboardState keyboardState)
+        private async void ClickWASD(KeyboardState keyboardState)
         {
             float pressingTime = 0.6f;
             int numObjFuture = _numObj;
@@ -276,7 +252,7 @@ namespace Coin_Wave_Lib
         {
             if (thisElements[_numObj].Get() == false)
             {
-                GameObject ob = (new Coin
+                Coin ob = (new Coin
                     (
                         new Rectangle(mg.mainPoints[_numObj], mg._sizeX, mg._sizeY),
                         textureMap.GetTexturePoints(blocksPanel.MenuElements[currentIndex].IndexTexture),
@@ -289,6 +265,45 @@ namespace Coin_Wave_Lib
                 // Так как конвертировать массив игровых обьектов каждый раз не выгодно
                 bufferGameObj.UpdateDate(bufferGameObj.vertices.Concat(ob.GetVertices()).ToArray());
                 gameObjects.Add(ob);
+            }
+        }
+        private void ClickDelete()
+        {
+            for (int i = 0; i < gameObjects.Count; i++)
+            {
+                if (gameObjects[i].Index == _numObj)
+                {
+                    gameObjects.RemoveAt(i);
+                    thisElements[_numObj].element = false;
+                    bufferGameObj.UpdateDate(Obj.GetVertices(gameObjects.ToArray(), 5));
+                    break;
+                }
+            }
+        }
+        private void ClickShift()
+        {
+            if (
+                    currentKeyboardState.IsKeyPressed(Keys.Tab) &&
+                    lastKeyboardState.IsKeyDown(Keys.LeftShift) &&
+                    index < blocksPanel.MenuElements.Count - 1
+                    )
+            {
+                index++;
+                currentIndex = index;
+            }
+            else if (
+                    (!currentKeyboardState.IsKeyPressed(Keys.LeftShift) &&
+                    index >= blocksPanel.MenuElements.Count - 1 &&
+                    currentKeyboardState.IsKeyPressed(Keys.Tab)) ||
+                    !currentKeyboardState.IsKeyDown(Keys.LeftShift)
+                    )
+            {
+                index = 0;
+            }
+            else if (currentKeyboardState.IsKeyPressed(Keys.LeftShift))
+            {
+                index = 0;
+                currentIndex = index;
             }
         }
     }

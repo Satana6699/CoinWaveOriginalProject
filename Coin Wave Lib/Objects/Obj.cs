@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace Coin_Wave_Lib
 {
@@ -12,8 +13,11 @@ namespace Coin_Wave_Lib
         {
             get { return typeof(Obj).Name; }
         }
-        public Rectangle Rectangle { get; private set; }
-        public TexturePoint[] TexturePoints { get; private set; }
+        public double[] Vertices { get; set; }
+        [XmlElement(ElementName = nameof(Rectangle))]
+        public Rectangle Rectangle { get; set; } = new Rectangle(new Point(0, 0), 0, 0);
+        [XmlElement(ElementName = nameof(Point))]
+        public TexturePoint[] TexturePoints { get; set; } = { new TexturePoint(0, 0), new TexturePoint(0, 0), new TexturePoint(0, 0), new TexturePoint(0, 0) };
         protected IGetVertices _getVertices;
         public Obj(Rectangle rectangle, TexturePoint[] texturePoints, IGetVertices getVertices)
         {
@@ -21,6 +25,7 @@ namespace Coin_Wave_Lib
             TexturePoints = texturePoints;
             _getVertices = getVertices;
         }
+        public Obj() { }
         public void NewPoints(Rectangle rctng)
         {
             Rectangle = rctng;
@@ -49,6 +54,14 @@ namespace Coin_Wave_Lib
         public static double[] GetVertices(List<Obj> objects, int offset)
         {
             return GetVertices(objects.ToArray(), offset);
+        }
+        public Rectangle GetRectangle()
+        {
+            return Rectangle;
+        }
+        public TexturePoint[] GetTexturePoints()
+        {
+            return TexturePoints;
         }
     }
 }

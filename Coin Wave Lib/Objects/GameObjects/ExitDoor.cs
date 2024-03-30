@@ -8,6 +8,10 @@ namespace Coin_Wave_Lib
 {
     public class ExitDoor : GameObject
     {
+        public ExitDoor()
+        {
+        }
+
         public ExitDoor(Rectangle rectangle, TexturePoint[] texturePoints, IGetVertices getVertices, int index) : base(rectangle, texturePoints, getVertices, index)
         {
         }

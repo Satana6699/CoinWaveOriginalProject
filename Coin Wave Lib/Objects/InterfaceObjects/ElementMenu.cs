@@ -16,5 +16,7 @@ namespace Coin_Wave_Lib.Objects.InterfaceObjects
             Name = name;
             IndexTexture = indexTexture;
         }
+
+        public ElementMenu() { }
     }
 }

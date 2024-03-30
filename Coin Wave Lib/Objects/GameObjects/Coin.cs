@@ -8,6 +8,10 @@ namespace Coin_Wave_Lib
 {
     public class Coin : GameObject
     {
+        public Coin()
+        {
+        }
+
         public Coin(Rectangle rectangle, TexturePoint[] texturePoints, IGetVertices getVertices, int index) : base(rectangle, texturePoints, getVertices, index)
         {
         }

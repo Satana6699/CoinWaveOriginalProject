@@ -9,6 +9,10 @@ namespace Coin_Wave_Lib
 {
     public class BackWall : GameObject
     {
+        public BackWall()
+        {
+        }
+
         public BackWall(Rectangle rectangle, TexturePoint[] texturePoints, IGetVertices getVertices, int index) : base(rectangle, texturePoints, getVertices, index)
         {
         }

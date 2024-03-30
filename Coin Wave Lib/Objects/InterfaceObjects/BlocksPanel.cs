@@ -33,6 +33,8 @@ namespace Coin_Wave_Lib
             CountDimensions();
         }
 
+        public BlocksPanel() { }
+
         public void GenerateMenuElement(string name, int texture)
         {
             MenuElements.Add(new ElementMenu
@@ -85,10 +87,10 @@ namespace Coin_Wave_Lib
                 return;
             double percanteX = 0.03;
             double percanteY = 0.08;
-            double xPos = MenuElements[index].Rectangle.TopLeft.X - Math.Abs(MenuElements[index].Rectangle.TopLeft.X * percanteX);
-            double yPos = MenuElements[index].Rectangle.TopLeft.Y + Math.Abs(MenuElements[index].Rectangle.TopLeft.Y * percanteY);
-            double width = MenuElements[index].Rectangle.GetWidth() * 1.1;
-            double hidth = MenuElements[index].Rectangle.GetHeight() * 1.1;
+            double xPos = MenuElements[index].GetRectangle().TopLeft.X - Math.Abs(MenuElements[index].GetRectangle().TopLeft.X * percanteX);
+            double yPos = MenuElements[index].GetRectangle().TopLeft.Y + Math.Abs(MenuElements[index].GetRectangle().TopLeft.Y * percanteY);
+            double width = MenuElements[index].GetRectangle().GetWidth() * 1.1;
+            double hidth = MenuElements[index].GetRectangle().GetHeight() * 1.1;
             viborObj.NewPoints(new Rectangle(new Point(xPos, yPos), width, hidth));
         }
 

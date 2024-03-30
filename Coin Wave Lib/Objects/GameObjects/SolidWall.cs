@@ -8,6 +8,10 @@ namespace Coin_Wave_Lib
 {
     public class SolidWall : GameObject
     {
+        public SolidWall()
+        {
+        }
+
         public SolidWall(Rectangle rectangle, TexturePoint[] texturePoints, IGetVertices getVertices, int index) : base(rectangle, texturePoints, getVertices, index)
         {
         }

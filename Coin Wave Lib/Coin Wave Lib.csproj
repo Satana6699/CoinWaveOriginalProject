@@ -23,16 +23,13 @@
     <None Update="data\image\redsqrt.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="data\image\sqrt.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="data\image\stone.png">
+    <None Update="data\image\save.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="data\image\texMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="data\image\trava.png">
+    <None Update="data\maps\lvl1.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="data\shaders\shader.frag">
@@ -45,7 +42,6 @@
 
   <ItemGroup>
     <Folder Include="Decorators\" />
-    <Folder Include="Папка для теста\" />
   </ItemGroup>
 
 </Project>

@@ -9,12 +9,13 @@ namespace Coin_Wave_Lib
 {
     public abstract class GameObject : Obj
     {
-        public int Index { get; private set; }
+        public int Index { get; set; }
         protected GameObject(Rectangle rectangle, TexturePoint[] texturePoints, IGetVertices getVertices, int index) :
             base(rectangle, texturePoints, getVertices)
         {
             this.Index = index;
         }
 
+        protected GameObject() { }
     }
 }
