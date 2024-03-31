@@ -8,6 +8,10 @@ namespace Coin_Wave_Lib
 {
     public class SolidWall : GameObject
     {
+        static SolidWall()
+        {
+            isSolid = true;
+        }
         public SolidWall()
         {
         }

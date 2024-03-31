@@ -14,29 +14,17 @@ using SixLabors.ImageSharp.Processing;
 using System.IO;
 using System.Numerics;
 using Coin_Wave_Lib.Objects.InterfaceObjects;
-   
+using System.Diagnostics;
+
 namespace Coin_Wave_Lib
 {
-    class ThisElement
-    {
-        public int index;
-        public bool element;
-        public ThisElement(int index)
-        {
-            this.index = index;
-            element = false;
-        }
-        public bool Get()
-        {
-            return element;
-        }
-    }
     public class MapGenerateWindow : GameWindow
     {
         KeyboardState lastKeyboardState, currentKeyboardState;
         private float frameTime = 0.0f;
         private float _time = 0.0f;
         private int fps = 0;
+        int frameCounter = 0;
 
         // Создание всех полей для буферов тут
         BufferManager bufferEmptyElements;
@@ -49,7 +37,7 @@ namespace Coin_Wave_Lib
 
         // Создание всех списков и массивов тут
         List<GameObjectData> gameObjectDataList = new List<GameObjectData>(0);
-        ThisElement[] thisElements;
+
         private double[] _currentPosition;
         private double[] _emptyElement;
 
@@ -65,7 +53,6 @@ namespace Coin_Wave_Lib
         MapGenerate mg;
         BlocksPanel blocksPanel;
         TextureMap textureMap;
-        DoublePoints doublePoints = new DoublePoints();
         InterfaceConcreteObj save;
         bool ifSaved;
 
@@ -92,8 +79,6 @@ namespace Coin_Wave_Lib
             GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
             textureMap = new TextureMap(6, 6, 4, @"data\textureForGame\texMap.png");
             save = new InterfaceConcreteObj(new Rectangle(new Point(-1,1), 0.3, 0.1), TexturePoint.Default());
-            thisElements = new ThisElement[_height * _width];
-            for(int i = 0; i < thisElements.Length; i++) thisElements[i] = new ThisElement(i);
             mg = new(_width, _height);
             mg.GeneratePoints();
             _emptyElement = mg.GetPoints();
@@ -112,13 +97,9 @@ namespace Coin_Wave_Lib
                 );
             blocksPanel.GenerateMenuElement(typeof(StartDoor).Name, 18);
             blocksPanel.GenerateMenuElement(typeof(ExitDoor).Name, 18);
-            blocksPanel.GenerateMenuElement(typeof(SolidWall).Name, 20);
-            blocksPanel.GenerateMenuElement(typeof(Chest).Name, 22);
-            blocksPanel.GenerateMenuElement(typeof(Coin).Name, 19);
-            blocksPanel.GenerateMenuElement(typeof(Coin).Name, 4);
-            blocksPanel.GenerateMenuElement(typeof(Coin).Name, 20);
-            blocksPanel.GenerateMenuElement(typeof(Coin).Name, 21);
-            blocksPanel.GenerateMenuElement(typeof(Coin).Name, 22);
+            blocksPanel.GenerateMenuElement(typeof(SolidWall).Name, 0);
+            blocksPanel.GenerateMenuElement(typeof(Player).Name, 19);
+            blocksPanel.GenerateMenuElement(typeof(BackWall).Name, 7);
             blocksPanel.GenerateTexturViborObj(@"data\textureForInterface\redsqry.png");
             bufferSave = new(save.GetVertices(), @"data\textureForInterface\save.png");
             bufferEmptyElements = new(_emptyElement, @"data\textureForInterface\empty.png");
@@ -150,7 +131,7 @@ namespace Coin_Wave_Lib
             blocksPanel.ObjVibor(index);
             bufferViborPanel.UpdateDate(blocksPanel.viborObj.GetVertices());
 
-            if (currentKeyboardState.IsKeyDown(Keys.Delete) && thisElements[_numObj].Get()) ClickDelete();
+            if (currentKeyboardState.IsKeyDown(Keys.Delete)) ClickDelete();
             ClickWASD(currentKeyboardState);
             ClickShift();
             if (currentKeyboardState.IsKeyDown(Keys.Enter)) ClickEnter();
@@ -173,7 +154,6 @@ namespace Coin_Wave_Lib
             // Alpha-chanal support
             GL.Enable(EnableCap.Blend);
             GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
-
             bufferEmptyElements.Render();
             bufferGameObj.Render();
             bufferCurrentElement.Render();
@@ -227,12 +207,32 @@ namespace Coin_Wave_Lib
                 default:
                     break;
             }
+            int operationFrequency = 16;
+            frameCounter ++;
             if (currentKeyboardState.IsKeyDown(Keys.D) || currentKeyboardState.IsKeyDown(Keys.S) ||
                 currentKeyboardState.IsKeyDown(Keys.A) || currentKeyboardState.IsKeyDown(Keys.W))
-            if (_time - timeOfMoment >= pressingTime && currentKeyboardState.IsKeyDown(Keys.W)) numObjFuture -= _width;
-            else if (_time - timeOfMoment >= pressingTime && currentKeyboardState.IsKeyDown(Keys.A)) numObjFuture -= 1;
-            else if (_time - timeOfMoment >= pressingTime && currentKeyboardState.IsKeyDown(Keys.S)) numObjFuture += _width;
-            else if (_time - timeOfMoment >= pressingTime && currentKeyboardState.IsKeyDown(Keys.D)) numObjFuture += 1;
+                if (_time - timeOfMoment >= pressingTime && currentKeyboardState.IsKeyDown(Keys.W) && frameCounter >= operationFrequency)
+                {
+                    numObjFuture -= _width;
+                    frameCounter = 0;
+                }
+                else if (_time - timeOfMoment >= pressingTime && currentKeyboardState.IsKeyDown(Keys.A) && frameCounter >= operationFrequency)
+                {
+                    numObjFuture -= 1;
+                    frameCounter = 0;
+                }
+                else if (_time - timeOfMoment >= pressingTime && currentKeyboardState.IsKeyDown(Keys.S) && frameCounter >= operationFrequency)
+                {
+                    numObjFuture += _width;
+                    frameCounter = 0;
+                }
+                else if (_time - timeOfMoment >= pressingTime && currentKeyboardState.IsKeyDown(Keys.D) && frameCounter >= operationFrequency)
+                {
+                    numObjFuture += 1;
+                    frameCounter = 0;
+                }
+
+
             if (numObjFuture >= 0 && numObjFuture < _emptyElement.Length / 20)
                 _numObj = numObjFuture;
             else
@@ -246,8 +246,6 @@ namespace Coin_Wave_Lib
 
         private void ClickEnter()
         {
-            if (thisElements[_numObj].Get() == false)
-            {
                 GameObjectData ob = new GameObjectData
                 {
                     Name = blocksPanel.MenuElements[currentIndex].Name,
@@ -255,13 +253,12 @@ namespace Coin_Wave_Lib
                     Rectangle = new Rectangle(mg.mainPoints[_numObj], mg._sizeX, mg._sizeY),
                     TexturePoints = textureMap.GetTexturePoints(blocksPanel.MenuElements[currentIndex].IndexTexture),
                 };
-                thisElements[_numObj].element = true;
 
                 // Добавление обьектов методом конкатенации массивов с целью оптимизации программы,
                 // Так как конвертировать массив игровых обьектов каждый раз не выгодно
                 bufferGameObj.UpdateDate(bufferGameObj.vertices.Concat(ob.GetVertices()).ToArray());
                 gameObjectDataList.Add(ob);
-            }
+  
         }
         private void ClickDelete()
         {
@@ -270,9 +267,7 @@ namespace Coin_Wave_Lib
                 if (gameObjectDataList[i].Index == _numObj)
                 {
                     gameObjectDataList.RemoveAt(i);
-                    thisElements[_numObj].element = false;
                     bufferGameObj.UpdateDate(Obj.GetVertices(gameObjectDataList.ToArray(), 5));
-                    break;
                 }
             }
         }

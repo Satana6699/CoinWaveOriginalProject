@@ -9,6 +9,7 @@ namespace Coin_Wave_Lib
     public abstract class GameObject : Obj
     {
         public int Index { get; set; }
+        public static bool isSolid { get; set; } = false;
         protected GameObject(Rectangle rectangle, TexturePoint[] texturePoints, int index) :
             base(rectangle, texturePoints)
         {
