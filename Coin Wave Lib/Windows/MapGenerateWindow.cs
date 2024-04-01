@@ -20,45 +20,39 @@ namespace Coin_Wave_Lib
 {
     public class MapGenerateWindow : GameWindow
     {
-        KeyboardState lastKeyboardState, currentKeyboardState;
+        public (KeyboardState last, KeyboardState current) keyboardState;
         private float frameTime = 0.0f;
         private float _time = 0.0f;
         private int fps = 0;
         int frameCounter = 0;
-
-        // Создание всех полей для буферов тут
-        BufferManager bufferEmptyElements;
-        BufferManager bufferCurrentElement;
-        BufferManager bufferWindowBlocksPanel;
-        BufferManager bufferGameObj;
-        BufferManager bufferBlockPanel;
-        BufferManager bufferViborPanel;
-        BufferManager bufferSave;
+        int layer = 1;
         // размер карты 34 на 18 и разрешение экрана 1920 на 1080
-        /*private readonly int _width = 32;
-        private readonly int _height = 20;*/
-        private readonly int _width = 32;
-        private readonly int _height = 18;
+        private readonly (int width, int height) sidesMaps = (32, 18);
         private bool IsTherePlayer = false;
 
         // Создание всех списков и массивов тут
-        List<GameObjectData> gameObjectDataList = new List<GameObjectData>(0);
-        List<GameObjectData>[,] gameObjects;
+        private (GameObjectData[,] first, GameObjectData[,] second) layers;
+
         int[,] f = new int[1,1];
-        private double[] _currentPosition;
-        private double[] _emptyElement;
+        private CurrentPositionElement _currentPosition;
+        Texture _textureCurrentPosition;
+        Texture _textureMap;
+        private EmptyElement[,] _emptyElements;
 
 
         private float timeOfMoment;
-        private int _numObj = 0;
+        private (int x, int y) _numObj = (0, 0);
         int currentIndex = 0;
         int index = 0;
         MapGenerate mg;
         BlocksPanel blocksPanel;
         TextureMap textureMap;
         InterfaceConcreteObj save;
+        LayerInterface layerInterface;
+        TextureMap textureMapLayerInt;
+        Texture textureLayerInt;
         bool ifSaved;
-
+        
         public MapGenerateWindow(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings)
             : base(gameWindowSettings, nativeWindowSettings)
         {
@@ -80,55 +74,69 @@ namespace Coin_Wave_Lib
             
             base.OnLoad();
             GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-
-            gameObjects = new List<GameObjectData>[_width,_height];
-
-            for (int i = 0; i < gameObjects.GetLength(0); i++)
-            {
-                for (int j = 0; j < gameObjects.GetLength(1); j++)
-                {
-                    gameObjects[i, j] = new List<GameObjectData>();
-                }
-            }
-
-            textureMap = new TextureMap(5, 5, 4, @"data\textureForGame\texMap.png");
-            save = new InterfaceConcreteObj(new Rectangle(new Point(-1,1), 0.3, 0.1), TexturePoint.Default());
-            mg = new(_width, _height, 0.02, 0.1, 0.01);
-            _emptyElement = mg.GetPoints();
-            _currentPosition = new double[20]; //20 так в 4 вершинах по 5 позиций
-            for (int i = 0, j = _numObj * 20; i < _currentPosition.Length; i++, j++)
-            {
-                _currentPosition[i] = _emptyElement[j];
-            }
-                
-            blocksPanel = new(new Rectangle
+            layers.first = new GameObjectData[sidesMaps.height, sidesMaps.width];
+            layers.second = new GameObjectData[sidesMaps.height, sidesMaps.width];
+            _textureMap = Texture.LoadFromFile(@"data\textureForGame\texMap.png");
+            textureMap = new TextureMap(5, 5, 4, _textureMap);
+            save = new InterfaceConcreteObj
                 (
-                    new Point(-0.8, 0.6), 1.6, 1.2),
-                    new TexturePoint[] { new TexturePoint(0, 1), new TexturePoint(1, 1), new TexturePoint(1, 0), new TexturePoint(0, 0)},
-                    10,
-                    textureMap
+                    new RectangleWithTexture
+                    (
+                        new Rectangle(new Point(-0.99,0.9, 0), 0.3, 0.1),
+                        TexturePoint.Default()
+                    ),
+                    Texture.LoadFromFile(@"data\textureForInterface\save.png")
                 );
+            textureLayerInt = Texture.LoadFromFile(@"data\textureForInterface\layers.png");
+            textureMapLayerInt = new TextureMap(2, 1, 4, textureLayerInt);
+            layerInterface = new LayerInterface
+                (
+                    new RectangleWithTexture
+                    (
+                        new Rectangle(new Point(-1, 0.9, 0), 0.07, 0.08),
+                        textureMapLayerInt.GetTexturePoints(0)
+                    ),
+                    textureLayerInt
+                );
+            mg = new(sidesMaps.width, sidesMaps.height, 0.08, 0.1, 0.01);
+            _emptyElements = new EmptyElement[sidesMaps.height, sidesMaps.width];
+            Texture emptyTexture = Texture.LoadFromFile(@"data\textureForInterface\empty.png");
+            for (int i = 0; i < _emptyElements.GetLength(0); i++)
+                for (int j = 0; j < _emptyElements.GetLength(1); j++)
+                {
+                    _emptyElements[i,j] = new(mg.RectangleWithTextures[i, j], emptyTexture);
+                }
+            _currentPosition = new(_emptyElements[0,0].RectangleWithTexture, Texture.LoadFromFile(@"data\textureForInterface\redsqrt.png"));
+                
+            blocksPanel = new
+            (
+                new RectangleWithTexture
+                (
+                new Rectangle
+                (
+                    new Point(-0.8, 0.6, 0),
+                    1.6, 
+                    1.2),
+                    new TexturePoint[] { new TexturePoint(0, 1), new TexturePoint(1, 1), new TexturePoint(1, 0), new TexturePoint(0, 0)}
+                ),
+                10,
+                Texture.LoadFromFile(@"data\textureForInterface\bluesqrt.png"),
+                textureMap
+            );
             blocksPanel.GenerateMenuElement(typeof(StartDoor).Name, 7);
             blocksPanel.GenerateMenuElement(typeof(ExitDoor).Name, 7);
             blocksPanel.GenerateMenuElement(typeof(SolidWall).Name, 0);
             blocksPanel.GenerateMenuElement(typeof(Player).Name, 5);
             blocksPanel.GenerateMenuElement(typeof(BackWall).Name, 3);
-            blocksPanel.GenerateTexturViborObj(@"data\textureForInterface\redsqry.png");
-            bufferSave = new(save.GetVertices(), @"data\textureForInterface\save.png");
-            bufferEmptyElements = new(_emptyElement, @"data\textureForInterface\empty.png");
-            bufferCurrentElement = new(_currentPosition, @"data\textureForInterface\redsqrt.png");
-            bufferWindowBlocksPanel = new(blocksPanel.GetVertices(), @"data\textureForInterface\bluesqrt.png");
-            bufferViborPanel = new(blocksPanel.choiceObj.GetVertices(), @"data\textureForInterface\redsqrt.png");
-           
-            bufferGameObj = new(Obj.GetVertices(gameObjectDataList.ToArray(), 5), textureMap.TexturePath);
-            bufferBlockPanel = new(Obj.GetVertices(blocksPanel.MenuElements.ToArray(), 5), textureMap.TexturePath);
+            _textureCurrentPosition = Texture.LoadFromFile(@"data\textureForInterface\redsqrt.png");
+            blocksPanel.GenerateTexturViborObj(_textureCurrentPosition);
         }
 
         protected override void OnUpdateFrame(FrameEventArgs args)
         {
             base.OnUpdateFrame(args);
-            lastKeyboardState = currentKeyboardState;
-            currentKeyboardState = KeyboardState.GetSnapshot();
+            keyboardState.last = keyboardState.current;
+            keyboardState.current = KeyboardState.GetSnapshot();
 
             frameTime += (float)args.Time;
             _time += (float)args.Time;
@@ -142,18 +150,44 @@ namespace Coin_Wave_Lib
 
             
             blocksPanel.ObjVibor(index);
-            bufferViborPanel.UpdateDate(blocksPanel.choiceObj.GetVertices());
+            blocksPanel.choiceObj.UpdateDate(blocksPanel.choiceObj.GetVertices());
 
-            if (currentKeyboardState.IsKeyDown(Keys.Delete)) ClickDelete();
-            ClickWASD(currentKeyboardState);
+            
+            ClickWASD(keyboardState.current);
             ClickShift();
-            if (currentKeyboardState.IsKeyDown(Keys.Enter)) ClickEnter();
-            if (currentKeyboardState.IsKeyDown(Keys.Escape)) Close();
-            if (lastKeyboardState != null &&
-                lastKeyboardState.IsKeyDown(Keys.LeftControl) &&
-                currentKeyboardState.IsKeyDown(Keys.S))
+
+            
+            switch (keyboardState.current)
             {
-                ifSaved = FileSave.SerializeObjectsToXml(gameObjectDataList, @"data\maps\lvl1.xml");
+                case var _ when keyboardState.current.IsKeyDown(Keys.D1):
+                    layer = 1;
+                    layerInterface.SetTexturePoints(textureMapLayerInt.GetTexturePoints(layer - 1));
+                    layerInterface.UpdateDate(layerInterface.GetVertices());
+                    break;
+                case var _ when keyboardState.current.IsKeyPressed(Keys.D2):
+                    layer = 2;
+                    layerInterface.SetTexturePoints(textureMapLayerInt.GetTexturePoints(layer - 1));
+                    layerInterface.UpdateDate(layerInterface.GetVertices());
+                    break;
+            }
+            if (layer == 1)
+            {
+                if (keyboardState.current.IsKeyDown(Keys.Enter)) ClickEnter(layers.first);
+                if (keyboardState.current.IsKeyDown(Keys.Delete)) ClickDelete(layers.first);
+            }
+            if (layer == 2)
+            {
+                if (keyboardState.current.IsKeyDown(Keys.Enter)) ClickEnter(layers.second);
+                if (keyboardState.current.IsKeyDown(Keys.Delete)) ClickDelete(layers.second);
+            }
+            if (keyboardState.current.IsKeyDown(Keys.Escape)) Close();
+            if (keyboardState.last != null &&
+                keyboardState.last.IsKeyDown(Keys.LeftControl) &&
+                keyboardState.current.IsKeyDown(Keys.S))
+            {
+                ifSaved = FileSave.SerializeObjectsToXml(layers.first.Cast<GameObjectData>().ToArray(), @"data\maps\lvl1\first.xml");
+                if (ifSaved)
+                    ifSaved = FileSave.SerializeObjectsToXml(layers.second.Cast<GameObjectData>().ToArray(), @"data\maps\lvl1\second.xml");
             }
             if (ifSaved) ifSaved = save.IsLive((float)args.Time);
         }
@@ -167,20 +201,23 @@ namespace Coin_Wave_Lib
             // Alpha-chanal support
             GL.Enable(EnableCap.Blend);
             GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
-            bufferEmptyElements.Render();
-            bufferGameObj.Render();
-            bufferCurrentElement.Render();
-            if (currentKeyboardState.IsKeyDown(Keys.LeftShift))
+
+            foreach (EmptyElement eE in _emptyElements) eE.Render();
+            foreach (var gO in layers.first) if (gO != null) gO.Render();
+            foreach (var gO in layers.second) if (gO != null) gO.Render();
+            _currentPosition.Render();
+
+            if (keyboardState.current.IsKeyDown(Keys.LeftShift))
             {
-                bufferWindowBlocksPanel.Render();
-                bufferViborPanel.Render();
-                bufferBlockPanel.Render();
+                blocksPanel.Render();
+                blocksPanel.choiceObj.Render();
+                foreach(var v in blocksPanel.MenuElements) v.Render();
             }
             if (ifSaved)
             {
-                bufferSave.Render();
+                save.Render();
             }
-
+            layerInterface.Render();
             SwapBuffers();
         }
 
@@ -196,25 +233,25 @@ namespace Coin_Wave_Lib
         private async void ClickWASD(KeyboardState keyboardState)
         {
             float pressingTime = 0.6f;
-            int numObjFuture = _numObj;
+            (int x, int y) numObjFuture = _numObj;
 
             
             switch (true)
             {
-                case var _ when currentKeyboardState.IsKeyPressed(Keys.W):
-                    numObjFuture -= _width;
+                case var _ when keyboardState.IsKeyPressed(Keys.W):
+                    numObjFuture.y -= 1;
                     timeOfMoment = _time;
                     break;
-                case var _ when currentKeyboardState.IsKeyPressed(Keys.A):
-                    numObjFuture -= 1;
+                case var _ when keyboardState.IsKeyPressed(Keys.A):
+                    numObjFuture.x -= 1;
                     timeOfMoment = _time;
                     break;
-                case var _ when currentKeyboardState.IsKeyPressed(Keys.S):
-                    numObjFuture += _width;
+                case var _ when keyboardState.IsKeyPressed(Keys.S):
+                    numObjFuture.y += 1;
                     timeOfMoment = _time;
                     break;
-                case var _ when currentKeyboardState.IsKeyPressed(Keys.D):
-                    numObjFuture += 1;
+                case var _ when keyboardState.IsKeyPressed(Keys.D):
+                    numObjFuture.x += 1;
                     timeOfMoment = _time;
                     break;
                 default:
@@ -222,73 +259,67 @@ namespace Coin_Wave_Lib
             }
             int operationFrequency = 6;
             frameCounter ++;
-            if (currentKeyboardState.IsKeyDown(Keys.D) || currentKeyboardState.IsKeyDown(Keys.S) ||
-                currentKeyboardState.IsKeyDown(Keys.A) || currentKeyboardState.IsKeyDown(Keys.W))
-                if (_time - timeOfMoment >= pressingTime && currentKeyboardState.IsKeyDown(Keys.W) && frameCounter >= operationFrequency)
+            if (keyboardState.IsKeyDown(Keys.D) || keyboardState.IsKeyDown(Keys.S) ||
+                keyboardState.IsKeyDown(Keys.A) || keyboardState.IsKeyDown(Keys.W))
+                if (_time - timeOfMoment >= pressingTime && keyboardState.IsKeyDown(Keys.W) && frameCounter >= operationFrequency)
                 {
-                    numObjFuture -= _width;
+                    numObjFuture.y -= 1;
                     frameCounter = 0;
                 }
-                else if (_time - timeOfMoment >= pressingTime && currentKeyboardState.IsKeyDown(Keys.A) && frameCounter >= operationFrequency)
+                else if (_time - timeOfMoment >= pressingTime && keyboardState.IsKeyDown(Keys.A) && frameCounter >= operationFrequency)
                 {
-                    numObjFuture -= 1;
+                    numObjFuture.x -= 1;
                     frameCounter = 0;
                 }
-                else if (_time - timeOfMoment >= pressingTime && currentKeyboardState.IsKeyDown(Keys.S) && frameCounter >= operationFrequency)
+                else if (_time - timeOfMoment >= pressingTime && keyboardState.IsKeyDown(Keys.S) && frameCounter >= operationFrequency)
                 {
-                    numObjFuture += _width;
+                    numObjFuture.y += 1;
                     frameCounter = 0;
                 }
-                else if (_time - timeOfMoment >= pressingTime && currentKeyboardState.IsKeyDown(Keys.D) && frameCounter >= operationFrequency)
+                else if (_time - timeOfMoment >= pressingTime && keyboardState.IsKeyDown(Keys.D) && frameCounter >= operationFrequency)
                 {
-                    numObjFuture += 1;
+                    numObjFuture.x += 1;
                     frameCounter = 0;
                 }
 
 
-            if (numObjFuture >= 0 && numObjFuture < _emptyElement.Length / 20)
+            if (numObjFuture.y >= 0 &&
+                numObjFuture.x >= 0 &&
+                numObjFuture.x < _emptyElements.GetLength(1) &&
+                numObjFuture.y < _emptyElements.GetLength(0))
                 _numObj = numObjFuture;
             else
                 numObjFuture = _numObj;
-            for (int i = 0, j = _numObj * 20; i < _currentPosition.Length; i++, j++)
-            {
-                _currentPosition[i] = _emptyElement[j];
-            }
-            bufferCurrentElement.UpdateDate(_currentPosition);
+            _currentPosition = new(_emptyElements[_numObj.y, _numObj.x].RectangleWithTexture, _textureCurrentPosition);
         }
 
-        private void ClickEnter()
+        private void ClickEnter(GameObjectData[,] gameObjectData)
         {
-                GameObjectData ob = new GameObjectData
-                {
-                    Name = blocksPanel.MenuElements[currentIndex].Name,
-                    Index = _numObj,
-                    Rectangle = new Rectangle(mg.mainPoints[_numObj], mg._unitX, mg._unitY),
-                    TexturePoints = textureMap.GetTexturePoints(blocksPanel.MenuElements[currentIndex].IndexTexture),
-                };
-
-                // Добавление обьектов методом конкатенации массивов с целью оптимизации программы,
-                // Так как конвертировать массив игровых обьектов каждый раз не выгодно
-                bufferGameObj.UpdateDate(bufferGameObj.vertices.Concat(ob.GetVertices()).ToArray());
-                gameObjectDataList.Add(ob);
-  
-        }
-        private void ClickDelete()
-        {
-            for (int i = 0; i < gameObjectDataList.Count; i++)
+            GameObjectData ob = new GameObjectData
             {
-                if (gameObjectDataList[i].Index == _numObj)
-                {
-                    gameObjectDataList.RemoveAt(i);
-                    bufferGameObj.UpdateDate(Obj.GetVertices(gameObjectDataList.ToArray(), 5));
-                }
-            }
+                RectangleWithTexture = new RectangleWithTexture
+                (
+                    new Rectangle(mg.RectangleWithTextures[_numObj.y, _numObj.x].Rectangle.TopLeft, mg.units.X, mg.units.Y),
+                    textureMap.GetTexturePoints(blocksPanel.MenuElements[currentIndex].IndexTexture)
+                ),
+                Index = _numObj,
+                Name=  blocksPanel.MenuElements[currentIndex].Name,
+                Texture = _textureMap
+            };
+            ob.SetBuffer(new Buffer(ob.GetVertices()));
+            // Добавление обьектов методом конкатенации массивов с целью оптимизации программы,
+            // Так как конвертировать массив игровых обьектов каждый раз не выгодно
+            gameObjectData[_numObj.y, _numObj.x] = ob;
+        }
+        private void ClickDelete(GameObjectData[,] gameObjectData)
+        {
+            gameObjectData[_numObj.y, _numObj.x] = null;
         }
         private void ClickShift()
         {
             if (
-                    currentKeyboardState.IsKeyPressed(Keys.Tab) &&
-                    lastKeyboardState.IsKeyDown(Keys.LeftShift) &&
+                    keyboardState.current.IsKeyPressed(Keys.Tab) &&
+                    keyboardState.last.IsKeyDown(Keys.LeftShift) &&
                     index < blocksPanel.MenuElements.Count - 1
                     )
             {
@@ -296,15 +327,15 @@ namespace Coin_Wave_Lib
                 currentIndex = index;
             }
             else if (
-                    (!currentKeyboardState.IsKeyPressed(Keys.LeftShift) &&
+                    (!keyboardState.current.IsKeyPressed(Keys.LeftShift) &&
                     index >= blocksPanel.MenuElements.Count - 1 &&
-                    currentKeyboardState.IsKeyPressed(Keys.Tab)) ||
-                    !currentKeyboardState.IsKeyDown(Keys.LeftShift)
+                    keyboardState.current.IsKeyPressed(Keys.Tab)) ||
+                    !keyboardState.current.IsKeyDown(Keys.LeftShift)
                     )
             {
                 index = 0;
             }
-            else if (currentKeyboardState.IsKeyPressed(Keys.LeftShift))
+            else if (keyboardState.current.IsKeyPressed(Keys.LeftShift))
             {
                 index = 0;
                 currentIndex = index;

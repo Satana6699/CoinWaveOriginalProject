@@ -1,81 +1,91 @@
 ﻿using Coin_Wave_Lib.Objects.InterfaceObjects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace Coin_Wave_Lib
 {
     public class BlocksPanel : InterfaceObject
     {
         public List<ElementMenu> MenuElements { get; private set; } = new List<ElementMenu>(0);
-        int numberOfSeats;
+        int numberOCell;
         public ChoiceObj choiceObj;
         private TextureMap _textureMap;
         double unitX; //ширина одного контейнра
         double unitY;
         double xPos;
         double yPos;
+        double zPos;
         public BlocksPanel
             (
-                Rectangle rectangle,
-                TexturePoint[] texturePoints,
-                int numberOfSeats,
+                RectangleWithTexture rectangleWithTexture,
+                int numberOfCell,
+                Texture texture,
                 TextureMap textureMap
-            ) : base(rectangle, texturePoints)
+            ) : base(rectangleWithTexture, texture)
         {
-            if (numberOfSeats % 2 != 0) numberOfSeats++;
-            this.numberOfSeats = numberOfSeats;
+            // Если войдёт нечетное число, то сделать его чётным
+            if (numberOfCell % 2 != 0) numberOfCell++;
+            this.numberOCell = numberOfCell;
             _textureMap = textureMap;
             CountDimensions();
         }
-
         public BlocksPanel() { }
-
-        public void GenerateMenuElement(string name, int texture)
+        public void GenerateMenuElement(string name, int indexTexture)
         {
             MenuElements.Add(new ElementMenu
                 (
-                    new Rectangle
+                    new RectangleWithTexture
                     (
-                        new Point
+                        new Rectangle
                         (
-                            xPos,
-                            yPos
+
+                            new Point
+                            (
+                                xPos,
+                                yPos,
+                                zPos
+                            ),
+                            new Point
+                            (
+                                xPos + unitX,
+                                yPos,
+                                zPos
+                            ),
+                            new Point
+                            (
+                                xPos + unitX,
+                                yPos - unitY,
+                                zPos
+                            ),
+                            new Point
+                            (
+                                xPos,
+                                yPos - unitY,
+                                zPos
+                            )
                         ),
-                        new Point
-                        (
-                            xPos + unitX,
-                            yPos
-                        ),
-                        new Point
-                        (
-                            xPos + unitX,
-                            yPos - unitY
-                        ),
-                        new Point
-                        (
-                            xPos,
-                            yPos - unitY
-                        )
+                        _textureMap.GetTexturePoints(indexTexture)
                     ),
-                    _textureMap.GetTexturePoints(texture),
+                    _textureMap.Texture,
                     name,
-                    texture
+                    indexTexture
                 ));
 
             xPos = xPos + 2 * unitX;
-            if (MenuElements.Count == numberOfSeats / 2)
+            if (MenuElements.Count == numberOCell / 2)
             {
-                xPos = Rectangle.TopLeft.X + unitX;
+                xPos = RectangleWithTexture.Rectangle.TopLeft.X + unitX;
                 yPos = yPos - 2 * unitY;
             }
         }
-        public void GenerateTexturViborObj(string path)
+        public void GenerateTexturViborObj(Texture texture)
         {
-            choiceObj = new ChoiceObj(new Rectangle(Rectangle.TopLeft, 0, 0), 
-                new TexturePoint[] {new TexturePoint(0,1), new TexturePoint(1, 1), new TexturePoint(1, 0), new TexturePoint(0, 0)});
+            choiceObj = new ChoiceObj
+                (
+                    new RectangleWithTexture
+                    (
+                        new Rectangle(RectangleWithTexture.Rectangle.TopLeft, 0, 0),
+                        [new TexturePoint(0,1), new TexturePoint(1, 1), new TexturePoint(1, 0), new TexturePoint(0, 0)]
+                    ),
+                    texture
+                );
         }
         public void ObjVibor(int index)
         {
@@ -87,16 +97,16 @@ namespace Coin_Wave_Lib
             double yPos = MenuElements[index].GetRectangle().TopLeft.Y + Math.Abs(MenuElements[index].GetRectangle().TopLeft.Y * percanteY);
             double width = MenuElements[index].GetRectangle().GetWidth() * 1.1;
             double hidth = MenuElements[index].GetRectangle().GetHeight() * 1.1;
-            choiceObj.NewPoints(new Rectangle(new Point(xPos, yPos), width, hidth));
+            choiceObj.SetPoints(new Rectangle(new Point(xPos, yPos, zPos), width, hidth));
         }
-
         public void CountDimensions()
         {
-            int row = numberOfSeats + 1;
-            unitX = Rectangle.GetWidth() / row; //ширина одного контейнра
-            unitY = Rectangle.GetHeight() / 5;
-            xPos = Rectangle.TopLeft.X + unitX;
-            yPos = Rectangle.TopLeft.Y - unitY;
+            int row = numberOCell + 1;
+            unitX = RectangleWithTexture.Rectangle.GetWidth() / row; //ширина одного контейнра
+            unitY = RectangleWithTexture.Rectangle.GetHeight() / 5;
+            xPos = RectangleWithTexture.Rectangle.TopLeft.X + unitX;
+            yPos = RectangleWithTexture.Rectangle.TopLeft.Y - unitY;
+            zPos = 0.0;
         }
     }
 }

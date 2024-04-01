@@ -12,7 +12,7 @@ namespace Coin_Wave_Lib
         {
         }
 
-        public ExitDoor(Rectangle rectangle, TexturePoint[] texturePoints, int index) : base(rectangle, texturePoints, index)
+        public ExitDoor(RectangleWithTexture rectangleWithTexture, Texture texture, (int x, int y) index) : base(rectangleWithTexture, texture, index)
         {
         }
     }

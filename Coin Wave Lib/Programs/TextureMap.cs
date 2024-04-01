@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Coin_Wave_Lib
 {
-    public record class TextureMap
+    public /*record*/ class TextureMap
     {
         private TexturePoint[] TexturePoints { get; set; }
         /// <summary>
@@ -22,9 +22,9 @@ namespace Coin_Wave_Lib
         /// </summary>
         private int NumberVertex {  get; init; }
         /// <summary>
-        /// Путь к текстурной карте
+        /// Текстура
         /// </summary>
-        public string TexturePath {  get; init; }
+        public Texture Texture { get; init; }
 
         /// <summary>
         /// 
@@ -33,7 +33,7 @@ namespace Coin_Wave_Lib
         /// <param name="hidth">Количество текстур в текстурной карте в высоту</param>
         /// <param name="numberVertices">Количество вершин в текстурке</param>
         /// <param name="texturePath">Путь к текстурной карте</param>
-        public TextureMap(double width, double hidth, int numberVertices, string texturePath)
+        public TextureMap(double width, double hidth, int numberVertices, Texture texture)
         {
             if (width == 0) width = 1;
             if (hidth == 0) hidth = 1;
@@ -41,7 +41,7 @@ namespace Coin_Wave_Lib
             Heidth = hidth;
             NumberVertex = numberVertices;
             TexturePoints = new TexturePoint[(int)(width * hidth * numberVertices)];
-            TexturePath = texturePath;
+            Texture = texture;
             GenerateMap();
         }
         /// <summary>

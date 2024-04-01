@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,8 +12,18 @@ namespace Coin_Wave_Lib
     {
         public static bool SerializeObjectsToXml<T>(T objects, string filePath)
         {
+            XmlSerializer serializer;
             // Создаем объект XmlSerializer для класса Obj
-            XmlSerializer serializer = new XmlSerializer(typeof(T));
+            try
+            {
+                serializer = new XmlSerializer(typeof(T));
+            }
+            catch(Exception ex)
+            {
+                Debug.WriteLine(typeof(T));
+                Debug.WriteLine($"Ошибка при сериализации объектов: {ex.Message}");
+                return false;
+            }
 
             // Создаем поток для записи в файл
             using (FileStream stream = new FileStream(filePath, FileMode.Create))
@@ -25,7 +36,7 @@ namespace Coin_Wave_Lib
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Ошибка при сериализации объектов: {ex.Message}");
+                    Debug.WriteLine($"Ошибка при сериализации объектов: {ex.Message}");
                     return false;
                 }
             }

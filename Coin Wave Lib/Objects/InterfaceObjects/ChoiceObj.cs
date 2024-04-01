@@ -12,7 +12,7 @@ namespace Coin_Wave_Lib
         {
         }
 
-        public ChoiceObj(Rectangle rectangle, TexturePoint[] texturePoints) : base(rectangle, texturePoints)
+        public ChoiceObj(RectangleWithTexture rectangleWithTexture, Texture texture) : base(rectangleWithTexture, texture)
         {
         }
     }

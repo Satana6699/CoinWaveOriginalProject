@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Coin_Wave_Lib.Objects.InterfaceObjects
 {
-    public class EmptyElement : InterfaceObject
+    public class LayerInterface : InterfaceObject
     {
-        public EmptyElement(RectangleWithTexture rectangleWithTexture, Texture texture) : base(rectangleWithTexture, texture)
+        public LayerInterface(RectangleWithTexture rectangleWithTexture, Texture texture) : base(rectangleWithTexture, texture)
         {
         }
     }

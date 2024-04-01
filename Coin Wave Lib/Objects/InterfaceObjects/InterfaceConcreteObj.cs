@@ -9,11 +9,12 @@ namespace Coin_Wave_Lib.Objects.InterfaceObjects
     public class InterfaceConcreteObj : InterfaceObject
     {
         public float frameTimeLive {get; private set;} = 2f;
-        public InterfaceConcreteObj(Rectangle rectangle, TexturePoint[] texturePoints) : base(rectangle, texturePoints)
-        {
-        }
 
         public InterfaceConcreteObj() { }
+
+        public InterfaceConcreteObj(RectangleWithTexture rectangleWithTexture, Texture texture) : base(rectangleWithTexture, texture)
+        {
+        }
 
         public bool IsLive(float time)
         {

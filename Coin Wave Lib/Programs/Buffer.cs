@@ -21,25 +21,24 @@ using System.Numerics;
 
 namespace Coin_Wave_Lib
 {
-    public class BufferManager
+    public class Buffer
     {
         int vertexArrayObject = 0;
         int vertexBufferObject = 0;
         public double[] vertices;
         static Shader shader;
-        Texture texture;
 
-        static BufferManager()
+        static Buffer()
         {
             shader = new Shader(@"data\shaders\shader.vert", @"data\shaders\shader.frag");
         }
-        public BufferManager(double[] vertices, string texturePath)
+        public Buffer(double[] vertices)
         {
             this.vertices = vertices;
-            GenerateBuffers(texturePath);
+            GenerateBuffers();
         }
 
-        private void GenerateBuffers(string texturePath)
+        private void GenerateBuffers()
         {
             vertexArrayObject = GL.GenVertexArray();
             GL.BindVertexArray(vertexArrayObject);
@@ -57,9 +56,6 @@ namespace Coin_Wave_Lib
             var texCoordLocation = shader.GetAttribLocation("aTexCoord");
             GL.EnableVertexAttribArray(texCoordLocation);
             GL.VertexAttribPointer(texCoordLocation, 2, VertexAttribPointerType.Double, false, 5 * sizeof(double), 3 * sizeof(double));
-
-            texture = Texture.LoadFromFile(texturePath);
-            texture.Use(TextureUnit.Texture0);
         }
 
         public void UpdateDate(double[] vertices)
@@ -69,7 +65,7 @@ namespace Coin_Wave_Lib
             GL.BufferData(BufferTarget.ArrayBuffer, this.vertices.Length * sizeof(double), this.vertices, BufferUsageHint.DynamicDraw);
         }
 
-        public void Render()
+        public void Render(Texture texture)
         {
             GL.BindVertexArray(vertexArrayObject);
             texture.Use(TextureUnit.Texture0);

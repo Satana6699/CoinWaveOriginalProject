@@ -26,6 +26,9 @@
     <None Update="data\textureForInterface\empty.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="data\textureForInterface\layers.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="data\textureForInterface\redsqrt.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

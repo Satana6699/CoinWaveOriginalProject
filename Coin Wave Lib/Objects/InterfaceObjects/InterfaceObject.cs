@@ -12,7 +12,7 @@ namespace Coin_Wave_Lib
         {
         }
 
-        protected InterfaceObject(Rectangle rectangle, TexturePoint[] texturePoints) : base(rectangle, texturePoints)
+        protected InterfaceObject(RectangleWithTexture rectangleWithTexture, Texture texture) : base(rectangleWithTexture, texture)
         {
         }
     }

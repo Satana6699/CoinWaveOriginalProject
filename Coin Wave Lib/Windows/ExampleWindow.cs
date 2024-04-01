@@ -22,9 +22,8 @@ namespace Coin_Wave_Lib
         KeyboardState lastKeyboardState, currentKeyboardState;
         private float frameTime = 0.0f;
         private int fps = 0;
-        List<GameObject> gameObjects = new List<GameObject>();
-        BufferManager bufferGameObject;
-
+        private (int widht, int hidth) sides = (32, 18);
+        private (GameObject[,] first, GameObject[,] second) layers;
         public ExampleWindow(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings)
             : base(gameWindowSettings, nativeWindowSettings)
         {
@@ -45,10 +44,21 @@ namespace Coin_Wave_Lib
         {
             base.OnLoad();
 
+            List<GameObject> gameObjects = new List<GameObject>();
             GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-            var path = @"data\maps\lvl1.xml";
-            gameObjects = GameObjectsList.CreateListForXml(FileRead.DeserializeObjectsToXml(path));
-            bufferGameObject = new(Obj.GetVertices(gameObjects.ToArray(), 5), @"data\textureForGame\texMap.png");
+            Texture textureMap = Texture.LoadFromFile(@"data\textureForGame\texMap.png");
+            List<GameObject> first = GameObjectsList.CreateListForXml(FileRead.DeserializeObjectsToXml(@"data\maps\lvl1\first.xml"), textureMap);
+            List<GameObject> second = GameObjectsList.CreateListForXml(FileRead.DeserializeObjectsToXml(@"data\maps\lvl1\second.xml"), textureMap);
+            layers.first = new GameObject[sides.hidth, sides.widht];
+            layers.second = new GameObject[sides.hidth, sides.widht];
+            foreach (GameObject obj in first)
+            {
+                layers.first[obj.Index.y, obj.Index.x] = obj;
+            }
+            foreach (GameObject obj in second)
+            {
+                layers.second[obj.Index.y, obj.Index.x] = obj;
+            }
         }
 
         
@@ -80,7 +90,8 @@ namespace Coin_Wave_Lib
             GL.Enable(EnableCap.Blend);
             GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
 
-            bufferGameObject.Render();
+            foreach (var gameObject in layers.first) if (gameObject != null)  gameObject.Render();
+            foreach (var gameObject in layers.second) if (gameObject != null)  gameObject.Render();
 
             SwapBuffers();
         }
@@ -94,7 +105,5 @@ namespace Coin_Wave_Lib
             base.OnResize(e);
             GL.Viewport(0, 0, Size.X, Size.Y);
         }
-
-         
     }
 }

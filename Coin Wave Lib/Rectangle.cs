@@ -43,18 +43,21 @@ namespace Coin_Wave_Lib
             Points[1] = TopRight = new Point
                 (
                     topLeft.X + width,
-                    topLeft.Y
+                    topLeft.Y, 
+                    topLeft.Z 
                 );
 
             Points[2] = BottomRight = new Point
                 (
                     topLeft.X + width,
-                    topLeft.Y - hidth
+                    topLeft.Y - hidth,
+                    topLeft.Z
                 );
             Points[3] = BottomLeft = new Point
                 (
                     topLeft.X,
-                    topLeft.Y - hidth
+                    topLeft.Y - hidth,
+                    topLeft.Z
                 );
         }
         /// <summary>
@@ -72,6 +75,11 @@ namespace Coin_Wave_Lib
         public double GetHeight()
         {
             return Math.Abs(TopLeft.Y - BottomLeft.Y);
+        }
+
+        public double[] ToArray()
+        {
+            return Points[0].ToArray().Concat(Points[1].ToArray()).ToArray().Concat(Points[2].ToArray()).ToArray().Concat(Points[3].ToArray()).ToArray();
         }
     }
 }

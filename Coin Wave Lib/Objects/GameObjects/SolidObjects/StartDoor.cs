@@ -12,7 +12,7 @@ namespace Coin_Wave_Lib
         {
         }
 
-        public StartDoor(Rectangle rectangle, TexturePoint[] texturePoints, int index) : base(rectangle, texturePoints, index)
+        public StartDoor(RectangleWithTexture rectangleWithTexture, Texture texture, (int x, int y) index) : base(rectangleWithTexture, texture, index)
         {
         }
     }

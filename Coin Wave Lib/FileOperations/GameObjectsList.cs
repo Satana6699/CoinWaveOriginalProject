@@ -9,7 +9,7 @@ namespace Coin_Wave_Lib
 {
     public class GameObjectsList
     {
-        public static List<GameObject> CreateListForXml(GameObject[] gameObjectDatas)
+        public static List<GameObject> CreateListForXml(GameObject[] gameObjectDatas, Texture textureMap)
         {
             /* Если будет внешняя библиотека
              * Assembly externalAssembly = Assembly.LoadFrom("путь_к_вашей_библиотеке.dll");
@@ -22,15 +22,23 @@ namespace Coin_Wave_Lib
 
             types = gameObjectTypes.ToArray();
 
-            List<GameObject> gameObjects = new List<GameObject>();
+            List<GameObject> gameObjects = new List<GameObject>(0);
             for (int i = 0; i < gameObjectDatas.Length; i++)
             {
                 for (int j = 0; j < types.Length; j++)
                 {
-                    if (gameObjectDatas[i].Name == types[j].Name)
+                    if (gameObjectDatas[i] != null && gameObjectDatas[i].Name == types[j].Name)
                     {
-                        gameObjects.Add((GameObject)Activator.CreateInstance(types[j], new object[]
-                        {gameObjectDatas[i].Rectangle, gameObjectDatas[i].TexturePoints, gameObjectDatas[i].Index }));
+                        gameObjects?.Add((GameObject)Activator.CreateInstance(types?[j], new object?[]
+                        {
+                            new RectangleWithTexture
+                            (
+                                gameObjectDatas[i].RectangleWithTexture.Rectangle, 
+                                gameObjectDatas[i].RectangleWithTexture.TexturePoints
+                            ),
+                            textureMap,
+                            gameObjectDatas[i].Index
+                        }));
                         break;
                     }
                 }
