@@ -36,5 +36,9 @@ namespace Coin_Wave_Lib
 
             return texturePoints;
         }
+        public double[] ToArray()
+        {
+            return new double[] { S, T };
+        }
     }
 }

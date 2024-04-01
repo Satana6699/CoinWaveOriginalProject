@@ -14,6 +14,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="data\textureForGame\texMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="data\textureForInterface\bluesqrt.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -29,7 +32,7 @@
     <None Update="data\textureForInterface\save.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="data\textureForGame\texMap.png">
+    <None Update="data\textureForGame\texMap2.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="data\shaders\shader.frag">

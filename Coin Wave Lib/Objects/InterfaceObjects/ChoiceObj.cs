@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace Coin_Wave_Lib
 {
-    public class ViborObj : InterfaceObject
+    public class ChoiceObj : InterfaceObject
     {
-        public ViborObj()
+        public ChoiceObj()
         {
         }
 
-        public ViborObj(Rectangle rectangle, TexturePoint[] texturePoints) : base(rectangle, texturePoints)
+        public ChoiceObj(Rectangle rectangle, TexturePoint[] texturePoints) : base(rectangle, texturePoints)
         {
         }
     }

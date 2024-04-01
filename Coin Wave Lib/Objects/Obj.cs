@@ -50,17 +50,34 @@ namespace Coin_Wave_Lib
         }
         public static double[] GetVertices(Obj[] objects, int offset)
         {
-            double[] vertices = new double[offset * objects.Length * 4];
-            for (int j = 0; j < objects.Length; j++)
+            // Предварительно вычисляем общее количество вершин
+            int totalVertices = objects.Sum(obj => obj.Rectangle.Points.Length);
+
+            // Создаем один массив для всех вершин
+            double[] vertices = new double[totalVertices * offset];
+
+            // Индекс для отслеживания текущей позиции в массиве вершин
+            int vertexIndex = 0;
+
+            foreach (var obj in objects)
             {
-                vertices = vertices.Concat(objects[j].GetVertices()).ToArray();
+                int numPoints = obj.Rectangle.Points.Length;
+                for (int i = 0; i < numPoints; i++)
+                {
+                    vertices[vertexIndex] = obj.Rectangle.Points[i].X;
+                    vertices[vertexIndex + 1] = obj.Rectangle.Points[i].Y;
+                    vertices[vertexIndex + 2] = 0.0;
+                    vertices[vertexIndex + 3] = obj.TexturePoints[i].S;
+                    vertices[vertexIndex + 4] = obj.TexturePoints[i].T;
+                    vertexIndex += offset;
+                }
             }
+
             return vertices;
         }
-        public static double[] GetVertices(List<Obj> objects, int offset)
-        {
-            return GetVertices(objects.ToArray(), offset);
-        }
+
+
+
         public Rectangle GetRectangle()
         {
             return Rectangle;

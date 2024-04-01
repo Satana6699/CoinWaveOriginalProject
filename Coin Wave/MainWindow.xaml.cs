@@ -64,7 +64,7 @@ namespace Coin_Wave
             {
                 Size = new Vector2i(Convert.ToInt32(1920/1.1), Convert.ToInt32(1080 / 1.1)),
                 Location = new Vector2i(10, 10),
-                WindowBorder = WindowBorder.Hidden,
+                WindowBorder = WindowBorder.Resizable,
 
 
                 Flags = ContextFlags.Default,

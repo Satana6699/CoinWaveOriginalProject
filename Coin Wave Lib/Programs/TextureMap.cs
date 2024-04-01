@@ -12,11 +12,11 @@ namespace Coin_Wave_Lib
         /// <summary>
         /// Количество текстур в текстурной карте в ширину
         /// </summary>
-        private int Width {  get; init; }
+        private double Width {  get; init; }
         /// <summary>
         /// Количество текстур в текстурной карте в высоту
         /// </summary>
-        private int Heidth {  get; init; }
+        private double Heidth {  get; init; }
         /// <summary>
         /// Количество вершин в текстурке
         /// </summary>
@@ -33,14 +33,14 @@ namespace Coin_Wave_Lib
         /// <param name="hidth">Количество текстур в текстурной карте в высоту</param>
         /// <param name="numberVertices">Количество вершин в текстурке</param>
         /// <param name="texturePath">Путь к текстурной карте</param>
-        public TextureMap(int width, int hidth, int numberVertices, string texturePath)
+        public TextureMap(double width, double hidth, int numberVertices, string texturePath)
         {
             if (width == 0) width = 1;
             if (hidth == 0) hidth = 1;
             Width = width;
             Heidth = hidth;
             NumberVertex = numberVertices;
-            TexturePoints = new TexturePoint[width * hidth * numberVertices];
+            TexturePoints = new TexturePoint[(int)(width * hidth * numberVertices)];
             TexturePath = texturePath;
             GenerateMap();
         }
@@ -50,8 +50,9 @@ namespace Coin_Wave_Lib
         /// </summary>
         private void GenerateMap()
         {
-            double UnitWidth = 1.0 / (double)Width;
-            double UnitHeidth = 1.0 / (double)Heidth;
+            int digits = 3;
+            double UnitWidth = double.Round(1.0 / Width, digits);
+            double UnitHeidth = double.Round(1.0 / Heidth, digits);
             // Верхний левый угол текстры соответствует координате (0,1)
             // Нижний правый угол текстуры соответствует координате (1,0)
             // В данном случе x и y это верхний левый угол
@@ -59,18 +60,18 @@ namespace Coin_Wave_Lib
             double yPos = 1.0;
             for (int i = 0; i < TexturePoints.Length; i += NumberVertex)
             {
-                TexturePoints[i] = new(xPos, yPos);
-                TexturePoints[i+1] = new(xPos + UnitWidth, yPos);
-                TexturePoints[i+2] = new(xPos + UnitWidth, yPos - UnitHeidth);
-                TexturePoints[i+3] = new(xPos, yPos - UnitHeidth);
+                TexturePoints[i] = new(double.Round(xPos, digits), double.Round(yPos, digits));
+                TexturePoints[i+1] = new(double.Round(xPos + UnitWidth, digits), double.Round(yPos, 5));
+                TexturePoints[i+2] = new(double.Round(xPos + UnitWidth, digits), double.Round(yPos - UnitHeidth, digits));
+                TexturePoints[i+3] = new(double.Round(xPos, digits), double.Round(yPos - UnitHeidth, digits));
                 if ((i / NumberVertex + 1) % Width == 0 && i != 0)
                 {
                     xPos = 0.0;
-                    yPos -= UnitHeidth;
+                    yPos = double.Round(yPos - UnitHeidth, digits);
                 }
                 else
                 {
-                    xPos += UnitWidth;
+                    xPos = double.Round(xPos + UnitWidth, digits);
                 }
             }
         }

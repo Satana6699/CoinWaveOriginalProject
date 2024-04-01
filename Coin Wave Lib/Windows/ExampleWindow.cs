@@ -95,6 +95,6 @@ namespace Coin_Wave_Lib
             GL.Viewport(0, 0, Size.X, Size.Y);
         }
 
-
+         
     }
 }

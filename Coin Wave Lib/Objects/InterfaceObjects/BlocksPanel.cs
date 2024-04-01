@@ -11,7 +11,7 @@ namespace Coin_Wave_Lib
     {
         public List<ElementMenu> MenuElements { get; private set; } = new List<ElementMenu>(0);
         int numberOfSeats;
-        public ViborObj viborObj;
+        public ChoiceObj choiceObj;
         private TextureMap _textureMap;
         double unitX; //ширина одного контейнра
         double unitY;
@@ -74,7 +74,7 @@ namespace Coin_Wave_Lib
         }
         public void GenerateTexturViborObj(string path)
         {
-            viborObj = new ViborObj(new Rectangle(Rectangle.TopLeft, 0, 0), 
+            choiceObj = new ChoiceObj(new Rectangle(Rectangle.TopLeft, 0, 0), 
                 new TexturePoint[] {new TexturePoint(0,1), new TexturePoint(1, 1), new TexturePoint(1, 0), new TexturePoint(0, 0)});
         }
         public void ObjVibor(int index)
@@ -87,7 +87,7 @@ namespace Coin_Wave_Lib
             double yPos = MenuElements[index].GetRectangle().TopLeft.Y + Math.Abs(MenuElements[index].GetRectangle().TopLeft.Y * percanteY);
             double width = MenuElements[index].GetRectangle().GetWidth() * 1.1;
             double hidth = MenuElements[index].GetRectangle().GetHeight() * 1.1;
-            viborObj.NewPoints(new Rectangle(new Point(xPos, yPos), width, hidth));
+            choiceObj.NewPoints(new Rectangle(new Point(xPos, yPos), width, hidth));
         }
 
         public void CountDimensions()

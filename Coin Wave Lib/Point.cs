@@ -24,5 +24,9 @@ namespace Coin_Wave_Lib
             X = x;
             Y = y;
         }
+        public double[] ToArray()
+        {
+            return new double[] { X, Y };
+        }
     }
 }
