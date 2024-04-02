@@ -7,7 +7,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Coin_Wave_Lib
 {
-    internal class Player
+    internal class Player___
     {
         public enum direction
         {
@@ -32,7 +32,7 @@ namespace Coin_Wave_Lib
         /// </summary>
         /// <param name="position">Массив позиций вершин игрока и дополнительных характеристик вершин</param>
         /// <param name="numberOfPoints">Колличество вершин у персонажа</param>
-        public Player(double[] position, int numberOfPoints, double velocityX, double velocityY)
+        public Player___(double[] position, int numberOfPoints, double velocityX, double velocityY)
         {
             _position = position;
             _velocityY = velocityY;

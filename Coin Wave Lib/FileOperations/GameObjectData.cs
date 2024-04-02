@@ -8,5 +8,6 @@ namespace Coin_Wave_Lib
 {
     public class GameObjectData : GameObject
     {
+        public override string Name { get; set; }
     }
 }

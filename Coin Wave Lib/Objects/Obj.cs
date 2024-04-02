@@ -9,7 +9,7 @@ namespace Coin_Wave_Lib
 {
     public abstract class Obj
     {
-        public string Name{ get; set; } = typeof(Obj).Name;
+        public abstract string Name{ get; set; }
         public double[] Vertices { get; set; }
         [XmlElement(ElementName = nameof(RectangleWithTexture))]
         public RectangleWithTexture RectangleWithTexture { get; set; }

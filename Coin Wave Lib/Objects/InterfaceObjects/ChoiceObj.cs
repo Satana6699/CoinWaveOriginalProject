@@ -15,5 +15,7 @@ namespace Coin_Wave_Lib
         public ChoiceObj(RectangleWithTexture rectangleWithTexture, Texture texture) : base(rectangleWithTexture, texture)
         {
         }
+
+        public override string Name { get => typeof(ChoiceObj).Name; set { } }
     }
 }

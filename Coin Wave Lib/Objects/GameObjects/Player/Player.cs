@@ -5,30 +5,86 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Coin_Wave_Lib.Objects.GameObjects.Player
+namespace Coin_Wave_Lib
 {
-    public class Player : GameObject, IMovement
+    public class Player : GameObject
     {
-        
+        private (double x, double y) _unit = (0,0);
+        private int frameTime;
+
+        public override string Name { get => typeof(Player).Name; set { } }
+
         public Player(RectangleWithTexture rectangleWithTexture, Texture texture, (int x, int y) index) : base(rectangleWithTexture, texture, index)
         {
         }
-
-        public void Move(IMovement.MovementHelp movementHelp)
+        public void SetUnit(double x, double y, int frameTime)
         {
-            switch (movementHelp)
+            this.frameTime = frameTime;
+            this._unit = (x / (double)frameTime, y / (double)frameTime);
+        }
+        public void Move(GameObject gameObject)
+        {
+            Index = gameObject.Index;
+
+            double errrorRate = 0.0001;
+            if (Math.Abs(gameObject.RectangleWithTexture.Rectangle.TopLeft.X - RectangleWithTexture.Rectangle.TopLeft.X) < errrorRate) 
             {
-                case IMovement.MovementHelp.Up:
-                    break;
-                case IMovement.MovementHelp.Down:
-                    break;
-                case IMovement.MovementHelp.Right:
-                    break;
-                case IMovement.MovementHelp.Left:
-                    break;
-                default:
-                    break;
+                // Для более точного фиксированного расположения игрока на позиции, иначе позиция обновляется в каждом кадре
             }
+            else if (gameObject.RectangleWithTexture.Rectangle.TopLeft.X < RectangleWithTexture.Rectangle.TopLeft.X)
+                RectangleWithTexture.Rectangle = new
+                    (
+                        new Point
+                        (
+                            RectangleWithTexture.Rectangle.TopLeft.X - _unit.x,
+                            RectangleWithTexture.Rectangle.TopLeft.Y,
+                            RectangleWithTexture.Rectangle.TopLeft.Z
+                        ),
+                        RectangleWithTexture.Rectangle.GetWidth(),
+                        RectangleWithTexture.Rectangle.GetHeight()
+                    );
+            else if (gameObject.RectangleWithTexture.Rectangle.TopLeft.X > RectangleWithTexture.Rectangle.TopLeft.X)
+                RectangleWithTexture.Rectangle = new
+                    (
+                        new Point
+                        (
+                            RectangleWithTexture.Rectangle.TopLeft.X + _unit.x,
+                            RectangleWithTexture.Rectangle.TopLeft.Y,
+                            RectangleWithTexture.Rectangle.TopLeft.Z
+                        ),
+                        RectangleWithTexture.Rectangle.GetWidth(),
+                        RectangleWithTexture.Rectangle.GetHeight()
+                    );
+
+            if (Math.Abs(gameObject.RectangleWithTexture.Rectangle.TopLeft.Y - RectangleWithTexture.Rectangle.TopLeft.Y) < errrorRate) 
+            { 
+                // Для более точного фиксированного расположения игрока на позиции, иначе позиция обновляется в каждом кадре
+            }
+            else if (gameObject.RectangleWithTexture.Rectangle.TopLeft.Y < RectangleWithTexture.Rectangle.TopLeft.Y)
+                RectangleWithTexture.Rectangle = new
+                    (
+                        new Point
+                        (
+                            RectangleWithTexture.Rectangle.TopLeft.X,
+                            RectangleWithTexture.Rectangle.TopLeft.Y - _unit.y,
+                            RectangleWithTexture.Rectangle.TopLeft.Z
+                        ),
+                        RectangleWithTexture.Rectangle.GetWidth(),
+                        RectangleWithTexture.Rectangle.GetHeight()
+                    );
+            else if (gameObject.RectangleWithTexture.Rectangle.TopLeft.Y > RectangleWithTexture.Rectangle.TopLeft.Y)
+                RectangleWithTexture.Rectangle = new
+                    (
+                        new Point
+                        (
+                            RectangleWithTexture.Rectangle.TopLeft.X,
+                            RectangleWithTexture.Rectangle.TopLeft.Y + _unit.y,
+                            RectangleWithTexture.Rectangle.TopLeft.Z
+                        ),
+                        RectangleWithTexture.Rectangle.GetWidth(),
+                        RectangleWithTexture.Rectangle.GetHeight()
+                    );
+            this.SetPoints(RectangleWithTexture.Rectangle);
         }
     }
 }

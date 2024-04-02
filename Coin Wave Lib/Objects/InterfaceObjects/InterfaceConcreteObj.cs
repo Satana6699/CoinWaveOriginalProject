@@ -9,6 +9,7 @@ namespace Coin_Wave_Lib.Objects.InterfaceObjects
     public class InterfaceConcreteObj : InterfaceObject
     {
         public float frameTimeLive {get; private set;} = 2f;
+        public override string Name { get => typeof(InterfaceConcreteObj).Name; set { } }
 
         public InterfaceConcreteObj() { }
 

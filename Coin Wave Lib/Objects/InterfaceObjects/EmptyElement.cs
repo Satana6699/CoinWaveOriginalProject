@@ -11,5 +11,7 @@ namespace Coin_Wave_Lib.Objects.InterfaceObjects
         public EmptyElement(RectangleWithTexture rectangleWithTexture, Texture texture) : base(rectangleWithTexture, texture)
         {
         }
+
+        public override string Name { get => typeof(EmptyElement).Name; set { } }
     }
 }

@@ -4,9 +4,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Coin_Wave_Lib.Objects.GameObjects
+namespace Coin_Wave_Lib
 {
     public abstract class SolidObject : GameObject
     {
+        static SolidObject()
+        {
+            isSolid = true;
+        }
+        public SolidObject ()
+        {
+        }
+        public SolidObject(RectangleWithTexture rectangleWithTexture, Texture texture, (int x, int y) index) : base(rectangleWithTexture, texture, index)
+        {
+        }
     }
+
 }

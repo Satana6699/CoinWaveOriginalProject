@@ -4,6 +4,8 @@ namespace Coin_Wave_Lib
     public class BlocksPanel : InterfaceObject
     {
         public List<ElementMenu> MenuElements { get; private set; } = new List<ElementMenu>(0);
+        public override string Name { get => typeof(BlocksPanel).Name; set { } }
+
         int numberOCell;
         public ChoiceObj choiceObj;
         private TextureMap _textureMap;

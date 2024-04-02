@@ -1,18 +1,8 @@
-﻿using System;
-using OpenTK;
-using OpenTK.Windowing.Common;
+﻿using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
 using OpenTK.Graphics.OpenGL4;
-using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
-using static Coin_Wave_Lib.Player;
-using System;
-using System.Collections.Generic;
-
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.PixelFormats;
-using SixLabors.ImageSharp.Processing;
-using System.IO;
+using Coin_Wave_Lib.Objects.InterfaceObjects;
 
 namespace Coin_Wave_Lib
 {
@@ -23,7 +13,9 @@ namespace Coin_Wave_Lib
         private float frameTime = 0.0f;
         private int fps = 0;
         private (int widht, int hidth) sides = (32, 18);
+        private (int x, int y) _numObj = (0, 0);
         private (GameObject[,] first, GameObject[,] second) layers;
+        Player player;
         public ExampleWindow(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings)
             : base(gameWindowSettings, nativeWindowSettings)
         {
@@ -57,8 +49,23 @@ namespace Coin_Wave_Lib
             }
             foreach (GameObject obj in second)
             {
-                layers.second[obj.Index.y, obj.Index.x] = obj;
+                
+                if (obj.Name == typeof(Player).Name) player = new Player
+                                                              (
+                                                                  obj.RectangleWithTexture,
+                                                                  obj.Texture,
+                                                                  obj.Index
+                                                              );
+                else layers.second[obj.Index.y, obj.Index.x] = obj;
             }
+
+            player.SetUnit
+                (
+                    player.RectangleWithTexture.Rectangle.GetWidth(),
+                    player.RectangleWithTexture.Rectangle.GetHeight(),
+                    40
+                );
+            _numObj = player.Index;
         }
 
         
@@ -81,6 +88,39 @@ namespace Coin_Wave_Lib
             }
 
 
+            (int x, int y) numObjFuture = _numObj;
+
+
+            switch (true)
+            {
+                case var _ when KeyboardState.IsKeyPressed(Keys.W):
+                    numObjFuture.y -= 1;
+                    break;
+                case var _ when KeyboardState.IsKeyPressed(Keys.A):
+                    numObjFuture.x -= 1;
+                    break;
+                case var _ when KeyboardState.IsKeyPressed(Keys.S):
+                    numObjFuture.y += 1;
+                    break;
+                case var _ when KeyboardState.IsKeyPressed(Keys.D):
+                    numObjFuture.x += 1;
+                    break;
+                default:
+                    break;
+            }
+            if (numObjFuture.y >= 0 &&
+            numObjFuture.x >= 0 &&
+                numObjFuture.x < layers.first.GetLength(1) &&
+                numObjFuture.y < layers.first.GetLength(0))
+                _numObj = numObjFuture;
+            else
+                numObjFuture = _numObj;
+
+            if (layers.first[_numObj.y, _numObj.x] != null)
+            {
+                player.Move(layers.first[_numObj.y, _numObj.x]);
+                player.UpdateDate(player.GetVertices());
+            }
         }
         protected override void OnRenderFrame(FrameEventArgs args)
         {
@@ -92,6 +132,7 @@ namespace Coin_Wave_Lib
 
             foreach (var gameObject in layers.first) if (gameObject != null)  gameObject.Render();
             foreach (var gameObject in layers.second) if (gameObject != null)  gameObject.Render();
+            player.Render();
 
             SwapBuffers();
         }

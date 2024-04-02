@@ -15,5 +15,7 @@ namespace Coin_Wave_Lib
         public BackWall(RectangleWithTexture rectangleWithTexture, Texture texture, (int x, int y) index) : base(rectangleWithTexture, texture, index)
         {
         }
+
+        public override string Name { get => typeof(BackWall).Name; set { } }
     }
 }

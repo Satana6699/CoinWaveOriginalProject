@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Coin_Wave_Lib
 {
-    public class StartDoor : GameObject
+    public class StartDoor : SolidObject
     {
         public StartDoor()
         {
@@ -15,5 +15,7 @@ namespace Coin_Wave_Lib
         public StartDoor(RectangleWithTexture rectangleWithTexture, Texture texture, (int x, int y) index) : base(rectangleWithTexture, texture, index)
         {
         }
+
+        public override string Name { get => typeof(StartDoor).Name; set { } }
     }
 }

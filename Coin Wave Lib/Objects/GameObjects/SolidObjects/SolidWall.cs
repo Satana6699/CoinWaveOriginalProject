@@ -6,12 +6,9 @@ using System.Threading.Tasks;
 
 namespace Coin_Wave_Lib
 {
-    public class SolidWall : GameObject
+    public class SolidWall : SolidObject
     {
-        static SolidWall()
-        {
-            isSolid = true;
-        }
+
         public SolidWall()
         {
         }
@@ -19,5 +16,7 @@ namespace Coin_Wave_Lib
         public SolidWall(RectangleWithTexture rectangleWithTexture, Texture texture, (int x, int y) index) : base(rectangleWithTexture, texture, index)
         {
         }
+
+        public override string Name { get => typeof(SolidWall).Name; set { } }
     }
 }
