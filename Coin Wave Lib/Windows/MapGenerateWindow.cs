@@ -27,13 +27,12 @@ namespace Coin_Wave_Lib
         int frameCounter = 0;
         int layer = 1;
         // размер карты 34 на 18 и разрешение экрана 1920 на 1080
-        private readonly (int width, int height) sidesMaps = (32, 18);
+        private (int width, int height) sidesMaps = (32, 18);
         private bool IsTherePlayer = false;
 
         // Создание всех списков и массивов тут
         private (GameObjectData[,] first, GameObjectData[,] second) layers;
 
-        int[,] f = new int[1,1];
         private CurrentPositionElement _currentPosition;
         Texture _textureCurrentPosition;
         Texture _textureMap;
@@ -298,21 +297,34 @@ namespace Coin_Wave_Lib
             GameObjectData ob = new GameObjectData
             {
                 RectangleWithTexture = new RectangleWithTexture
-                (
-                    new Rectangle(mg.RectangleWithTextures[_numObj.y, _numObj.x].Rectangle.TopLeft, mg.units.X, mg.units.Y),
-                    textureMap.GetTexturePoints(blocksPanel.MenuElements[currentIndex].IndexTexture)
-                ),
+                    (
+                        new Rectangle(mg.RectangleWithTextures[_numObj.y, _numObj.x].Rectangle.TopLeft, mg.units.X, mg.units.Y),
+                        textureMap.GetTexturePoints(blocksPanel.MenuElements[currentIndex].IndexTexture)
+                    ),
                 Index = _numObj,
-                Name=  blocksPanel.MenuElements[currentIndex].Name,
+                Name = blocksPanel.MenuElements[currentIndex].Name,
                 Texture = _textureMap
             };
-            ob.SetBuffer(new Buffer(ob.GetVertices()));
-            // Добавление обьектов методом конкатенации массивов с целью оптимизации программы,
-            // Так как конвертировать массив игровых обьектов каждый раз не выгодно
-            gameObjectData[_numObj.y, _numObj.x] = ob;
+            if (blocksPanel.MenuElements[currentIndex].Name != typeof(Player).Name)
+            {
+                ob.SetBuffer(new Buffer(ob.GetVertices()));
+                gameObjectData[_numObj.y, _numObj.x] = ob;
+            }
+            else if (blocksPanel.MenuElements[currentIndex].Name == typeof(Player).Name && !IsTherePlayer)
+            {
+                ob.SetBuffer(new Buffer(ob.GetVertices()));
+                gameObjectData[_numObj.y, _numObj.x] = ob;
+                IsTherePlayer = true;
+            }
         }
         private void ClickDelete(GameObjectData[,] gameObjectData)
         {
+            if (gameObjectData[_numObj.y, _numObj.x] != null &&
+                gameObjectData[_numObj.y, _numObj.x].Name == typeof(Player).Name && 
+                IsTherePlayer)
+            {
+                IsTherePlayer = false;
+            }
             gameObjectData[_numObj.y, _numObj.x] = null;
         }
         private void ClickShift()
