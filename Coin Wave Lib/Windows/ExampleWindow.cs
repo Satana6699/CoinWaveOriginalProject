@@ -87,35 +87,34 @@ namespace Coin_Wave_Lib
                 fps = 0;
             }
 
-
-            (int x, int y) numObjFuture = _numObj;
-
-
-            switch (true)
+            if (player.FrameTime == player.Time)
             {
-                case var _ when KeyboardState.IsKeyPressed(Keys.W):
-                    numObjFuture.y -= 1;
-                    break;
-                case var _ when KeyboardState.IsKeyPressed(Keys.A):
-                    numObjFuture.x -= 1;
-                    break;
-                case var _ when KeyboardState.IsKeyPressed(Keys.S):
-                    numObjFuture.y += 1;
-                    break;
-                case var _ when KeyboardState.IsKeyPressed(Keys.D):
-                    numObjFuture.x += 1;
-                    break;
-                default:
-                    break;
+                (int x, int y) numObjFuture = _numObj;
+                switch (true)
+                {
+                    case var _ when KeyboardState.IsKeyDown(Keys.W):
+                        numObjFuture.y -= 1;
+                        break;
+                    case var _ when KeyboardState.IsKeyDown(Keys.A):
+                        numObjFuture.x -= 1;
+                        break;
+                    case var _ when KeyboardState.IsKeyDown(Keys.S):
+                        numObjFuture.y += 1;
+                        break;
+                    case var _ when KeyboardState.IsKeyDown(Keys.D):
+                        numObjFuture.x += 1;
+                        break;
+                }
+                if (numObjFuture.y >= 0 &&
+                numObjFuture.x >= 0 &&
+                    numObjFuture.x < layers.first.GetLength(1) &&
+                    numObjFuture.y < layers.first.GetLength(0) &&
+                    !layers.first[numObjFuture.y, numObjFuture.x].isSolid )
+                    _numObj = numObjFuture;
+                else
+                    numObjFuture = _numObj;
             }
-            if (numObjFuture.y >= 0 &&
-            numObjFuture.x >= 0 &&
-                numObjFuture.x < layers.first.GetLength(1) &&
-                numObjFuture.y < layers.first.GetLength(0))
-                _numObj = numObjFuture;
-            else
-                numObjFuture = _numObj;
-
+        
             if (layers.first[_numObj.y, _numObj.x] != null)
             {
                 player.Move(layers.first[_numObj.y, _numObj.x]);

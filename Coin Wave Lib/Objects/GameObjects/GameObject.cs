@@ -9,13 +9,17 @@ namespace Coin_Wave_Lib
     public abstract class GameObject : Obj
     {
         public (int x, int y) Index;
-        public static bool isSolid { get; set; } = false;
+        public bool isSolid { get; set; }
         protected GameObject(RectangleWithTexture rectangleWithTexture, Texture texture, (int x, int y) index) :
             base(rectangleWithTexture, texture)
         {
             this.Index = index;
+            isSolid = false;
         }
 
-        protected GameObject() { }
+        protected GameObject() 
+        {
+            isSolid = false;
+        }
     }
 }

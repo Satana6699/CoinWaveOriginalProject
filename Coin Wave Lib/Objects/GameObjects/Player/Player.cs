@@ -10,7 +10,8 @@ namespace Coin_Wave_Lib
     public class Player : GameObject
     {
         private (double x, double y) _unit = (0,0);
-        private int frameTime;
+        public int FrameTime { get; private set; }
+        public int Time { get; private set; }
 
         public override string Name { get => typeof(Player).Name; set { } }
 
@@ -19,13 +20,13 @@ namespace Coin_Wave_Lib
         }
         public void SetUnit(double x, double y, int frameTime)
         {
-            this.frameTime = frameTime;
+            this.FrameTime = Time = frameTime;
             this._unit = (x / (double)frameTime, y / (double)frameTime);
         }
         public void Move(GameObject gameObject)
         {
             Index = gameObject.Index;
-
+            Time--;
             double errrorRate = 0.0001;
             if (Math.Abs(gameObject.RectangleWithTexture.Rectangle.TopLeft.X - RectangleWithTexture.Rectangle.TopLeft.X) < errrorRate) 
             {
@@ -84,6 +85,12 @@ namespace Coin_Wave_Lib
                         RectangleWithTexture.Rectangle.GetWidth(),
                         RectangleWithTexture.Rectangle.GetHeight()
                     );
+
+            if (Math.Abs(gameObject.RectangleWithTexture.Rectangle.TopLeft.X - RectangleWithTexture.Rectangle.TopLeft.X) < errrorRate &&
+                Math.Abs(gameObject.RectangleWithTexture.Rectangle.TopLeft.Y - RectangleWithTexture.Rectangle.TopLeft.Y) < errrorRate)
+            {
+                Time = FrameTime;
+            }
             this.SetPoints(RectangleWithTexture.Rectangle);
         }
     }

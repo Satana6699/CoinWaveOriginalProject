@@ -8,15 +8,13 @@ namespace Coin_Wave_Lib
 {
     public abstract class SolidObject : GameObject
     {
-        static SolidObject()
+        public SolidObject ()
         {
             isSolid = true;
         }
-        public SolidObject ()
-        {
-        }
         public SolidObject(RectangleWithTexture rectangleWithTexture, Texture texture, (int x, int y) index) : base(rectangleWithTexture, texture, index)
         {
+            isSolid = true;
         }
     }
 
