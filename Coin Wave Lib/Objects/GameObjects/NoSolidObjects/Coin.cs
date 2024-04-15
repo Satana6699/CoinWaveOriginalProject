@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Coin_Wave_Lib
 {
-    public class Coin : GameObject
+    public class Coin : GameObject, IMembership, IGameMembership
     {
         public Coin()
         {

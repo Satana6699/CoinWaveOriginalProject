@@ -109,7 +109,7 @@ namespace Coin_Wave_Lib
                 numObjFuture.x >= 0 &&
                     numObjFuture.x < layers.first.GetLength(1) &&
                     numObjFuture.y < layers.first.GetLength(0) &&
-                    !layers.first[numObjFuture.y, numObjFuture.x].isSolid )
+                    !layers.first[numObjFuture.y, numObjFuture.x].IsSolid )
                     _numObj = numObjFuture;
                 else
                     numObjFuture = _numObj;

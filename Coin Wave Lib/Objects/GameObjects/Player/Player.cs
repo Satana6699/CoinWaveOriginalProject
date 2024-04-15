@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Coin_Wave_Lib
 {
-    public class Player : GameObject
+    public class Player : GameObject, IMembership, IGameMembership
     {
         private (double x, double y) _unit = (0,0);
         public int FrameTime { get; private set; }

@@ -29,16 +29,16 @@ namespace Coin_Wave_Lib
                 {
                     if (gameObjectDatas[i] != null && gameObjectDatas[i].Name == types[j].Name)
                     {
-                        gameObjects?.Add((GameObject)Activator.CreateInstance(types?[j], new object?[]
-                        {
+                        gameObjects.Add((GameObject)Activator.CreateInstance(types[j],
+                        [
                             new RectangleWithTexture
                             (
-                                gameObjectDatas[i].RectangleWithTexture.Rectangle, 
+                                gameObjectDatas[i].RectangleWithTexture.Rectangle,
                                 gameObjectDatas[i].RectangleWithTexture.TexturePoints
                             ),
                             textureMap,
                             gameObjectDatas[i].Index
-                        }));
+                        ]));
                         break;
                     }
                 }

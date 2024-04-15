@@ -76,7 +76,6 @@ namespace Coin_Wave_Lib
             layers.first = new GameObjectData[sidesMaps.height, sidesMaps.width];
             layers.second = new GameObjectData[sidesMaps.height, sidesMaps.width];
             _textureMap = Texture.LoadFromFile(@"data\textureForGame\texMap.png");
-            textureMap = new TextureMap(5, 5, 4, _textureMap);
             save = new InterfaceConcreteObj
                 (
                     new RectangleWithTexture
@@ -107,6 +106,9 @@ namespace Coin_Wave_Lib
                 }
             _currentPosition = new(_emptyElements[0,0].RectangleWithTexture, Texture.LoadFromFile(@"data\textureForInterface\redsqrt.png"));
                 
+
+
+            textureMap = new TextureMap(5, 5, 4, _textureMap);
             blocksPanel = new
             (
                 new RectangleWithTexture
@@ -152,7 +154,7 @@ namespace Coin_Wave_Lib
             blocksPanel.choiceObj.UpdateDate(blocksPanel.choiceObj.GetVertices());
 
             
-            ClickWASD(keyboardState.current);
+            ClickWASD(keyboardState.current);  // Утечка памяти
             ClickShift();
 
             
@@ -282,14 +284,21 @@ namespace Coin_Wave_Lib
                 }
 
 
-            if (numObjFuture.y >= 0 &&
+            if 
+            (
+                numObjFuture.y >= 0 &&
                 numObjFuture.x >= 0 &&
                 numObjFuture.x < _emptyElements.GetLength(1) &&
-                numObjFuture.y < _emptyElements.GetLength(0))
+                numObjFuture.y < _emptyElements.GetLength(0)
+            )
                 _numObj = numObjFuture;
             else
                 numObjFuture = _numObj;
-            _currentPosition = new(_emptyElements[_numObj.y, _numObj.x].RectangleWithTexture, _textureCurrentPosition);
+
+
+            Rectangle newRect = mg.RectangleWithTextures[_numObj.y, _numObj.x].Rectangle;
+            _currentPosition.RectangleWithTexture = new RectangleWithTexture(newRect, mg.RectangleWithTextures[_numObj.y, _numObj.x].TexturePoints);
+            _currentPosition.UpdateDate(_currentPosition.GetVertices());
         }
 
         private void ClickEnter(GameObjectData[,] gameObjectData)

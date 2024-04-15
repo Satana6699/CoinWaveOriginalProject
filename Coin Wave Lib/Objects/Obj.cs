@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Coin_Wave_Lib.Objects;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,36 +8,23 @@ using System.Xml.Serialization;
 
 namespace Coin_Wave_Lib
 {
-    public abstract class Obj
+    public abstract class Obj : IMembership
     {
         public abstract string Name{ get; set; }
         public double[] Vertices { get; set; }
-        [XmlElement(ElementName = nameof(RectangleWithTexture))]
-        public RectangleWithTexture RectangleWithTexture { get; set; }
-        [XmlIgnore]
-        public Texture Texture {  get; set; }
-        private Buffer _buffer;
+        [XmlElement(ElementName = nameof(RectangleWithTexture))] public RectangleWithTexture RectangleWithTexture { get; set; }
+        [XmlIgnore]  public Texture Texture {  get; set; }
+        [XmlIgnore]  public Buffer Buffer { get; set; }
+
         
         public Obj(RectangleWithTexture rectangleWithTexture, Texture texture)
         {
             this.RectangleWithTexture = rectangleWithTexture;
-            _buffer = new(GetVertices());
+            Buffer = new(GetVertices());
             Texture = texture;
-            _buffer = new Buffer(GetVertices());
+            Buffer = new Buffer(GetVertices());
         }
         public Obj() { }
-        public void SetPoints(Rectangle rctng)
-        {
-            RectangleWithTexture.Rectangle = rctng;
-        }
-        public void SetPoints(Point leftTop, double width, double heidth)
-        {
-            RectangleWithTexture.Rectangle = new Rectangle(leftTop, width, heidth);
-        }
-        public void SetTexturePoints(TexturePoint[] texturePoints)
-        {
-            RectangleWithTexture.TexturePoints = texturePoints;
-        }
         public double[] GetVertices()
         {
             int offset = 5;
@@ -81,31 +69,15 @@ namespace Coin_Wave_Lib
                     vertexIndex += offset;
                 }
             }
-
             return vertices;
         }
-
-
-
-        public Rectangle GetRectangle()
-        {
-            return RectangleWithTexture.Rectangle;
-        }
-        public TexturePoint[] GetTexturePoints()
-        {
-            return RectangleWithTexture.TexturePoints;
-        }
-        public void Render()
-        {
-            _buffer.Render(Texture);
-        }
-        public void UpdateDate(double[] vertieces)
-        {
-            _buffer.UpdateDate(vertieces);
-        }
-        public void SetBuffer(Buffer buffer)
-        {
-            _buffer = buffer;
-        }
+        public void SetPoints(Rectangle rctng) => RectangleWithTexture.Rectangle = new(rctng.TopLeft, rctng.GetWidth(), rctng.GetHeight());
+        public void SetPoints(Point leftTop, double width, double heidth) => RectangleWithTexture.Rectangle = new Rectangle(leftTop, width, heidth);
+        public void SetTexturePoints(TexturePoint[] texturePoints) =>  RectangleWithTexture.TexturePoints = texturePoints;
+        public Rectangle GetRectangle() => RectangleWithTexture.Rectangle;
+        public TexturePoint[] GetTexturePoints() => RectangleWithTexture.TexturePoints;
+        public void Render() => Buffer.Render(Texture);
+        public void UpdateDate(double[] vertieces) => Buffer.UpdateDate(vertieces);
+        public void SetBuffer(Buffer buffer) => Buffer = buffer;
     }
 }
