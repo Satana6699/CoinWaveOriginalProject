@@ -3,6 +3,7 @@ using OpenTK.Windowing.Desktop;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using Coin_Wave_Lib.Objects.InterfaceObjects;
+using Coin_Wave_Lib.Objects.GameObjects;
 
 namespace Coin_Wave_Lib
 {
@@ -15,7 +16,11 @@ namespace Coin_Wave_Lib
         private (int widht, int hidth) sides = (32, 18);
         private (int x, int y) _numObj = (0, 0);
         private (GameObject[,] first, GameObject[,] second) layers;
+        TextureMap textureMap;
+        Texture textureForMap;
         Player player;
+        int indexTextureAir = 24;
+        List<DynamicObject> dynamicObjects = new List<DynamicObject>();
         public ExampleWindow(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings)
             : base(gameWindowSettings, nativeWindowSettings)
         {
@@ -38,34 +43,35 @@ namespace Coin_Wave_Lib
 
             List<GameObject> gameObjects = new List<GameObject>();
             GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-            Texture textureMap = Texture.LoadFromFile(@"data\textureForGame\texMap.png");
-            List<GameObject> first = GameObjectsList.CreateListForXml(FileRead.DeserializeObjectsToXml(@"data\maps\lvl1\first.xml"), textureMap);
-            List<GameObject> second = GameObjectsList.CreateListForXml(FileRead.DeserializeObjectsToXml(@"data\maps\lvl1\second.xml"), textureMap);
+            textureForMap = Texture.LoadFromFile(@"data\textureForGame\texMap.png");
+            List<GameObject> first = GameObjectsList.CreateListForXml(FileRead.DeserializeObjectsToXml(@"data\maps\lvl1\first.xml"), textureForMap);
+            List<GameObject> second = GameObjectsList.CreateListForXml(FileRead.DeserializeObjectsToXml(@"data\maps\lvl1\second.xml"), textureForMap);
             layers.first = new GameObject[sides.hidth, sides.widht];
             layers.second = new GameObject[sides.hidth, sides.widht];
+            textureMap = new TextureMap(5, 5, 4, textureForMap);
+
+
             foreach (GameObject obj in first)
             {
                 layers.first[obj.Index.y, obj.Index.x] = obj;
             }
-            foreach (GameObject obj in second)
-            {
-                
-                if (obj.Name == typeof(Player).Name) player = new Player
-                                                              (
-                                                                  obj.RectangleWithTexture,
-                                                                  obj.Texture,
-                                                                  obj.Index
-                                                              );
-                else layers.second[obj.Index.y, obj.Index.x] = obj;
-            }
 
+            player = SearchPlayer(second);
+            if (player is null) Close(); // Загрыть игру если нет игрока
+
+            int speedPlayer = 15; //чем меньше значение тем быстрее игрок (так как это не прямая скорость, а частота обновления позиции)
             player.SetUnit
                 (
                     player.RectangleWithTexture.Rectangle.GetWidth(),
                     player.RectangleWithTexture.Rectangle.GetHeight(),
-                    40
+                    speedPlayer
                 );
             _numObj = player.Index;
+
+
+
+            SearchDynamicObjects(layers.second);
+
         }
 
         
@@ -105,20 +111,46 @@ namespace Coin_Wave_Lib
                         numObjFuture.x += 1;
                         break;
                 }
-                if (numObjFuture.y >= 0 &&
-                numObjFuture.x >= 0 &&
+                
+                if 
+                (
+                    numObjFuture.y >= 0 &&
+                    numObjFuture.x >= 0 &&
                     numObjFuture.x < layers.first.GetLength(1) &&
                     numObjFuture.y < layers.first.GetLength(0) &&
-                    !layers.first[numObjFuture.y, numObjFuture.x].IsSolid )
+                    !layers.first[numObjFuture.y, numObjFuture.x].IsSolid &&
+                    !layers.second[numObjFuture.y, numObjFuture.x].IsSolid ||
+                    layers.second[numObjFuture.y, numObjFuture.x] is ICollectable
+                )
                     _numObj = numObjFuture;
                 else
                     numObjFuture = _numObj;
             }
         
+            // Дижение игрока
             if (layers.first[_numObj.y, _numObj.x] != null)
             {
                 player.Move(layers.first[_numObj.y, _numObj.x]);
                 player.UpdateDate(player.GetVertices());
+            }
+
+            // Собрать монетку
+            if (layers.second[_numObj.y, _numObj.x].GetType().Name == typeof(Coin).Name)
+            {
+                player.ColletCoins(1);
+                layers.second[_numObj.y, _numObj.x] = new Air
+                (
+                    new RectangleWithTexture
+                    (
+                        layers.second[_numObj.y, _numObj.x].RectangleWithTexture.Rectangle,
+                        textureMap.GetTexturePoints(indexTextureAir)
+                    ),
+                    textureMap.Texture,
+                    (_numObj.y, _numObj.x)
+                )
+                {
+                    Name = typeof(Air).Name,
+                };
             }
         }
         protected override void OnRenderFrame(FrameEventArgs args)
@@ -144,6 +176,47 @@ namespace Coin_Wave_Lib
         {
             base.OnResize(e);
             GL.Viewport(0, 0, Size.X, Size.Y);
+        }
+
+        private Player SearchPlayer(List<GameObject> second)
+        {
+            Player player = null;
+            foreach (GameObject obj in second)
+            {
+
+                if (obj.Name == typeof(Player).Name)
+                {
+                    player = new Player
+                    (
+                        obj.RectangleWithTexture,
+                        obj.Texture,
+                        obj.Index
+                    );
+
+
+                    layers.second[obj.Index.y, obj.Index.x] = new Air
+                    (
+                        new RectangleWithTexture
+                        (
+                            obj.RectangleWithTexture.Rectangle,
+                            textureMap.GetTexturePoints(indexTextureAir)
+                        ),
+                        textureForMap,
+                        obj.Index
+                    );
+                }
+                else layers.second[obj.Index.y, obj.Index.x] = obj;
+            }
+
+            return player;
+        }
+        private List<DynamicObject> SearchDynamicObjects(GameObject[,] gameObjects)
+        {
+            List<DynamicObject> dynamicObjects = new List<DynamicObject>();
+
+
+
+            return dynamicObjects;
         }
     }
 }

@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Coin_Wave_Lib
+namespace Coin_Wave_Lib.Objects.GameObjects
 {
-    public abstract class ObjectFactoy
+    public interface ICollectable
     {
-        public abstract IMembership GetMembership();
-
+        // Меня можно взять
     }
 }

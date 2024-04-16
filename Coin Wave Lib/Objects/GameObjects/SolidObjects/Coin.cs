@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Coin_Wave_Lib.Objects.GameObjects;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Coin_Wave_Lib
 {
-    public class Coin : GameObject, IMembership, IGameMembership
+    public class Coin : SolidObject, IMembership, IGameMembership, ICollectable
     {
         public Coin()
         {

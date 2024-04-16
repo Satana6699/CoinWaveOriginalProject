@@ -35,7 +35,7 @@ namespace Coin_Wave_Lib
 
         private CurrentPositionElement _currentPosition;
         Texture _textureCurrentPosition;
-        Texture _textureMap;
+        Texture _textureForMap;
         private EmptyElement[,] _emptyElements;
 
 
@@ -75,7 +75,7 @@ namespace Coin_Wave_Lib
             GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
             layers.first = new GameObjectData[sidesMaps.height, sidesMaps.width];
             layers.second = new GameObjectData[sidesMaps.height, sidesMaps.width];
-            _textureMap = Texture.LoadFromFile(@"data\textureForGame\texMap.png");
+            _textureForMap = Texture.LoadFromFile(@"data\textureForGame\texMap.png");
             save = new InterfaceConcreteObj
                 (
                     new RectangleWithTexture
@@ -108,7 +108,7 @@ namespace Coin_Wave_Lib
                 
 
 
-            textureMap = new TextureMap(5, 5, 4, _textureMap);
+            textureMap = new TextureMap(5, 5, 4, _textureForMap);
             blocksPanel = new
             (
                 new RectangleWithTexture
@@ -124,13 +124,15 @@ namespace Coin_Wave_Lib
                 Texture.LoadFromFile(@"data\textureForInterface\bluesqrt.png"),
                 textureMap
             );
-            blocksPanel.GenerateMenuElement(typeof(StartDoor).Name, 7);
-            blocksPanel.GenerateMenuElement(typeof(ExitDoor).Name, 7);
             blocksPanel.GenerateMenuElement(typeof(SolidWall).Name, 0);
-            blocksPanel.GenerateMenuElement(typeof(Player).Name, 5);
             blocksPanel.GenerateMenuElement(typeof(BackWall).Name, 3);
+            blocksPanel.GenerateMenuElement(typeof(Stone).Name, 4);
+            blocksPanel.GenerateMenuElement(typeof(Player).Name, 15);
+            blocksPanel.GenerateMenuElement(typeof(Coin).Name, 6);
+            blocksPanel.GenerateMenuElement(typeof(ExitDoor).Name, 7);
             _textureCurrentPosition = Texture.LoadFromFile(@"data\textureForInterface\redsqrt.png");
             blocksPanel.GenerateTexturViborObj(_textureCurrentPosition);
+
         }
 
         protected override void OnUpdateFrame(FrameEventArgs args)
@@ -186,9 +188,51 @@ namespace Coin_Wave_Lib
                 keyboardState.last.IsKeyDown(Keys.LeftControl) &&
                 keyboardState.current.IsKeyDown(Keys.S))
             {
-                ifSaved = FileSave.SerializeObjectsToXml(layers.first.Cast<GameObjectData>().ToArray(), @"data\maps\lvl1\first.xml");
+                // Создать промежуточные массивы
+                (GameObjectData[,] first, GameObjectData[,] second) temporaryLayers;
+                temporaryLayers.first = new GameObjectData[layers.first.GetLength(0), layers.first.GetLength(1)];
+                temporaryLayers.second = new GameObjectData[layers.second.GetLength(0), layers.second.GetLength(1)];
+                int indexTextureAir = 24;
+                // Если имеются в массиве незаполненные элементы массива, то заполнить их объктом воздух
+                // Для того, чтобы в массиве не было null объектов
+                for (int i = 0; i < temporaryLayers.first.GetLength(0); i++)
+                    for (int j = 0; j < temporaryLayers.first.GetLength(1); j++)
+                    {
+                        GameObjectData ob = new GameObjectData
+                        {
+                            RectangleWithTexture = new RectangleWithTexture
+                                (
+                                    new Rectangle(mg.RectangleWithTextures[i, j].Rectangle.TopLeft, mg.units.X, mg.units.Y),
+                                    textureMap.GetTexturePoints(indexTextureAir)
+                                ),
+                            Index = (j,i),
+                            Name = typeof(Air).Name,
+                            Texture = _textureForMap
+                        };
+
+
+                        if (layers.first[i,j] is null)
+                        {
+                            temporaryLayers.first[i, j] = ob;
+                        }
+                        else
+                        {
+                            temporaryLayers.first[i, j] = layers.first[i, j];
+                        }
+
+                        if (layers.second[i, j] is null)
+                        {
+                            temporaryLayers.second[i, j] = ob;
+                        }
+                        else
+                        {
+                            temporaryLayers.second[i, j] = layers.second[i, j];
+                        }
+                    }
+
+                ifSaved = FileSave.SerializeObjectsToXml(temporaryLayers.first.Cast<GameObjectData>().ToArray(), @"data\maps\lvl1\first.xml");
                 if (ifSaved)
-                    ifSaved = FileSave.SerializeObjectsToXml(layers.second.Cast<GameObjectData>().ToArray(), @"data\maps\lvl1\second.xml");
+                    ifSaved = FileSave.SerializeObjectsToXml(temporaryLayers.second.Cast<GameObjectData>().ToArray(), @"data\maps\lvl1\second.xml");
             }
             if (ifSaved) ifSaved = save.IsLive((float)args.Time);
         }
@@ -312,7 +356,7 @@ namespace Coin_Wave_Lib
                     ),
                 Index = _numObj,
                 Name = blocksPanel.MenuElements[currentIndex].Name,
-                Texture = _textureMap
+                Texture = _textureForMap
             };
             if (blocksPanel.MenuElements[currentIndex].Name != typeof(Player).Name)
             {
