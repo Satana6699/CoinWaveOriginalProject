@@ -87,5 +87,10 @@ namespace Coin_Wave_Lib
             GL.ActiveTexture(unit);
             GL.BindTexture(TextureTarget.Texture2D, Handle);
         }
+
+        public void Dispouse()
+        {
+            GL.DeleteTexture(Handle);
+        }
     }
 }

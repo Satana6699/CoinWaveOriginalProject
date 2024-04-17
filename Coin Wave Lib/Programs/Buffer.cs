@@ -72,5 +72,16 @@ namespace Coin_Wave_Lib
             shader.Use();
             GL.DrawArrays(PrimitiveType.Quads, 0, vertices.Length);
         }
+
+        public void Dispouse()
+        {
+            GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
+            GL.DeleteBuffer(vertexBufferObject);
+            vertexBufferObject = 0;
+
+            GL.BindVertexArray(0);
+            GL.DeleteVertexArray(vertexArrayObject);
+            vertexArrayObject = 0;
+        }
     }
 }

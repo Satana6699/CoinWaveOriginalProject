@@ -20,7 +20,8 @@ namespace Coin_Wave_Lib
         Texture textureForMap;
         Player player;
         int indexTextureAir = 24;
-        List<DynamicObject> dynamicObjects = new List<DynamicObject>();
+        List<Stones> stones = new List<Stones>();
+        int speedObj = 15;
         public ExampleWindow(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings)
             : base(gameWindowSettings, nativeWindowSettings)
         {
@@ -43,34 +44,8 @@ namespace Coin_Wave_Lib
 
             List<GameObject> gameObjects = new List<GameObject>();
             GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-            textureForMap = Texture.LoadFromFile(@"data\textureForGame\texMap.png");
-            List<GameObject> first = GameObjectsList.CreateListForXml(FileRead.DeserializeObjectsToXml(@"data\maps\lvl1\first.xml"), textureForMap);
-            List<GameObject> second = GameObjectsList.CreateListForXml(FileRead.DeserializeObjectsToXml(@"data\maps\lvl1\second.xml"), textureForMap);
-            layers.first = new GameObject[sides.hidth, sides.widht];
-            layers.second = new GameObject[sides.hidth, sides.widht];
-            textureMap = new TextureMap(5, 5, 4, textureForMap);
 
-
-            foreach (GameObject obj in first)
-            {
-                layers.first[obj.Index.y, obj.Index.x] = obj;
-            }
-
-            player = CreateSecondLayer(second);
-            if (player is null) Close(); // Загрыть игру если нет игрока
-
-            int speedPlayer = 15; //чем меньше значение тем быстрее игрок (так как это не прямая скорость, а частота обновления позиции)
-            player.SetUnit
-                (
-                    player.RectangleWithTexture.Rectangle.GetWidth(),
-                    player.RectangleWithTexture.Rectangle.GetHeight(),
-                    speedPlayer
-                );
-            _numObj = player.Index;
-
-
-
-            dynamicObjects = SearchDynamicObjects(layers.second);
+            StartGame();
         }
 
         
@@ -83,126 +58,23 @@ namespace Coin_Wave_Lib
             // Получаем текущее состояние клавиатуры
             currentKeyboardState = KeyboardState.GetSnapshot();
 
-            frameTime += (float)args.Time;
-            fps++;
-            if (frameTime >= 1.0f)
-            {
-                Title = $"OpenTK {NameExampleWindow} : FPS - {fps}";
-                frameTime = 0.0f;
-                fps = 0;
-            }
+            // Обновить FPS
+            UpdateFPS(args);
 
-            if (player.ContinueMove())
-            {
-                (int x, int y) numObjFuture = _numObj;
-                switch (true)
-                {
-                    case var _ when KeyboardState.IsKeyDown(Keys.W):
-                        numObjFuture.y -= 1;
-                        break;
-                    case var _ when KeyboardState.IsKeyDown(Keys.A):
-                        numObjFuture.x -= 1;
-                        break;
-                    case var _ when KeyboardState.IsKeyDown(Keys.S):
-                        numObjFuture.y += 1;
-                        break;
-                    case var _ when KeyboardState.IsKeyDown(Keys.D):
-                        numObjFuture.x += 1;
-                        break;
-                }
+            // Обновить позицию игрока
+            PlayerMove();
 
-                if
-                (
-                    numObjFuture.y >= 0 &&
-                    numObjFuture.x >= 0 &&
-                    numObjFuture.x < layers.first.GetLength(1) &&
-                    numObjFuture.y < layers.first.GetLength(0) &&
-                    !layers.first[numObjFuture.y, numObjFuture.x].IsSolid &&
-                    !layers.second[numObjFuture.y, numObjFuture.x].IsSolid ||
-                    layers.second[numObjFuture.y, numObjFuture.x] is ICollectable
-                )
-                {
-                    bool colisionDynamicSolid = true;
-
-                    foreach (var dynamicObj in dynamicObjects)
-                    {
-                        if (dynamicObj.Index == (numObjFuture.x, numObjFuture.y))
-                        {
-                            colisionDynamicSolid = false;
-                            break;
-                        }
-                    }
-                    if(colisionDynamicSolid)
-                    {
-                        _numObj = numObjFuture;
-                        player.Index = numObjFuture;
-                    }
-                }
-                else
-                    numObjFuture = _numObj;
-
-
-            }
-        
-            // Дижение игрока
-            if (layers.first[_numObj.y, _numObj.x] != null)
-            {
-                player.Move(layers.first[_numObj.y, _numObj.x]);
-                player.UpdateDate(player.GetVertices());
-            }
+            // Обновить состояние игрока (его текстуру)
+            PlayerSetTexture();
 
             // Собрать монетку
-            if (layers.second[_numObj.y, _numObj.x].GetType().Name == typeof(Coin).Name)
-            {
-                player.ColletCoins(1);
-                layers.second[_numObj.y, _numObj.x] = new Air
-                (
-                    new RectangleWithTexture
-                    (
-                        layers.second[_numObj.y, _numObj.x].RectangleWithTexture.Rectangle,
-                        textureMap.GetTexturePoints(indexTextureAir)
-                    ),
-                    textureMap.Texture,
-                    (_numObj.y, _numObj.x)
-                )
-                {
-                    Name = typeof(Air).Name,
-                };
-
-             
-            }
-
-
-
+            CollectMoney();
 
             //Камень упасть
-            for (int i = 0; i < dynamicObjects.Count; i++)
-            {
-                if (dynamicObjects[i].ContinueMove() &&
-                    dynamicObjects[i].Index.y+1 < layers.second.GetLength(0) &&
-                    dynamicObjects[i].GetType().Name == typeof(Stone).Name &&
-                    layers.second[dynamicObjects[i].Index.y+1, dynamicObjects[i].Index.x] is not null &&
-                    !layers.first[dynamicObjects[i].Index.y+1, dynamicObjects[i].Index.x].IsSolid &&
-                    !layers.second[dynamicObjects[i].Index.y+1, dynamicObjects[i].Index.x].IsSolid)
-                {
+            FallStone();
 
-                    dynamicObjects[i].Index = (dynamicObjects[i].Index.x, dynamicObjects[i].Index.y+1);
-
-                    for(int j = 0; j < dynamicObjects.Count; j++)
-                    {
-                        if ((dynamicObjects[i].Index == dynamicObjects[j].Index &&
-                             dynamicObjects[i] != dynamicObjects[j]) ||
-                             dynamicObjects[i].Index == player.Index)
-                        {
-                            dynamicObjects[i].Index = (dynamicObjects[i].Index.x, dynamicObjects[i].Index.y - 1);
-                            break;
-                        }
-                    }
-                }
-
-                dynamicObjects[i].Move(layers.second[dynamicObjects[i].Index.y, dynamicObjects[i].Index.x]);
-                dynamicObjects[i].UpdateDate(dynamicObjects[i].GetVertices());
-            }
+            if (currentKeyboardState.IsKeyPressed(Keys.Escape)) Close();
+            if (currentKeyboardState.IsKeyPressed(Keys.R)) RestarrtGame();
         }
         protected override void OnRenderFrame(FrameEventArgs args)
         {
@@ -211,11 +83,8 @@ namespace Coin_Wave_Lib
             // Alpha-chanal support
             GL.Enable(EnableCap.Blend);
             GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
-            
-            foreach (var gameObject in layers.first) if (gameObject != null)  gameObject.Render();
-            foreach (var gameObject in layers.second) if (gameObject != null)  gameObject.Render();
-            foreach (var obj in dynamicObjects) obj.Render();
-            player.Render();
+
+            AllRender();
 
             SwapBuffers();
         }
@@ -262,13 +131,13 @@ namespace Coin_Wave_Lib
 
             return player;
         }
-        private List<DynamicObject> SearchDynamicObjects(GameObject[,] gameObjects)
+        private List<Stones> SearchDynamicObjects(GameObject[,] gameObjects)
         {
-            List<DynamicObject> dynamicObjects = new List<DynamicObject>();
+            List<Stones> dynamicObjects = new List<Stones>();
 
             foreach (GameObject obj in gameObjects)
             {
-                if (obj is IMoveable)
+                if (obj is Stone)
                 {
                     Stone stone = new Stone
                         (
@@ -287,7 +156,7 @@ namespace Coin_Wave_Lib
                     (
                         stone.RectangleWithTexture.Rectangle.GetWidth(),
                         stone.RectangleWithTexture.Rectangle.GetHeight(),
-                        20
+                        speedObj
                     );
                     dynamicObjects.Add
                     (
@@ -317,6 +186,252 @@ namespace Coin_Wave_Lib
             }
 
             return dynamicObjects;
+        }
+        private void PlayerSetTexture()
+        {
+            int playerHoldingStoneTextureIndex = 18;
+            int playerNotHoldingStoneTextureIndex = 15;
+
+            foreach (var obj in stones)
+            {
+                if (player.Index == (obj.Index.x, obj.Index.y + 1))
+                {
+                    player.SetTexturePoints(textureMap.GetTexturePoints(playerHoldingStoneTextureIndex));
+                    break;
+                }
+                else 
+                    player.SetTexturePoints(textureMap.GetTexturePoints(playerNotHoldingStoneTextureIndex));
+            }
+
+        }
+
+        private void PlayerMove()
+        {
+            if (player.ContinueMove())
+            {
+                (int x, int y) numObjFuture = _numObj;
+                switch (true)
+                {
+                    case var _ when KeyboardState.IsKeyDown(Keys.W):
+                        numObjFuture.y -= 1;
+                        break;
+                    case var _ when KeyboardState.IsKeyDown(Keys.A):
+                        numObjFuture.x -= 1;
+                        MoveStoneLeft(numObjFuture); 
+                        break;
+                    case var _ when KeyboardState.IsKeyDown(Keys.S):
+                        numObjFuture.y += 1;
+                        break;
+                    case var _ when KeyboardState.IsKeyDown(Keys.D):
+                        numObjFuture.x += 1;
+                        MoveStoneRight(numObjFuture);
+                        break;
+                }
+
+                if
+                (
+                    numObjFuture.y >= 0 &&
+                    numObjFuture.x >= 0 &&
+                    numObjFuture.x < layers.first.GetLength(1) &&
+                    numObjFuture.y < layers.first.GetLength(0) &&
+                    !layers.first[numObjFuture.y, numObjFuture.x].IsSolid &&
+                    !layers.second[numObjFuture.y, numObjFuture.x].IsSolid ||
+                    layers.second[numObjFuture.y, numObjFuture.x] is ICollectable
+                )
+                {
+                    bool colisionDynamicSolid = false;
+
+                    foreach (var dynamicObj in stones)
+                    {
+                        if (dynamicObj.Index == (numObjFuture.x, numObjFuture.y))
+                        {
+                            colisionDynamicSolid = true;
+                            break;
+                        }
+                    }
+                    if (!colisionDynamicSolid)
+                    {
+                        _numObj = numObjFuture;
+                        player.Index = numObjFuture;
+                    }
+                }
+                else
+                    numObjFuture = _numObj;
+            }
+
+            // Дижение игрока
+            if (layers.first[_numObj.y, _numObj.x] != null)
+            {
+                player.Move(layers.first[_numObj.y, _numObj.x]);
+                player.UpdateDate(player.GetVertices());
+            }
+        }
+        private void AllRender()
+        {
+            foreach (var gameObject in layers.first) if (gameObject != null) gameObject.Render();
+            foreach (var gameObject in layers.second) if (gameObject != null) gameObject.Render();
+            foreach (var obj in stones) obj.Render();
+            player.Render();
+        }
+        private void FallStone()
+        {
+            for (int i = 0; i < stones.Count; i++)
+            {
+                if (stones[i].ContinueMove() &&
+                    stones[i].Index.y + 1 < layers.second.GetLength(0) &&
+                    stones[i].GetType().Name == typeof(Stone).Name &&
+                    layers.second[stones[i].Index.y + 1, stones[i].Index.x] is not null &&
+                    !layers.first[stones[i].Index.y + 1, stones[i].Index.x].IsSolid &&
+                    !layers.second[stones[i].Index.y + 1, stones[i].Index.x].IsSolid)
+                {
+
+                    stones[i].Index = (stones[i].Index.x, stones[i].Index.y + 1);
+
+                    for (int j = 0; j < stones.Count; j++)
+                    {
+                        if ((stones[i].Index == stones[j].Index &&
+                             stones[i] != stones[j]) ||
+                             stones[i].Index == player.Index)
+                        {
+                            stones[i].Index = (stones[i].Index.x, stones[i].Index.y - 1);
+                            break;
+                        }
+                    }
+                }
+
+                stones[i].Move(layers.second[stones[i].Index.y, stones[i].Index.x]);
+                stones[i].UpdateDate(stones[i].GetVertices());
+            }
+        }
+        private void CollectMoney()
+        {
+            if (layers.second[_numObj.y, _numObj.x].GetType().Name == typeof(Coin).Name)
+            {
+                player.ColletCoins(1);
+                layers.second[_numObj.y, _numObj.x] = new Air
+                (
+                    new RectangleWithTexture
+                    (
+                        layers.second[_numObj.y, _numObj.x].RectangleWithTexture.Rectangle,
+                        textureMap.GetTexturePoints(indexTextureAir)
+                    ),
+                    textureMap.Texture,
+                    (_numObj.y, _numObj.x)
+                )
+                {
+                    Name = typeof(Air).Name,
+                };
+            }
+        }
+
+        private void UpdateFPS(FrameEventArgs args)
+        {
+            frameTime += (float)args.Time;
+            fps++;
+            if (frameTime >= 1.0f)
+            {
+                Title = $"OpenTK {NameExampleWindow} : FPS - {fps}";
+                frameTime = 0.0f;
+                fps = 0;
+            }
+        }
+
+        private void MoveStoneRight((int x, int y) numObjFuture)
+        {
+            foreach (var thisObj in stones)
+            {
+                if (numObjFuture == thisObj.Index &&
+                    (numObjFuture.x - 1, numObjFuture.y) == _numObj &&
+                    !layers.second[thisObj.Index.y, thisObj.Index.x+1].IsSolid &&
+                    !layers.first[thisObj.Index.y, thisObj.Index.x + 1].IsSolid)
+                {
+                    bool nextOdjSolid = false;
+                    foreach(var nextObj in stones)
+                    {
+                        if ((thisObj.Index.x + 1, thisObj.Index.y) == nextObj.Index)
+                        {
+                            nextOdjSolid = true;
+                            break;
+                        }
+                    }
+                    if (!nextOdjSolid)
+                        thisObj.Index = (thisObj.Index.x + 1, thisObj.Index.y);
+                }
+            }
+        }
+        private void MoveStoneLeft((int x, int y) numObjFuture)
+        {
+            foreach (var thisObj in stones)
+            {
+                if (numObjFuture == thisObj.Index &&
+                    (numObjFuture.x + 1, numObjFuture.y) == _numObj &&
+                    !layers.second[thisObj.Index.y, thisObj.Index.x - 1].IsSolid &&
+                    !layers.first[thisObj.Index.y, thisObj.Index.x - 1].IsSolid)
+                {
+                    bool nextOdjSolid = false;
+                    foreach (var nextObj in stones)
+                    {
+                        if ((thisObj.Index.x - 1, thisObj.Index.y) == nextObj.Index)
+                        {
+                            nextOdjSolid = true;
+                            break;
+                        }
+                    }
+                    if (!nextOdjSolid)
+                        thisObj.Index = (thisObj.Index.x - 1, thisObj.Index.y);
+                }
+            }
+        }
+
+        private void StartGame()
+        {
+            textureForMap = Texture.LoadFromFile(@"data\textureForGame\texMap.png");
+
+            List<GameObject> first = GameObjectsList.CreateListForXml(FileRead.DeserializeObjectsToXml(@"data\maps\lvl1\first.xml"), textureForMap);
+            List<GameObject> second = GameObjectsList.CreateListForXml(FileRead.DeserializeObjectsToXml(@"data\maps\lvl1\second.xml"), textureForMap);
+
+            layers.first = new GameObject[sides.hidth, sides.widht];
+            layers.second = new GameObject[sides.hidth, sides.widht];
+
+            textureMap = new TextureMap(5, 5, 4, textureForMap);
+
+            foreach (GameObject obj in first)
+            {
+                layers.first[obj.Index.y, obj.Index.x] = obj;
+            }
+
+            player = CreateSecondLayer(second);
+            if (player is null) Close(); // Загрыть игру если нет игрока
+
+            player.SetUnit
+                (
+                    player.RectangleWithTexture.Rectangle.GetWidth(),
+                    player.RectangleWithTexture.Rectangle.GetHeight(),
+                    speedObj
+                );
+            _numObj = player.Index;
+
+            stones = SearchDynamicObjects(layers.second);
+        }
+
+        private void RestarrtGame()
+        {
+            for (int i = 0; i < layers.first.GetLength(0); i++)
+                for(int j = 0; j < layers.first.GetLength(1); j++)
+                {
+                    layers.first[i, j].Buffer.Dispouse();
+                    layers.first[i, j].Texture.Dispouse();
+                    layers.second[i, j].Buffer.Dispouse();
+                    layers.second[i,j].Texture.Dispouse();
+                    
+                }
+            foreach (var obj in stones)
+            {
+                obj.Buffer.Dispouse();
+            }
+            player.Buffer.Dispouse();
+            textureForMap.Dispouse();
+            StartGame();
         }
     }
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Coin_Wave_Lib
 {
-    public class Stone : DynamicObject
+    public class Stone : Stones
     {
         public Stone(RectangleWithTexture rectangleWithTexture, Texture texture, (int x, int y) index) : base(rectangleWithTexture, texture, index)
         {

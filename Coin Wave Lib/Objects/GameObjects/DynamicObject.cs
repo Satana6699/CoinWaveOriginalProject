@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace Coin_Wave_Lib
 {
-    public abstract class DynamicObject : GameObject, IMoveable
+    public abstract class Stones : GameObject, IMoveable
     {
         public int Time { get; private set; }
         public int FrameTime { get; private set; }
         private (double x, double y) _unit = (0, 0);
 
-        protected DynamicObject(RectangleWithTexture rectangleWithTexture, Texture texture, (int x, int y) index) : base(rectangleWithTexture, texture, index)
+        protected Stones(RectangleWithTexture rectangleWithTexture, Texture texture, (int x, int y) index) : base(rectangleWithTexture, texture, index)
         {
         }
 

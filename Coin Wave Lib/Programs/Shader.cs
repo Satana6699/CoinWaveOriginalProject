@@ -185,5 +185,10 @@ namespace Coin_Wave_Lib
             GL.UseProgram(Handle);
             GL.Uniform3(_uniformLocations[name], data);
         }
+        public void Dispose()
+        {
+            GL.DeleteProgram(Handle);
+            _uniformLocations.Clear();
+        }
     }
 }
