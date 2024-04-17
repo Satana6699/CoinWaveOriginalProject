@@ -25,7 +25,6 @@ namespace Coin_Wave_Lib
         }
         public void Move(GameObject gameObject)
         {
-            Index = gameObject.Index;
             Time--;
             double errrorRate = 0.0001;
             if (Math.Abs(gameObject.RectangleWithTexture.Rectangle.TopLeft.X - RectangleWithTexture.Rectangle.TopLeft.X) < errrorRate)
@@ -92,6 +91,11 @@ namespace Coin_Wave_Lib
                 Time = FrameTime;
             }
             this.SetPoints(RectangleWithTexture.Rectangle);
+        }
+
+        public bool ContinueMove()
+        {
+            return Time == FrameTime;
         }
     }
 }
