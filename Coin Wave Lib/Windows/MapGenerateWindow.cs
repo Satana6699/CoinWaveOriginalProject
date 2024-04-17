@@ -130,6 +130,7 @@ namespace Coin_Wave_Lib
             blocksPanel.GenerateMenuElement(typeof(Player).Name, 15);
             blocksPanel.GenerateMenuElement(typeof(Coin).Name, 6);
             blocksPanel.GenerateMenuElement(typeof(ExitDoor).Name, 7);
+            blocksPanel.GenerateMenuElement(typeof(Dragon).Name, 5);
             _textureCurrentPosition = Texture.LoadFromFile(@"data\textureForInterface\redsqrt.png");
             blocksPanel.GenerateTexturViborObj(_textureCurrentPosition);
 

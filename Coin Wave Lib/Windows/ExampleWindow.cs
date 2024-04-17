@@ -20,7 +20,7 @@ namespace Coin_Wave_Lib
         Texture textureForMap;
         Player player;
         int indexTextureAir = 24;
-        List<Stones> stones = new List<Stones>();
+        List<DynamicObject> stones = new List<DynamicObject>();
         int speedObj = 15;
         public ExampleWindow(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings)
             : base(gameWindowSettings, nativeWindowSettings)
@@ -73,9 +73,17 @@ namespace Coin_Wave_Lib
             //Камень упасть
             FallStone();
 
+            Monsters();
+
+            // Новое движение
+            {
+                FoolMove();
+            }
             if (currentKeyboardState.IsKeyPressed(Keys.Escape)) Close();
             if (currentKeyboardState.IsKeyPressed(Keys.R)) RestarrtGame();
         }
+
+
         protected override void OnRenderFrame(FrameEventArgs args)
         {
             base.OnRenderFrame(args);
@@ -131,13 +139,47 @@ namespace Coin_Wave_Lib
 
             return player;
         }
-        private List<Stones> SearchDynamicObjects(GameObject[,] gameObjects)
+        private List<DynamicObject> SearchDynamicObjects(GameObject[,] gameObjects)
         {
-            List<Stones> dynamicObjects = new List<Stones>();
+            List<DynamicObject> dynamicObjects = new List<DynamicObject>();
 
             foreach (GameObject obj in gameObjects)
             {
-                if (obj is Stone)
+                if (obj is IDynamic)
+                {
+                    GameObjectFactory objFactory = ObjectFactory.GetFactoy
+                        (
+                            obj.Name,
+                                new RectangleWithTexture
+                                    (
+                                        obj.RectangleWithTexture.Rectangle,
+                                        obj.RectangleWithTexture.TexturePoints
+                                    ),
+                            textureForMap,
+                            obj.Index
+                        );
+
+                    DynamicObject gameObject = (DynamicObject)objFactory.GetGameObject();
+                    gameObject.SetSpeed(speedObj);
+                    dynamicObjects.Add(gameObject);
+
+                    layers.second[obj.Index.y, obj.Index.x] = new Air
+                        (
+                            new RectangleWithTexture
+                            (
+                                obj.RectangleWithTexture.Rectangle,
+                                textureMap.GetTexturePoints(indexTextureAir)
+                            ),
+                            textureForMap,
+                            obj.Index
+                        )
+                    {
+                        Name = typeof(Air).Name
+                    };
+                }
+
+
+                /*if (obj is Stone)
                 {
                     Stone stone = new Stone
                         (
@@ -152,37 +194,16 @@ namespace Coin_Wave_Lib
                     {
                         Name = typeof(Stone).Name
                     };
-                    stone.SetUnit
+                    stone.SetSpeed
                     (
-                        stone.RectangleWithTexture.Rectangle.GetWidth(),
-                        stone.RectangleWithTexture.Rectangle.GetHeight(),
                         speedObj
                     );
                     dynamicObjects.Add
                     (
                         stone
                     );
-                    layers.second[obj.Index.y, obj.Index.x] = new Air
-                    (
-                        new RectangleWithTexture
-                        (
-                            obj.RectangleWithTexture.Rectangle,
-                            textureMap.GetTexturePoints(indexTextureAir)
-                        ),
-                        textureForMap,
-                        obj.Index
-                    )
-                    {
-                        Name = typeof(Air).Name
-                    };
-                    /*dynamicObjects.Add
-                    (
-                        new DynamicObject
-                        (
-                            obj
-                        )
-                    );*/
-                }
+                    
+                }*/
             }
 
             return dynamicObjects;
@@ -403,10 +424,8 @@ namespace Coin_Wave_Lib
             player = CreateSecondLayer(second);
             if (player is null) Close(); // Загрыть игру если нет игрока
 
-            player.SetUnit
+            player.SetSpeed
                 (
-                    player.RectangleWithTexture.Rectangle.GetWidth(),
-                    player.RectangleWithTexture.Rectangle.GetHeight(),
                     speedObj
                 );
             _numObj = player.Index;
@@ -432,6 +451,16 @@ namespace Coin_Wave_Lib
             player.Buffer.Dispouse();
             textureForMap.Dispouse();
             StartGame();
+        }
+
+        public void Monsters()
+        {
+
+        }
+
+        private void FoolMove()
+        {
+            
         }
     }
 }

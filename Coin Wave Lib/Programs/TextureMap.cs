@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Coin_Wave_Lib
 {
-    public /*record*/ class TextureMap
+    public class TextureMap
     {
         private TexturePoint[] TexturePoints { get; set; }
         /// <summary>

@@ -13,46 +13,13 @@ namespace Coin_Wave_Lib
     {
         public static List<GameObject> CreateListForXml(GameObjectData[] gameObjectDatas, Texture textureMap)
         {
-            /* Если будет внешняя библиотека
-             * Assembly externalAssembly = Assembly.LoadFrom("путь_к_вашей_библиотеке.dll");
-             * var types = externalAssembly.GetTypes();*/
-
-            /*var types = Assembly.GetExecutingAssembly().GetTypes();
-
-            // Фильтруем типы, чтобы найти те, которые являются наследниками GameObject
-            var gameObjectTypes = types.Where(t => t.IsSubclassOf(typeof(GameObject)));
-
-            types = gameObjectTypes.ToArray();
-
-            List<GameObject> gameObjects = new List<GameObject>(0);
-            for (int i = 0; i < gameObjectDatas.Length; i++)
-            {
-                for (int j = 0; j < types.Length; j++)
-                {
-                    if (gameObjectDatas[i] != null && gameObjectDatas[i].Name == types[j].Name)
-                    {
-                        gameObjects.Add((GameObject)Activator.CreateInstance(types[j],
-                        [
-                            new RectangleWithTexture
-                            (
-                                gameObjectDatas[i].RectangleWithTexture.Rectangle,
-                                gameObjectDatas[i].RectangleWithTexture.TexturePoints
-                            ),
-                            textureMap,
-                            gameObjectDatas[i].Index
-                        ]));
-                        break;
-                    }
-                }
-            }
-            return gameObjects;*/
             List<GameObject> gameObjects = new List<GameObject>(0);
 
             foreach (var gameObjectData in gameObjectDatas) 
             {
                 if (gameObjectData != null)
                 {
-                    GameObjectFactory objectFactoy = GetFactoy
+                    GameObjectFactory objectFactoy = ObjectFactory.GetFactoy
                         (
                             gameObjectData.Name,
                             new RectangleWithTexture
@@ -71,21 +38,5 @@ namespace Coin_Wave_Lib
 
             return gameObjects;
         }
-
-        private static GameObjectFactory GetFactoy(string n, RectangleWithTexture rwc, Texture t, (int x, int y) i) =>
-            n switch
-            {
-                "Player" => new PlayerFactory(n, rwc, t, i),
-                "ExitDoor" => new ExitDoorFactory(n, rwc, t, i),
-                "StartDoor" => new StartDoorFactory(n, rwc, t, i),
-                "SolidWall" => new SolidWallFactory(n, rwc, t, i),
-
-                "BackWall" => new BackWallFactory(n, rwc, t, i),
-                "Coin" => new CoinFactory(n, rwc, t, i),
-                "Chest" => new ChestFactory(n, rwc, t, i),
-                "Stone" => new StoneFactory(n, rwc, t, i),
-                "Air" => new AirFactory(n, rwc, t, i),
-                _ => throw new NotImplementedException(),
-            };
     }
 }
