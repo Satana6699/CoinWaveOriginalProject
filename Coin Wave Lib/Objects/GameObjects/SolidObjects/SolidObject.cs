@@ -17,6 +17,10 @@ namespace Coin_Wave_Lib
         {
             IsSolid = true;
         }
+
+        protected SolidObject(RectangleWithTexture rectangleWithTexture, (int x, int y) index) : base(rectangleWithTexture, index)
+        {
+        }
     }
 
 }

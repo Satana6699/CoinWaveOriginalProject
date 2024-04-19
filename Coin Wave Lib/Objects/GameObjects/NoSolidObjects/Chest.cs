@@ -12,10 +12,24 @@ namespace Coin_Wave_Lib
         {
         }
 
+        public Chest(RectangleWithTexture rectangleWithTexture, (int x, int y) index) : base(rectangleWithTexture, index)
+        {
+        }
+
         public Chest(RectangleWithTexture rectangleWithTexture, Texture texture, (int x, int y) index) : base(rectangleWithTexture, texture, index)
         {
         }
 
         public override string Name { get => typeof(Chest).Name; set { } }
+        public override object Clone()
+        {
+            return new Chest()
+            {
+                RectangleWithTexture = (RectangleWithTexture)RectangleWithTexture.Clone(),
+                Texture = Texture,
+                Buffer = new Buffer(GetVertices()),
+                Index = (Index.x, Index.y),
+            };
+        }
     }
 }

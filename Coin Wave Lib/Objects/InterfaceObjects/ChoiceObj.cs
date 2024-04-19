@@ -17,5 +17,15 @@ namespace Coin_Wave_Lib
         }
 
         public override string Name { get => typeof(ChoiceObj).Name; set { } }
+
+        public override object Clone()
+        {
+            return new ChoiceObj()
+            {
+                RectangleWithTexture = (RectangleWithTexture)RectangleWithTexture.Clone(),
+                Texture = Texture,
+                Buffer = new Buffer(GetVertices())
+            };
+        }
     }
 }

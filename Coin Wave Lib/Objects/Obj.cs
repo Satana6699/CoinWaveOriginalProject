@@ -16,13 +16,15 @@ namespace Coin_Wave_Lib
         [XmlIgnore]  public Texture Texture {  get; set; }
         [XmlIgnore]  public Buffer Buffer { get; set; }
 
-        
         public Obj(RectangleWithTexture rectangleWithTexture, Texture texture)
         {
             this.RectangleWithTexture = rectangleWithTexture;
-            Buffer = new(GetVertices());
             Texture = texture;
             Buffer = new Buffer(GetVertices());
+        }
+        public Obj(RectangleWithTexture rectangleWithTexture)
+        {
+            this.RectangleWithTexture = rectangleWithTexture;
         }
         public Obj() { }
         public double[] GetVertices()
@@ -79,5 +81,6 @@ namespace Coin_Wave_Lib
         public void Render() => Buffer.Render(Texture);
         public void UpdateDate(double[] vertieces) => Buffer.UpdateDate(vertieces);
         public void SetBuffer(Buffer buffer) => Buffer = buffer;
+        public abstract object Clone();
     }
 }

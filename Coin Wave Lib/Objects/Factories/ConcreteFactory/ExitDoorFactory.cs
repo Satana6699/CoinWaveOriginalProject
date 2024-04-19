@@ -8,11 +8,20 @@ namespace Coin_Wave_Lib.Objects.Factories.ConcreteFactory
 {
     public class ExitDoorFactory : SolidObjectFactory
     {
+        public ExitDoorFactory(string name, RectangleWithTexture rectangleWithTexture, (int x, int y) index) : base(name, rectangleWithTexture, index)
+        {
+        }
+
         public ExitDoorFactory(string name, RectangleWithTexture rectangleWithTexture, Texture texture, (int x, int y) index) : base(name, rectangleWithTexture, texture, index)
         {
         }
 
         public override GameObject GetGameObject() => new ExitDoor(_rectangleWithTexture, _texture, _index)
+        {
+            Name = _name,
+            IsSolid = true,
+        };
+        public override GameObject GetGameObjectNoTexture() => new ExitDoor(_rectangleWithTexture, _index)
         {
             Name = _name,
             IsSolid = true,

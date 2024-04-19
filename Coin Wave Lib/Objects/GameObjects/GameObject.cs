@@ -17,10 +17,22 @@ namespace Coin_Wave_Lib
             this.Index = index;
             IsSolid = false;
         }
+        protected GameObject(RectangleWithTexture rectangleWithTexture, (int x, int y) index) :
+            base(rectangleWithTexture)
+        {
+            this.Index = index;
+            IsSolid = false;
+        }
 
-        protected GameObject()
+        public GameObject()
         {
             IsSolid = false;
         }
+
+        public void NewIndex((int x, int y) index)
+        {
+            Index = (index.x, index.y);
+        }
+
     }
 }

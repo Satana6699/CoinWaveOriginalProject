@@ -11,5 +11,9 @@ namespace Coin_Wave_Lib.Objects.Factories
         public SolidObjectFactory(string name, RectangleWithTexture rectangleWithTexture, Texture texture, (int x, int y) index) : base(name, rectangleWithTexture, texture, index)
         {
         }
+
+        protected SolidObjectFactory(string name, RectangleWithTexture rectangleWithTexture, (int x, int y) index) : base(name, rectangleWithTexture, index)
+        {
+        }
     }
 }

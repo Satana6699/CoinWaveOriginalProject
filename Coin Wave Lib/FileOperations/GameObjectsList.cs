@@ -13,39 +13,6 @@ namespace Coin_Wave_Lib
     {
         public static List<GameObject> CreateListForXml(GameObjectData[] gameObjectDatas, Texture textureMap)
         {
-            /* Если будет внешняя библиотека
-             * Assembly externalAssembly = Assembly.LoadFrom("путь_к_вашей_библиотеке.dll");
-             * var types = externalAssembly.GetTypes();*/
-
-            /*var types = Assembly.GetExecutingAssembly().GetTypes();
-
-            // Фильтруем типы, чтобы найти те, которые являются наследниками GameObject
-            var gameObjectTypes = types.Where(t => t.IsSubclassOf(typeof(GameObject)));
-
-            types = gameObjectTypes.ToArray();
-
-            List<GameObject> gameObjects = new List<GameObject>(0);
-            for (int i = 0; i < gameObjectDatas.Length; i++)
-            {
-                for (int j = 0; j < types.Length; j++)
-                {
-                    if (gameObjectDatas[i] != null && gameObjectDatas[i].Name == types[j].Name)
-                    {
-                        gameObjects.Add((GameObject)Activator.CreateInstance(types[j],
-                        [
-                            new RectangleWithTexture
-                            (
-                                gameObjectDatas[i].RectangleWithTexture.Rectangle,
-                                gameObjectDatas[i].RectangleWithTexture.TexturePoints
-                            ),
-                            textureMap,
-                            gameObjectDatas[i].Index
-                        ]));
-                        break;
-                    }
-                }
-            }
-            return gameObjects;*/
             List<GameObject> gameObjects = new List<GameObject>(0);
 
             foreach (var gameObjectData in gameObjectDatas) 
@@ -85,7 +52,50 @@ namespace Coin_Wave_Lib
                 "Chest" => new ChestFactory(n, rwc, t, i),
                 "Stone" => new StoneFactory(n, rwc, t, i),
                 "Air" => new AirFactory(n, rwc, t, i),
-                _ => throw new NotImplementedException(),
+                _ => new AirFactory(n, rwc, t, i),
+            };
+
+        public static List<GameObject> CreateListForXml(GameObjectData[] gameObjectDatas)
+        {
+            List<GameObject> gameObjects = new List<GameObject>(0);
+
+            foreach (var gameObjectData in gameObjectDatas)
+            {
+                if (gameObjectData != null)
+                {
+                    GameObjectFactory objectFactoy = GetFactoy
+                        (
+                            gameObjectData.Name,
+                            new RectangleWithTexture
+                                (
+                                    gameObjectData.RectangleWithTexture.Rectangle,
+                                    gameObjectData.RectangleWithTexture.TexturePoints
+                                ),
+                            gameObjectData.Index
+                        );
+
+                    GameObject gameObject = objectFactoy.GetGameObjectNoTexture();
+                    gameObjects.Add(gameObject);
+                }
+            }
+
+            return gameObjects;
+        }
+
+        private static GameObjectFactory GetFactoy(string n, RectangleWithTexture rwc, (int x, int y) i) =>
+            n switch
+            {
+                "Player" => new PlayerFactory(n, rwc, i),
+                "ExitDoor" => new ExitDoorFactory(n, rwc, i),
+                "StartDoor" => new StartDoorFactory(n, rwc, i),
+                "SolidWall" => new SolidWallFactory(n, rwc, i),
+
+                "BackWall" => new BackWallFactory(n, rwc, i),
+                "Coin" => new CoinFactory(n, rwc, i),
+                "Chest" => new ChestFactory(n, rwc, i),
+                "Stone" => new StoneFactory(n, rwc, i),
+                "Air" => new AirFactory(n, rwc, i),
+                _ => new AirFactory(n, rwc, i),
             };
     }
 }

@@ -7,13 +7,18 @@ using System.Threading.Tasks;
 
 namespace Coin_Wave_Lib
 {
-    public abstract class Stones : GameObject, IMoveable
+    public abstract class DynamicObject : GameObject, IMoveable
     {
         public int Time { get; private set; }
         public int FrameTime { get; private set; }
         private (double x, double y) _unit = (0, 0);
+        private GameObject nextPositionForObject;
+        protected DynamicObject(RectangleWithTexture rectangleWithTexture, Texture texture, (int x, int y) index) : base(rectangleWithTexture, texture, index)
+        {
+        }
+        public DynamicObject() { }
 
-        protected Stones(RectangleWithTexture rectangleWithTexture, Texture texture, (int x, int y) index) : base(rectangleWithTexture, texture, index)
+        protected DynamicObject(RectangleWithTexture rectangleWithTexture, (int x, int y) index) : base(rectangleWithTexture, index)
         {
         }
 
@@ -92,6 +97,13 @@ namespace Coin_Wave_Lib
             }
             this.SetPoints(RectangleWithTexture.Rectangle);
         }
+
+        public void Move()
+        {
+            if (nextPositionForObject is not null) Move(nextPositionForObject);
+        }
+
+        public void NextPosition(GameObject gameObject) => nextPositionForObject = gameObject;
 
         public bool ContinueMove()
         {

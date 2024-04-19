@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Coin_Wave_Lib
 {
-    public class Player : Stones, IMembership, IGameMembership
+    public class Player : DynamicObject, IMembership, IGameMembership
     {
         public int CountCoins { get; private set; } = 0;
         public override string Name { get => typeof(Player).Name; set { } }
@@ -15,10 +15,25 @@ namespace Coin_Wave_Lib
         public Player(RectangleWithTexture rectangleWithTexture, Texture texture, (int x, int y) index) : base(rectangleWithTexture, texture, index)
         {
         }
-        
+        public Player() : base(){ }
+
+        public Player(RectangleWithTexture rectangleWithTexture, (int x, int y) index) : base(rectangleWithTexture, index)
+        {
+        }
+
         public void ColletCoins(int coins)
         {
             CountCoins += coins;
+        }
+        public override object Clone()
+        {
+            return new Player()
+            {
+                RectangleWithTexture = (RectangleWithTexture)RectangleWithTexture.Clone(),
+                Texture = Texture,
+                Buffer = new Buffer(GetVertices()),
+                Index = (Index.x, Index.y),
+            };
         }
     }
 }

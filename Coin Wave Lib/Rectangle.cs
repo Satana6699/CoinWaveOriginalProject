@@ -81,5 +81,16 @@ namespace Coin_Wave_Lib
         {
             return Points[0].ToArray().Concat(Points[1].ToArray()).ToArray().Concat(Points[2].ToArray()).ToArray().Concat(Points[3].ToArray()).ToArray();
         }
+
+        public object Clone()
+        {
+            return new Rectangle
+                (
+                    (Point)TopLeft.Clone(),
+                    (Point)TopRight.Clone(),
+                    (Point)BottomRight.Clone(),
+                    (Point)BottomLeft.Clone()
+                );
+        }
     }
 }

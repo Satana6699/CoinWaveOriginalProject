@@ -14,13 +14,13 @@ namespace Coin_Wave_Lib
         private float frameTime = 0.0f;
         private int fps = 0;
         private (int widht, int hidth) sides = (32, 18);
-        private (int x, int y) _numObj = (0, 0);
+        private (int x, int y) playerIndex = (0, 0);
         private (GameObject[,] first, GameObject[,] second) layers;
         TextureMap textureMap;
         Texture textureForMap;
         Player player;
         int indexTextureAir = 24;
-        List<Stones> stones = new List<Stones>();
+        List<DynamicObject> stones = new List<DynamicObject>();
         int speedObj = 15;
         public ExampleWindow(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings)
             : base(gameWindowSettings, nativeWindowSettings)
@@ -131,7 +131,8 @@ namespace Coin_Wave_Lib
 
             return player;
         }
-        private List<Stones> SearchDynamicObjects(GameObject[,] gameObjects)
+
+        /*private List<Stones> SearchDynamicObjects(GameObject[,] gameObjects)
         {
             List<Stones> dynamicObjects = new List<Stones>();
 
@@ -175,18 +176,11 @@ namespace Coin_Wave_Lib
                     {
                         Name = typeof(Air).Name
                     };
-                    /*dynamicObjects.Add
-                    (
-                        new DynamicObject
-                        (
-                            obj
-                        )
-                    );*/
                 }
             }
 
             return dynamicObjects;
-        }
+        }*/
         private void PlayerSetTexture()
         {
             int playerHoldingStoneTextureIndex = 18;
@@ -209,41 +203,41 @@ namespace Coin_Wave_Lib
         {
             if (player.ContinueMove())
             {
-                (int x, int y) numObjFuture = _numObj;
+                (int x, int y) playerIndexFuture = playerIndex;
                 switch (true)
                 {
                     case var _ when KeyboardState.IsKeyDown(Keys.W):
-                        numObjFuture.y -= 1;
+                        playerIndexFuture.y -= 1;
                         break;
                     case var _ when KeyboardState.IsKeyDown(Keys.A):
-                        numObjFuture.x -= 1;
-                        MoveStoneLeft(numObjFuture); 
+                        playerIndexFuture.x -= 1;
+                        MoveStoneLeft(playerIndexFuture); 
                         break;
                     case var _ when KeyboardState.IsKeyDown(Keys.S):
-                        numObjFuture.y += 1;
+                        playerIndexFuture.y += 1;
                         break;
                     case var _ when KeyboardState.IsKeyDown(Keys.D):
-                        numObjFuture.x += 1;
-                        MoveStoneRight(numObjFuture);
+                        playerIndexFuture.x += 1;
+                        MoveStoneRight(playerIndexFuture);
                         break;
                 }
 
                 if
                 (
-                    numObjFuture.y >= 0 &&
-                    numObjFuture.x >= 0 &&
-                    numObjFuture.x < layers.first.GetLength(1) &&
-                    numObjFuture.y < layers.first.GetLength(0) &&
-                    !layers.first[numObjFuture.y, numObjFuture.x].IsSolid &&
-                    !layers.second[numObjFuture.y, numObjFuture.x].IsSolid ||
-                    layers.second[numObjFuture.y, numObjFuture.x] is ICollectable
+                    playerIndexFuture.y >= 0 &&
+                    playerIndexFuture.x >= 0 &&
+                    playerIndexFuture.x < layers.first.GetLength(1) &&
+                    playerIndexFuture.y < layers.first.GetLength(0) &&
+                    !layers.first[playerIndexFuture.y, playerIndexFuture.x].IsSolid &&
+                    !layers.second[playerIndexFuture.y, playerIndexFuture.x].IsSolid ||
+                    layers.second[playerIndexFuture.y, playerIndexFuture.x] is ICollectable
                 )
                 {
                     bool colisionDynamicSolid = false;
 
                     foreach (var dynamicObj in stones)
                     {
-                        if (dynamicObj.Index == (numObjFuture.x, numObjFuture.y))
+                        if (dynamicObj.Index == (playerIndexFuture.x, playerIndexFuture.y))
                         {
                             colisionDynamicSolid = true;
                             break;
@@ -251,72 +245,79 @@ namespace Coin_Wave_Lib
                     }
                     if (!colisionDynamicSolid)
                     {
-                        _numObj = numObjFuture;
-                        player.Index = numObjFuture;
+                        playerIndex = playerIndexFuture;
+                        player.Index = playerIndexFuture;
+                        player.NextPosition(layers.first[playerIndex.y, playerIndex.x]);
                     }
                 }
                 else
-                    numObjFuture = _numObj;
+                    playerIndexFuture = playerIndex;
             }
 
             // Дижение игрока
-            if (layers.first[_numObj.y, _numObj.x] != null)
-            {
-                player.Move(layers.first[_numObj.y, _numObj.x]);
-                player.UpdateDate(player.GetVertices());
-            }
+            player.Move();
+            player.UpdateDate(player.GetVertices());
         }
         private void AllRender()
         {
             foreach (var gameObject in layers.first) if (gameObject != null) gameObject.Render();
             foreach (var gameObject in layers.second) if (gameObject != null) gameObject.Render();
-            foreach (var obj in stones) obj.Render();
+            //foreach (var obj in stones) obj.Render();
             player.Render();
         }
         private void FallStone()
         {
-            for (int i = 0; i < stones.Count; i++)
+            foreach (var obj in layers.second)
             {
-                if (stones[i].ContinueMove() &&
-                    stones[i].Index.y + 1 < layers.second.GetLength(0) &&
-                    stones[i].GetType().Name == typeof(Stone).Name &&
-                    layers.second[stones[i].Index.y + 1, stones[i].Index.x] is not null &&
-                    !layers.first[stones[i].Index.y + 1, stones[i].Index.x].IsSolid &&
-                    !layers.second[stones[i].Index.y + 1, stones[i].Index.x].IsSolid)
+                if (obj is Stone stone)
                 {
-
-                    stones[i].Index = (stones[i].Index.x, stones[i].Index.y + 1);
-
-                    for (int j = 0; j < stones.Count; j++)
+                    if (stone.ContinueMove() &&
+                        stone.Index.y + 1 < layers.second.GetLength(0) &&
+                        stone.GetType().Name == typeof(Stone).Name &&
+                        layers.second[stone.Index.y + 1, stone.Index.x] is not null &&
+                        !layers.first[stone.Index.y + 1, stone.Index.x].IsSolid &&
+                        !layers.second[stone.Index.y + 1, stone.Index.x].IsSolid)
                     {
-                        if ((stones[i].Index == stones[j].Index &&
-                             stones[i] != stones[j]) ||
-                             stones[i].Index == player.Index)
-                        {
-                            stones[i].Index = (stones[i].Index.x, stones[i].Index.y - 1);
-                            break;
-                        }
-                    }
-                }
+                        GameObject thisStone = (GameObject)layers.second[stone.Index.y, stone.Index.x].Clone();
+                        GameObject nextObj = (GameObject)layers.second[stone.Index.y + 1, stone.Index.x].Clone();
+                        
+                        Test();
 
-                stones[i].Move(layers.second[stones[i].Index.y, stones[i].Index.x]);
-                stones[i].UpdateDate(stones[i].GetVertices());
+                        // Для layers.second[stone.Index.y, stone.Index.x]
+                        {
+                            layers.second[stone.Index.y, stone.Index.x] = (GameObject)nextObj.Clone();
+                            layers.second[stone.Index.y, stone.Index.x].NewIndex(thisStone.Index);
+                            layers.second[stone.Index.y, stone.Index.x].RectangleWithTexture.Rectangle = (Rectangle)thisStone.RectangleWithTexture.Rectangle.Clone();
+                        };
+
+                        // Для layers.second[stone.Index.y + 1, stone.Index.x]
+                        {
+                                    layers.second[stone.Index.y + 1, stone.Index.x] = (GameObject)thisStone.Clone();
+                            ((Stone)layers.second[stone.Index.y + 1, stone.Index.x]).NextPosition(nextObj);
+                                    layers.second[stone.Index.y + 1, stone.Index.x].Index = (nextObj.Index.x, nextObj.Index.y);
+                        };
+
+                    }
+
+                    stone.Move();
+                    stone.UpdateDate(stone.GetVertices());
+                }
             }
         }
         private void CollectMoney()
         {
-            if (layers.second[_numObj.y, _numObj.x].GetType().Name == typeof(Coin).Name)
+            if (layers.second[playerIndex.y, playerIndex.x].GetType().Name == typeof(Coin).Name)
             {
                 player.ColletCoins(1);
-                layers.second[_numObj.y, _numObj.x] = new Air
+                layers.second[playerIndex.y, playerIndex.x] = new Air
                 (
                     new RectangleWithTexture
                     (
-                        layers.second[_numObj.y, _numObj.x].RectangleWithTexture.Rectangle,
+                        layers.second[playerIndex.y, playerIndex.x].RectangleWithTexture.Rectangle,
                         textureMap.GetTexturePoints(indexTextureAir)
                     ),
                     textureMap.Texture,
-                    (_numObj.y, _numObj.x)
+                    (playerIndex.x, playerIndex.y)
                 )
                 {
                     Name = typeof(Air).Name,
@@ -336,49 +337,30 @@ namespace Coin_Wave_Lib
             }
         }
 
-        private void MoveStoneRight((int x, int y) numObjFuture)
+        private void MoveStoneRight((int x, int y) playerIndexFuture)
         {
-            foreach (var thisObj in stones)
+            foreach (var obj in layers.second)
             {
-                if (numObjFuture == thisObj.Index &&
-                    (numObjFuture.x - 1, numObjFuture.y) == _numObj &&
-                    !layers.second[thisObj.Index.y, thisObj.Index.x+1].IsSolid &&
-                    !layers.first[thisObj.Index.y, thisObj.Index.x + 1].IsSolid)
+                if (obj is Stone &&
+                    playerIndexFuture == obj.Index &&
+                    (playerIndexFuture.x - 1, playerIndexFuture.y) == playerIndex &&
+                    !layers.second[obj.Index.y, obj.Index.x+1].IsSolid &&
+                    !layers.first[obj.Index.y, obj.Index.x + 1].IsSolid)
                 {
-                    bool nextOdjSolid = false;
-                    foreach(var nextObj in stones)
-                    {
-                        if ((thisObj.Index.x + 1, thisObj.Index.y) == nextObj.Index)
-                        {
-                            nextOdjSolid = true;
-                            break;
-                        }
-                    }
-                    if (!nextOdjSolid)
-                        thisObj.Index = (thisObj.Index.x + 1, thisObj.Index.y);
+                    obj.Index = (obj.Index.x + 1, obj.Index.y);
                 }
             }
         }
         private void MoveStoneLeft((int x, int y) numObjFuture)
         {
-            foreach (var thisObj in stones)
+            foreach (var obj in layers.second)
             {
-                if (numObjFuture == thisObj.Index &&
-                    (numObjFuture.x + 1, numObjFuture.y) == _numObj &&
-                    !layers.second[thisObj.Index.y, thisObj.Index.x - 1].IsSolid &&
-                    !layers.first[thisObj.Index.y, thisObj.Index.x - 1].IsSolid)
+                if (numObjFuture == obj.Index &&
+                    (numObjFuture.x + 1, numObjFuture.y) == playerIndex &&
+                    !layers.second[obj.Index.y, obj.Index.x - 1].IsSolid &&
+                    !layers.first[obj.Index.y, obj.Index.x - 1].IsSolid)
                 {
-                    bool nextOdjSolid = false;
-                    foreach (var nextObj in stones)
-                    {
-                        if ((thisObj.Index.x - 1, thisObj.Index.y) == nextObj.Index)
-                        {
-                            nextOdjSolid = true;
-                            break;
-                        }
-                    }
-                    if (!nextOdjSolid)
-                        thisObj.Index = (thisObj.Index.x - 1, thisObj.Index.y);
+                    obj.Index = (obj.Index.x - 1, obj.Index.y);
                 }
             }
         }
@@ -409,9 +391,9 @@ namespace Coin_Wave_Lib
                     player.RectangleWithTexture.Rectangle.GetHeight(),
                     speedObj
                 );
-            _numObj = player.Index;
+            playerIndex = player.Index;
 
-            stones = SearchDynamicObjects(layers.second);
+            //stones = SearchDynamicObjects(layers.second);
         }
 
         private void RestarrtGame()
@@ -432,6 +414,34 @@ namespace Coin_Wave_Lib
             player.Buffer.Dispouse();
             textureForMap.Dispouse();
             StartGame();
+        }
+
+        public void Test()
+        {
+
+            for (int i = 0; i < layers.second.GetLength(0); i++)
+                for (int j = 0; j < layers.second.GetLength(1); j++)
+                {
+                    var expectedIndex = layers.second[i, j].Index;
+                    (int x, int y) actualIndex = (j, i);
+
+                    if (expectedIndex != actualIndex)
+                    {
+                        throw new Exception("Тест не прошел");
+                    }
+                }
+
+            for (int i = 0; i < layers.first.GetLength(0); i++)
+                for (int j = 0; j < layers.first.GetLength(1); j++)
+                {
+                    var expectedIndex = layers.first[i, j].Index;
+                    (int x, int y) actualIndex = (j, i);
+
+                    if (expectedIndex != actualIndex)
+                    {
+                        throw new Exception("Тест не прошел");
+                    }
+                }
         }
     }
 }

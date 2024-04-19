@@ -40,5 +40,10 @@ namespace Coin_Wave_Lib
         {
             return new double[] { S, T };
         }
+
+        public object Clone()
+        {
+            return new TexturePoint(S, T);
+        }
     }
 }

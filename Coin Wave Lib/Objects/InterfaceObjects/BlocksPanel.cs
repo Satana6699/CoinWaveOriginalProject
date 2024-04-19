@@ -110,5 +110,15 @@ namespace Coin_Wave_Lib
             yPos = RectangleWithTexture.Rectangle.TopLeft.Y - unitY;
             zPos = 0.0;
         }
+
+        public override object Clone()
+        {
+            return new BlocksPanel()
+            {
+                RectangleWithTexture = (RectangleWithTexture)RectangleWithTexture.Clone(),
+                Texture = Texture,
+                Buffer = new Buffer(GetVertices())
+            };
+        }
     }
 }

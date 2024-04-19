@@ -6,24 +6,21 @@ using System.Threading.Tasks;
 
 namespace Coin_Wave_Lib
 {
-    public class BackWall : GameObject, IMembership, IGameMembership
+    public class Dragon : Monster, IDynamic
     {
-        public BackWall()
+        public Dragon(RectangleWithTexture rectangleWithTexture, Texture texture, (int x, int y) index) : base(rectangleWithTexture, texture, index)
+        {
+        }
+        public Dragon() : base() { }
+
+        public Dragon(RectangleWithTexture rectangleWithTexture, (int x, int y) index) : base(rectangleWithTexture, index)
         {
         }
 
-        public BackWall(RectangleWithTexture rectangleWithTexture, (int x, int y) index) : base(rectangleWithTexture, index)
-        {
-        }
-
-        public BackWall(RectangleWithTexture rectangleWithTexture, Texture texture, (int x, int y) index) : base(rectangleWithTexture, texture, index)
-        {
-        }
-
-        public override string Name { get => typeof(BackWall).Name; set { } }
+        public override string Name { get => typeof(Dragon).Name; set { } }
         public override object Clone()
         {
-            return new BackWall()
+            return new Dragon()
             {
                 RectangleWithTexture = (RectangleWithTexture)RectangleWithTexture.Clone(),
                 Texture = Texture,

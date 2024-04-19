@@ -39,5 +39,20 @@ namespace Coin_Wave_Lib
                 Concat(Rectangle.BottomLeft.ToArray()).ToArray().
                 Concat(TexturePoints[3].ToArray()).ToArray();
         }
+
+        public object Clone()
+        {
+            return new RectangleWithTexture
+                (
+                    (Rectangle)Rectangle.Clone(),
+                    new TexturePoint[]
+                    {
+                        (TexturePoint)TexturePoints[0].Clone(),
+                        (TexturePoint)TexturePoints[1].Clone(),
+                        (TexturePoint)TexturePoints[2].Clone(),
+                        (TexturePoint)TexturePoints[3].Clone(),
+                    }
+                );
+        }
     }
 }

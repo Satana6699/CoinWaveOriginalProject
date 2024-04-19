@@ -27,5 +27,14 @@ namespace Coin_Wave_Lib.Objects.InterfaceObjects
             }
             else return true;
         }
+        public override object Clone()
+        {
+            return new InterfaceConcreteObj()
+            {
+                RectangleWithTexture = (RectangleWithTexture)RectangleWithTexture.Clone(),
+                Texture = Texture,
+                Buffer = new Buffer(GetVertices())
+            };
+        }
     }
 }

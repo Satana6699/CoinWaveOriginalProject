@@ -9,5 +9,6 @@ namespace Coin_Wave_Lib.Objects.Factories
     public abstract class ObjectFactory
     {
         public abstract Obj GetObject();
+        public abstract Obj GetObjectNoTexture();
     }
 }
