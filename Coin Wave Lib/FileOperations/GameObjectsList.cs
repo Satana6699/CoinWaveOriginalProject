@@ -19,7 +19,7 @@ namespace Coin_Wave_Lib
             {
                 if (gameObjectData != null)
                 {
-                    GameObjectFactory objectFactoy = ObjectFactory.GetFactoy
+                    GameObjectFactory objectFactoy = ObjectFactory.GetFactory
                         (
                             gameObjectData.Name,
                             new RectangleWithTexture

@@ -8,8 +8,10 @@ namespace Coin_Wave_Lib
 {
     public class Dragon : Monster, IDynamic
     {
+
         public Dragon(RectangleWithTexture rectangleWithTexture, Texture texture, (int x, int y) index, int damage) : base(rectangleWithTexture, texture, index, damage)
         {
+            moveHelper = MoveHelper.Right;
         }
 
         public override string Name { get => typeof(Dragon).Name; set { } }

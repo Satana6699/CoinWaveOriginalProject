@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Coin_Wave_Lib.Objects.GameObjects.Traps
+namespace Coin_Wave_Lib
 {
     public abstract class Trap : GameObject
     {

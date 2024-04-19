@@ -81,5 +81,12 @@ namespace Coin_Wave_Lib
         {
             return Points[0].ToArray().Concat(Points[1].ToArray()).ToArray().Concat(Points[2].ToArray()).ToArray().Concat(Points[3].ToArray()).ToArray();
         }
+        public bool Intersects(Rectangle other)
+        {
+            return !(other.TopLeft.X > TopRight.X ||
+                     other.TopRight.X < TopLeft.X ||
+                     other.TopLeft.Y < BottomLeft.Y ||
+                     other.BottomLeft.Y > TopLeft.Y);
+        }
     }
 }

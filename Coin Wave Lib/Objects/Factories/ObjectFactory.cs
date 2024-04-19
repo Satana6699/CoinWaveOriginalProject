@@ -10,7 +10,7 @@ namespace Coin_Wave_Lib
     public abstract class ObjectFactory
     {
         public abstract Obj GetObject();
-        public static GameObjectFactory GetFactoy(string n, RectangleWithTexture rwc, Texture t, (int x, int y) i) =>
+        public static GameObjectFactory GetFactory(string n, RectangleWithTexture rwc, Texture t, (int x, int y) i) =>
             n switch
             {
                 "Player" => new PlayerFactory(n, rwc, t, i),
@@ -23,6 +23,9 @@ namespace Coin_Wave_Lib
                 "Chest" => new ChestFactory(n, rwc, t, i),
                 "Stone" => new StoneFactory(n, rwc, t, i),
                 "Dragon" => new DragonFactory(n, rwc, t, i),
+                "Monkey" => new MonkeyFactory(n, rwc, t, i),
+                "FireWheel" => new FireWheelFactory(n, rwc, t, i),
+                "Thorn" => new ThornFactory(n, rwc, t, i),
                 "Air" => new AirFactory(n, rwc, t, i),
                 _ => new AirFactory(n, rwc, t, i),
             };

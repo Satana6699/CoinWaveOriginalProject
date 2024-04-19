@@ -15,6 +15,7 @@ using System.IO;
 using System.Numerics;
 using Coin_Wave_Lib.Objects.InterfaceObjects;
 using System.Diagnostics;
+using Coin_Wave_Lib.Objects.GameObjects.DynamicEntity;
 
 namespace Coin_Wave_Lib
 {
@@ -152,6 +153,9 @@ namespace Coin_Wave_Lib
             blocksPanel.GenerateMenuElement(typeof(Coin).Name, 6);
             blocksPanel.GenerateMenuElement(typeof(ExitDoor).Name, 7);
             blocksPanel.GenerateMenuElement(typeof(Dragon).Name, 5);
+            blocksPanel.GenerateMenuElement(typeof(Monkey).Name, 10);
+            blocksPanel.GenerateMenuElement(typeof(FireWheel).Name, 9);
+            blocksPanel.GenerateMenuElement(typeof(Thorn).Name, 20);
             _textureCurrentPosition = Texture.LoadFromFile(@"data\textureForInterface\redsqrt.png");
             blocksPanel.GenerateTexturViborObj(_textureCurrentPosition);
 

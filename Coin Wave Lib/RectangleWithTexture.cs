@@ -39,5 +39,6 @@ namespace Coin_Wave_Lib
                 Concat(Rectangle.BottomLeft.ToArray()).ToArray().
                 Concat(TexturePoints[3].ToArray()).ToArray();
         }
+
     }
 }
