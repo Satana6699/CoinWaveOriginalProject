@@ -32,6 +32,7 @@ namespace Coin_Wave_Lib
 
         // Создание всех списков и массивов тут
         private (GameObjectData[,] first, GameObjectData[,] second) layers;
+        private List<InterfaceObject> interfaceObjects = new List<InterfaceObject>(0);
 
         private CurrentPositionElement _currentPosition;
         Texture _textureCurrentPosition;
@@ -51,7 +52,7 @@ namespace Coin_Wave_Lib
         TextureMap textureMapLayerInt;
         Texture textureLayerInt;
         bool ifSaved;
-        
+        int procentHealth = 100;
         public MapGenerateWindow(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings)
             : base(gameWindowSettings, nativeWindowSettings)
         {
@@ -96,7 +97,7 @@ namespace Coin_Wave_Lib
                     ),
                     textureLayerInt
                 );
-            mg = new(sidesMaps.width, sidesMaps.height, 0.08, 0.1, 0.01);
+            mg = new(sidesMaps.width, sidesMaps.height, 0.08, 0.2, 0.01);
             _emptyElements = new EmptyElement[sidesMaps.height, sidesMaps.width];
             Texture emptyTexture = Texture.LoadFromFile(@"data\textureForInterface\empty.png");
             for (int i = 0; i < _emptyElements.GetLength(0); i++)
@@ -124,6 +125,26 @@ namespace Coin_Wave_Lib
                 Texture.LoadFromFile(@"data\textureForInterface\bluesqrt.png"),
                 textureMap
             );
+
+            HealthPanel healthPanel = new HealthPanel
+            (
+                new RectangleWithTexture
+                (
+                    new Rectangle
+                    (
+                        new Point(-0.9, 0.89, 0),
+                        0.4,
+                        0.06
+                    ),
+                    textureMap.GetTexturePoints(8)
+                    ),
+                _textureForMap
+            );
+
+            healthPanel.RealTexturePoints(100);
+            healthPanel.UpdateDate(healthPanel.GetVertices());
+            interfaceObjects.Add(healthPanel);
+
             blocksPanel.GenerateMenuElement(typeof(SolidWall).Name, 0);
             blocksPanel.GenerateMenuElement(typeof(BackWall).Name, 3);
             blocksPanel.GenerateMenuElement(typeof(Stone).Name, 4);
@@ -187,7 +208,8 @@ namespace Coin_Wave_Lib
             if (keyboardState.current.IsKeyDown(Keys.Escape)) Close();
             if (keyboardState.last != null &&
                 keyboardState.last.IsKeyDown(Keys.LeftControl) &&
-                keyboardState.current.IsKeyDown(Keys.S))
+                keyboardState.current.IsKeyDown(Keys.S) && 
+                IsTherePlayer)
             {
                 // Создать промежуточные массивы
                 (GameObjectData[,] first, GameObjectData[,] second) temporaryLayers;
@@ -234,8 +256,14 @@ namespace Coin_Wave_Lib
                 ifSaved = FileSave.SerializeObjectsToXml(temporaryLayers.first.Cast<GameObjectData>().ToArray(), @"data\maps\lvl1\first.xml");
                 if (ifSaved)
                     ifSaved = FileSave.SerializeObjectsToXml(temporaryLayers.second.Cast<GameObjectData>().ToArray(), @"data\maps\lvl1\second.xml");
+               
             }
             if (ifSaved) ifSaved = save.IsLive((float)args.Time);
+
+
+            // Обновлять HealthPanel для проверки корректности ее работы
+            UpdateHealth();
+
         }
 
 
@@ -251,6 +279,7 @@ namespace Coin_Wave_Lib
             foreach (EmptyElement eE in _emptyElements) eE.Render();
             foreach (var gO in layers.first) if (gO != null) gO.Render();
             foreach (var gO in layers.second) if (gO != null) gO.Render();
+            foreach (var interfaceObj in interfaceObjects) if (interfaceObj != null) interfaceObj.Render();
             _currentPosition.Render();
 
             if (keyboardState.current.IsKeyDown(Keys.LeftShift))
@@ -405,6 +434,24 @@ namespace Coin_Wave_Lib
             {
                 index = 0;
                 currentIndex = index;
+            }
+        }
+        public void UpdateHealth()
+        {
+            if (frameTime >= 0.0f && frameTime <= 0.05)
+                procentHealth--;
+            if ( procentHealth < 0 )
+            {
+                procentHealth = 100;
+            }
+
+            foreach (var obj in interfaceObjects)
+            {
+                if (obj is HealthPanel healthPanel)
+                {
+                    ((HealthPanel)interfaceObjects[0]).RealTexturePoints(procentHealth);
+                    interfaceObjects[0].UpdateDate(interfaceObjects[0].GetVertices());
+                }
             }
         }
     }

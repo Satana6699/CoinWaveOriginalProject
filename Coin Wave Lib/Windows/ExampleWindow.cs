@@ -22,6 +22,7 @@ namespace Coin_Wave_Lib
         int indexTextureAir = 24;
         List<DynamicObject> stones = new List<DynamicObject>();
         int speedObj = 15;
+        HealthPanel healthPanel;
         public ExampleWindow(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings)
             : base(gameWindowSettings, nativeWindowSettings)
         {
@@ -74,6 +75,10 @@ namespace Coin_Wave_Lib
             FallStone();
 
             Monsters();
+
+            UpdateHealthPanel();
+            // Проверка на проигрыш
+            GameOver();
 
             // Новое движение
             {
@@ -215,7 +220,7 @@ namespace Coin_Wave_Lib
 
             foreach (var obj in stones)
             {
-                if (player.Index == (obj.Index.x, obj.Index.y + 1))
+                if (player.Index == (obj.Index.x, obj.Index.y + 1) && obj is Stone)
                 {
                     player.SetTexturePoints(textureMap.GetTexturePoints(playerHoldingStoneTextureIndex));
                     break;
@@ -264,10 +269,14 @@ namespace Coin_Wave_Lib
 
                     foreach (var dynamicObj in stones)
                     {
-                        if (dynamicObj.Index == (numObjFuture.x, numObjFuture.y))
+                        if (dynamicObj.Index == (numObjFuture.x, numObjFuture.y) && dynamicObj is Stone)
                         {
                             colisionDynamicSolid = true;
                             break;
+                        }
+                        else if (dynamicObj.Index == (numObjFuture.x, numObjFuture.y) && dynamicObj is Monster)
+                        {
+                            player.Damage(1);
                         }
                     }
                     if (!colisionDynamicSolid)
@@ -293,6 +302,7 @@ namespace Coin_Wave_Lib
             foreach (var gameObject in layers.second) if (gameObject != null) gameObject.Render();
             foreach (var obj in stones) obj.Render();
             player.Render();
+            healthPanel.Render();
         }
         private void FallStone()
         {
@@ -361,7 +371,8 @@ namespace Coin_Wave_Lib
         {
             foreach (var thisObj in stones)
             {
-                if (numObjFuture == thisObj.Index &&
+                if (thisObj is Stone &&
+                    numObjFuture == thisObj.Index &&
                     (numObjFuture.x - 1, numObjFuture.y) == _numObj &&
                     !layers.second[thisObj.Index.y, thisObj.Index.x+1].IsSolid &&
                     !layers.first[thisObj.Index.y, thisObj.Index.x + 1].IsSolid)
@@ -384,7 +395,8 @@ namespace Coin_Wave_Lib
         {
             foreach (var thisObj in stones)
             {
-                if (numObjFuture == thisObj.Index &&
+                if (thisObj is Stone &&
+                    numObjFuture == thisObj.Index &&
                     (numObjFuture.x + 1, numObjFuture.y) == _numObj &&
                     !layers.second[thisObj.Index.y, thisObj.Index.x - 1].IsSolid &&
                     !layers.first[thisObj.Index.y, thisObj.Index.x - 1].IsSolid)
@@ -430,6 +442,23 @@ namespace Coin_Wave_Lib
                 );
             _numObj = player.Index;
 
+
+            healthPanel = new HealthPanel
+            (
+                new RectangleWithTexture
+                (
+                    new Rectangle
+                    (
+                        new Point(-0.9, 0.89, 0),
+                        0.4,
+                        0.06
+                    ),
+                    textureMap.GetTexturePoints(8)
+                    ),
+                textureForMap
+            );
+
+
             stones = SearchDynamicObjects(layers.second);
         }
 
@@ -461,6 +490,21 @@ namespace Coin_Wave_Lib
         private void FoolMove()
         {
             
+        }
+
+        private void GameOver()
+        {
+            if(player.HealthPoint <= 0)
+            {
+                Close();
+            }
+        }
+
+        private void UpdateHealthPanel()
+        {
+            int percanteHealthPoint = Convert.ToInt32(  ((double)player.HealthPoint / player.MaxHealthPoint) * 100);
+            healthPanel.RealTexturePoints(percanteHealthPoint);
+            healthPanel.UpdateDate(healthPanel.GetVertices());
         }
     }
 }

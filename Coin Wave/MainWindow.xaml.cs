@@ -30,7 +30,6 @@ namespace Coin_Wave
 
         public MainWindow()
         {
-            InitializeComponent();
         }
 
         private void Play_Button_Click(object sender, RoutedEventArgs e)
@@ -40,6 +39,7 @@ namespace Coin_Wave
                 Size = new Vector2i(_windowSizeX * _windowSize, _windowSizeY * _windowSize),
                 Location = new Vector2i(100, 100),
                 WindowBorder = WindowBorder.Resizable,
+                WindowState = OpenTK.Windowing.Common.WindowState.Fullscreen,
 
 
                 // Flags = ContextFlags.ForwardCompatible,
@@ -65,7 +65,7 @@ namespace Coin_Wave
                 Size = new Vector2i(Convert.ToInt32(1920/1.1), Convert.ToInt32(1080 / 1.1)),
                 Location = new Vector2i(10, 10),
                 WindowBorder = WindowBorder.Resizable,
-
+                WindowState = OpenTK.Windowing.Common.WindowState.Fullscreen,
 
                 Flags = ContextFlags.Default,
                 APIVersion = new Version(3, 3),

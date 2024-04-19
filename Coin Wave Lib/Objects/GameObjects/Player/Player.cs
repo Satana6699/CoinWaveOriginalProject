@@ -11,10 +11,12 @@ namespace Coin_Wave_Lib
     {
         public int CountCoins { get; private set; } = 0;
         public override string Name { get => typeof(Player).Name; set { } }
-        public int Health { get; private set; }
+        public int HealthPoint { get; private set; }
+        public int MaxHealthPoint { get; private set; } = 50;
 
         public Player(RectangleWithTexture rectangleWithTexture, Texture texture, (int x, int y) index) : base(rectangleWithTexture, texture, index)
         {
+            HealthPoint = MaxHealthPoint;
         }
         
         public void ColletCoins(int coins)
@@ -23,8 +25,8 @@ namespace Coin_Wave_Lib
         }
 
         public void Damage(int damage) 
-        { 
-            Health -= damage; 
+        {
+            HealthPoint -= damage;
         }
     }
 }
