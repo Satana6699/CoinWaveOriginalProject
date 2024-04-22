@@ -11,9 +11,10 @@ namespace Coin_Wave_Lib
 
         public Dragon(RectangleWithTexture rectangleWithTexture, Texture texture, (int x, int y) index, int damage) : base(rectangleWithTexture, texture, index, damage)
         {
-            moveHelper = MoveHelper.Right;
+            viewDirection = MoveHelper.Right;
         }
 
         public override string Name { get => typeof(Dragon).Name; set { } }
+
     }
 }

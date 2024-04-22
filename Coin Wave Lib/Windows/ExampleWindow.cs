@@ -10,7 +10,6 @@ namespace Coin_Wave_Lib
 {
     public class ExampleWindow : GameWindow
     {
-        // размер карты 34 на 15
         KeyboardState lastKeyboardState, currentKeyboardState;
         private float frameTime = 0.0f;
         private int fps = 0;
@@ -20,7 +19,6 @@ namespace Coin_Wave_Lib
         TextureMap textureMap;
         Texture textureForMap;
         Player player;
-        int indexTextureAir = 24;
         List<DynamicObject> dynamicObjects = new List<DynamicObject>();
         int speedObj = 15;
         HealthPanel healthPanel;
@@ -137,7 +135,7 @@ namespace Coin_Wave_Lib
                         new RectangleWithTexture
                         (
                             obj.RectangleWithTexture.Rectangle,
-                            textureMap.GetTexturePoints(indexTextureAir)
+                            textureMap.GetTexturePoints(Resources.Air)
                         ),
                         textureForMap,
                         obj.Index
@@ -182,7 +180,7 @@ namespace Coin_Wave_Lib
                             new RectangleWithTexture
                             (
                                 obj.RectangleWithTexture.Rectangle,
-                                textureMap.GetTexturePoints(indexTextureAir)
+                                textureMap.GetTexturePoints(Resources.Air)
                             ),
                             textureForMap,
                             obj.Index
@@ -197,18 +195,16 @@ namespace Coin_Wave_Lib
         }
         private void PlayerSetTexture()
         {
-            int playerHoldingStoneTextureIndex = 18;
-            int playerNotHoldingStoneTextureIndex = 15;
 
             foreach (var obj in dynamicObjects)
             {
                 if (player.Index == (obj.Index.x, obj.Index.y + 1) && obj is Stone)
                 {
-                    player.SetTexturePoints(textureMap.GetTexturePoints(playerHoldingStoneTextureIndex));
+                    player.SetTexturePoints(textureMap.GetTexturePoints(Resources.PlayerAndStone));
                     break;
                 }
                 else 
-                    player.SetTexturePoints(textureMap.GetTexturePoints(playerNotHoldingStoneTextureIndex));
+                    player.SetTexturePoints(textureMap.GetTexturePoints(Resources.PlayerDefault));
             }
 
         }
@@ -270,7 +266,7 @@ namespace Coin_Wave_Lib
             // Дижение игрока
             if (layers.first[_numObj.y, _numObj.x] != null)
             {
-                player.Move(layers.first[_numObj.y, _numObj.x]);
+                player.MoveInOneFrame(layers.first[_numObj.y, _numObj.x]);
                 player.UpdateDate(player.GetVertices());
             }
         }
@@ -307,9 +303,6 @@ namespace Coin_Wave_Lib
                         }
                     }
                 }
-
-                dynamicObjects[i].Move(layers.second[dynamicObjects[i].Index.y, dynamicObjects[i].Index.x]);
-                dynamicObjects[i].UpdateDate(dynamicObjects[i].GetVertices());
             }
         }
         private void CollectMoney()
@@ -322,7 +315,7 @@ namespace Coin_Wave_Lib
                     new RectangleWithTexture
                     (
                         layers.second[_numObj.y, _numObj.x].RectangleWithTexture.Rectangle,
-                        textureMap.GetTexturePoints(indexTextureAir)
+                        textureMap.GetTexturePoints(Resources.Air)
                     ),
                     textureMap.Texture,
                     (_numObj.y, _numObj.x)
@@ -404,7 +397,7 @@ namespace Coin_Wave_Lib
             layers.first = new GameObject[sides.hidth, sides.widht];
             layers.second = new GameObject[sides.hidth, sides.widht];
 
-            textureMap = new TextureMap(5, 5, 4, textureForMap);
+            textureMap = new TextureMap(Resources.textureMap.Width, Resources.textureMap.Height, 4, textureForMap);
 
             foreach (GameObject obj in first)
             {
@@ -431,7 +424,7 @@ namespace Coin_Wave_Lib
                         0.4,
                         0.06
                     ),
-                    textureMap.GetTexturePoints(8)
+                    textureMap.GetTexturePoints(Resources.HealthPanel)
                     ),
                 textureForMap
             );
@@ -466,286 +459,40 @@ namespace Coin_Wave_Lib
             foreach(var obj in dynamicObjects)
             {
 
-                if (obj is Dragon dragon)
+                if (obj is Monster monster)
                 {
-                    DragonMove(dragon);
-                    
+                    monster.Move(layers, dynamicObjects);
                 }
+
                 if (obj is Monkey monkey)
                 {
-                    MonkeyMove(monkey);
+                    switch (monkey.viewDirection)
+                    {
+                        case MoveHelper.Up:
+                            monkey.SetTexturePoints(textureMap.GetTexturePoints(Resources.MonkeyUp));
+                            break;
+                        case MoveHelper.Down:
+                            monkey.SetTexturePoints(textureMap.GetTexturePoints(Resources.MonkeyDown));
+                            break;
+                    }
                 }
-                if (obj is FireWheel fireWheel)
+
+                if (obj is Dragon dragon)
                 {
-                    FireWheelMove(fireWheel);
+                    switch (dragon.viewDirection)
+                    {
+                        case MoveHelper.Left:
+                            dragon.SetTexturePoints(textureMap.GetTexturePoints(Resources.DragonLeft));
+                            break;
+                        case MoveHelper.Right:
+                            dragon.SetTexturePoints(textureMap.GetTexturePoints(Resources.DragonRight));
+                            break;
+                    }
                 }
-                obj.Move(layers.second[obj.Index.y, obj.Index.x]);
+
+                obj.MoveInOneFrame(layers.second[obj.Index.y, obj.Index.x]);
                 obj.UpdateDate(obj.GetVertices());
             }
-        }
-        public void DragonMove(Dragon dragon)
-        {
-            if (dragon.ContinueMove())
-                if (dragon.moveHelper == MoveHelper.Right)
-                {
-                    if (!layers.second[dragon.Index.y, dragon.Index.x + 1].IsSolid &&
-                        !layers.first[dragon.Index.y, dragon.Index.x + 1].IsSolid)
-                    {
-                        bool nextOdjSolid = false;
-                        foreach (var nextObj in dynamicObjects)
-                        {
-                            if ((dragon.Index.x + 1, dragon.Index.y) == nextObj.Index)
-                            {
-                                nextOdjSolid = true;
-                                dragon.moveHelper = MoveHelper.Left;
-                                break;
-                            }
-                        }
-                        if (!nextOdjSolid)
-                            dragon.Index = (dragon.Index.x + 1, dragon.Index.y);
-                    }
-                    else
-                    {
-                        dragon.moveHelper = MoveHelper.Left;
-                    }
-                }
-                else if (dragon.moveHelper == MoveHelper.Left)
-                {
-                    if (!layers.second[dragon.Index.y, dragon.Index.x - 1].IsSolid &&
-                        !layers.first[dragon.Index.y, dragon.Index.x - 1].IsSolid)
-                    {
-                        bool nextOdjSolid = false;
-                        foreach (var nextObj in dynamicObjects)
-                        {
-                            if ((dragon.Index.x - 1, dragon.Index.y) == nextObj.Index)
-                            {
-                                nextOdjSolid = true;
-                                dragon.moveHelper = MoveHelper.Right;
-                                break;
-                            }
-                        }
-                        if (!nextOdjSolid)
-                            dragon.Index = (dragon.Index.x - 1, dragon.Index.y);
-                    }
-                    else
-                    {
-                        dragon.moveHelper = MoveHelper.Right;
-                    }
-                }
-        }
-
-        public void MonkeyMove(Monkey monkey)
-        {
-            if (monkey.ContinueMove())
-                if (monkey.moveHelper == MoveHelper.Up)
-                {
-                    if (!layers.second[monkey.Index.y - 1, monkey.Index.x].IsSolid &&
-                        !layers.first[monkey.Index.y - 1, monkey.Index.x].IsSolid)
-                    {
-                        bool nextOdjSolid = false;
-                        foreach (var nextObj in dynamicObjects)
-                        {
-                            if ((monkey.Index.x, monkey.Index.y - 1) == nextObj.Index)
-                            {
-                                nextOdjSolid = true;
-                                monkey.moveHelper = MoveHelper.Down;
-                                break;
-                            }
-                        }
-                        if (!nextOdjSolid)
-                            monkey.Index = (monkey.Index.x, monkey.Index.y - 1);
-                    }
-                    else
-                    {
-                        monkey.moveHelper = MoveHelper.Down;
-                    }
-                }
-                else if (monkey.moveHelper == MoveHelper.Down)
-                {
-                    if (!layers.second[monkey.Index.y + 1, monkey.Index.x].IsSolid &&
-                        !layers.first[monkey.Index.y + 1, monkey.Index.x].IsSolid)
-                    {
-                        bool nextOdjSolid = false;
-                        foreach (var nextObj in dynamicObjects)
-                        {
-                            if ((monkey.Index.x, monkey.Index.y + 1) == nextObj.Index)
-                            {
-                                nextOdjSolid = true;
-                                monkey.moveHelper = MoveHelper.Up;
-                                break;
-                            }
-                        }
-                        if (!nextOdjSolid)
-                            monkey.Index = (monkey.Index.x, monkey.Index.y + 1);
-                    }
-                    else
-                    {
-                        monkey.moveHelper = MoveHelper.Up;
-                    }
-                }
-        }
-
-        public void FireWheelMove(FireWheel fireWheel)
-        {
-            Random randomGenerateDirection = new Random();
-            if (fireWheel.ContinueMove())
-                if (fireWheel.moveHelper == MoveHelper.Up)
-                {
-                    if (!layers.second[fireWheel.Index.y - 1, fireWheel.Index.x].IsSolid &&
-                        !layers.first[fireWheel.Index.y - 1, fireWheel.Index.x].IsSolid)
-                    {
-                        bool nextOdjSolid = false;
-                        foreach (var nextObj in dynamicObjects)
-                        {
-                            if ((fireWheel.Index.x, fireWheel.Index.y - 1) == nextObj.Index)
-                            {
-                                nextOdjSolid = true;
-                                int directionOfMuvement = randomGenerateDirection.Next(0,2);
-                                if (directionOfMuvement == 0)
-                                {
-                                    fireWheel.moveHelper = MoveHelper.Left;
-                                }
-                                else
-                                {
-                                    fireWheel.moveHelper = MoveHelper.Right;
-                                }
-                                break;
-                            }
-                        }
-                        if (!nextOdjSolid)
-                            fireWheel.Index = (fireWheel.Index.x, fireWheel.Index.y - 1);
-                    }
-                    else
-                    {
-                        int directionOfMuvement = randomGenerateDirection.Next(0, 2);
-                        if (directionOfMuvement == 0)
-                        {
-                            fireWheel.moveHelper = MoveHelper.Left;
-                        }
-                        else
-                        {
-                            fireWheel.moveHelper = MoveHelper.Right;
-                        }
-                    }
-                }
-                else if (fireWheel.moveHelper == MoveHelper.Down)
-                {
-                    if (!layers.second[fireWheel.Index.y + 1, fireWheel.Index.x].IsSolid &&
-                        !layers.first[fireWheel.Index.y + 1, fireWheel.Index.x].IsSolid)
-                    {
-                        bool nextOdjSolid = false;
-                        foreach (var nextObj in dynamicObjects)
-                        {
-                            if ((fireWheel.Index.x, fireWheel.Index.y + 1) == nextObj.Index)
-                            {
-                                nextOdjSolid = true;
-                                int directionOfMuvement = randomGenerateDirection.Next(0, 2);
-                                if (directionOfMuvement == 0)
-                                {
-                                    fireWheel.moveHelper = MoveHelper.Left;
-                                }
-                                else
-                                {
-                                    fireWheel.moveHelper = MoveHelper.Right;
-                                }
-                                break;
-                            }
-                        }
-                        if (!nextOdjSolid)
-                            fireWheel.Index = (fireWheel.Index.x, fireWheel.Index.y + 1);
-                    }
-                    else
-                    {
-                        int directionOfMuvement = randomGenerateDirection.Next(0, 2);
-                        if (directionOfMuvement == 0)
-                        {
-                            fireWheel.moveHelper = MoveHelper.Left;
-                        }
-                        else
-                        {
-                            fireWheel.moveHelper = MoveHelper.Right;
-                        }
-                    }
-                }
-
-                else if (fireWheel.moveHelper == MoveHelper.Right)
-                {
-                    if (!layers.second[fireWheel.Index.y, fireWheel.Index.x + 1].IsSolid &&
-                        !layers.first[fireWheel.Index.y, fireWheel.Index.x + 1].IsSolid)
-                    {
-                        bool nextOdjSolid = false;
-                        foreach (var nextObj in dynamicObjects)
-                        {
-                            if ((fireWheel.Index.x + 1, fireWheel.Index.y) == nextObj.Index)
-                            {
-                                nextOdjSolid = true;
-                                int directionOfMuvement = randomGenerateDirection.Next(0, 2);
-                                if (directionOfMuvement == 0)
-                                {
-                                    fireWheel.moveHelper = MoveHelper.Up;
-                                }
-                                else
-                                {
-                                    fireWheel.moveHelper = MoveHelper.Down;
-                                }
-                                break;
-                            }
-                        }
-                        if (!nextOdjSolid)
-                            fireWheel.Index = (fireWheel.Index.x + 1, fireWheel.Index.y);
-                    }
-                    else
-                    {
-                        int directionOfMuvement = randomGenerateDirection.Next(0, 2);
-                        if (directionOfMuvement == 0)
-                        {
-                            fireWheel.moveHelper = MoveHelper.Up;
-                        }
-                        else
-                        {
-                            fireWheel.moveHelper = MoveHelper.Down;
-                        }
-                    }
-                }
-                else if (fireWheel.moveHelper == MoveHelper.Left)
-                {
-                    if (!layers.second[fireWheel.Index.y, fireWheel.Index.x - 1].IsSolid &&
-                        !layers.first[fireWheel.Index.y, fireWheel.Index.x - 1].IsSolid)
-                    {
-                        bool nextOdjSolid = false;
-                        foreach (var nextObj in dynamicObjects)
-                        {
-                            if ((fireWheel.Index.x - 1, fireWheel.Index.y) == nextObj.Index)
-                            {
-                                nextOdjSolid = true;
-                                int directionOfMuvement = randomGenerateDirection.Next(0, 2);
-                                if (directionOfMuvement == 0)
-                                {
-                                    fireWheel.moveHelper = MoveHelper.Up;
-                                }
-                                else
-                                {
-                                    fireWheel.moveHelper = MoveHelper.Down;
-                                }
-                                break;
-                            }
-                        }
-                        if (!nextOdjSolid)
-                            fireWheel.Index = (fireWheel.Index.x - 1, fireWheel.Index.y);
-                    }
-                    else
-                    {
-                        int directionOfMuvement = randomGenerateDirection.Next(0, 2);
-                        if (directionOfMuvement == 0)
-                        {
-                            fireWheel.moveHelper = MoveHelper.Up;
-                        }
-                        else
-                        {
-                            fireWheel.moveHelper = MoveHelper.Down;
-                        }
-                    }
-                }
         }
         private void FoolMove()
         {

@@ -11,6 +11,6 @@ namespace Coin_Wave_Lib.Objects.GameObjects
         // я умею двигаться к обьекту
         // Стремление к точке
         // Но в данном случае стремление к сектору в сетке
-        void Move(GameObject gameObject);
+        void MoveInOneFrame(GameObject gameObject);
     }
 }

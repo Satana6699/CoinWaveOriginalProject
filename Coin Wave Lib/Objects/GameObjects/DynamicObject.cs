@@ -25,7 +25,7 @@ namespace Coin_Wave_Lib
             this._unit = (x / (double)frameTime, y / (double)frameTime);
             IsSolid = true;
         }
-        public void Move(GameObject gameObject)
+        public void MoveInOneFrame(GameObject gameObject)
         {
             Time--;
             double errrorRate = 0.0001;
@@ -87,17 +87,22 @@ namespace Coin_Wave_Lib
                         RectangleWithTexture.Rectangle.GetHeight()
                     );
 
-            if (Math.Abs(gameObject.RectangleWithTexture.Rectangle.TopLeft.X - RectangleWithTexture.Rectangle.TopLeft.X) < errrorRate &&
-                Math.Abs(gameObject.RectangleWithTexture.Rectangle.TopLeft.Y - RectangleWithTexture.Rectangle.TopLeft.Y) < errrorRate)
-            {
-                Time = FrameTime;
-            }
+            ReturnTime(gameObject, errrorRate);
             this.SetPoints(RectangleWithTexture.Rectangle);
         }
 
         public bool ContinueMove()
         {
             return Time == FrameTime;
+        }
+
+        private void ReturnTime(GameObject gameObject, double errrorRate)
+        {
+            if (Math.Abs(gameObject.RectangleWithTexture.Rectangle.TopLeft.X - RectangleWithTexture.Rectangle.TopLeft.X) < errrorRate &&
+                Math.Abs(gameObject.RectangleWithTexture.Rectangle.TopLeft.Y - RectangleWithTexture.Rectangle.TopLeft.Y) < errrorRate)
+            {
+                Time = FrameTime;
+            }
         }
     }
 }

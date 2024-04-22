@@ -21,6 +21,9 @@
     <None Update="data\fonts\Normal.ttf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="data\textureForGame\texMapFalse.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="data\textureForGame\texMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

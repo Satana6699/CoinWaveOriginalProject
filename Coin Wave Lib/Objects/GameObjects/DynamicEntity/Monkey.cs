@@ -11,7 +11,7 @@ namespace Coin_Wave_Lib
     {
         public Monkey(RectangleWithTexture rectangleWithTexture, Texture texture, (int x, int y) index, int damage) : base(rectangleWithTexture, texture, index, damage)
         {
-            moveHelper = MoveHelper.Down;
+            viewDirection = MoveHelper.Down;
         }
 
         public override string Name { get => typeof(Monkey).Name; set { } }

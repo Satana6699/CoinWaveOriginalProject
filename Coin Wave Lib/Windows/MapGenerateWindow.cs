@@ -110,19 +110,20 @@ namespace Coin_Wave_Lib
                 
 
 
-            textureMap = new TextureMap(5, 5, 4, _textureForMap);
+            textureMap = new TextureMap(Resources.textureMap.Width, Resources.textureMap.Height, 4, _textureForMap);
             blocksPanel = new
             (
                 new RectangleWithTexture
                 (
                 new Rectangle
                 (
-                    new Point(-0.8, 0.6, 0),
-                    1.6, 
-                    1.2),
+                    new Point(-0.9, 0.7, 0),
+                    1.8, 
+                    1.3),
                     new TexturePoint[] { new TexturePoint(0, 1), new TexturePoint(1, 1), new TexturePoint(1, 0), new TexturePoint(0, 0)}
                 ),
-                10,
+                16,
+                3,
                 Texture.LoadFromFile(@"data\textureForInterface\bluesqrt.png"),
                 textureMap
             );
@@ -137,7 +138,7 @@ namespace Coin_Wave_Lib
                         0.4,
                         0.06
                     ),
-                    textureMap.GetTexturePoints(8)
+                    textureMap.GetTexturePoints(Resources.HealthPanel)
                     ),
                 _textureForMap
             );
@@ -146,16 +147,35 @@ namespace Coin_Wave_Lib
             healthPanel.UpdateDate(healthPanel.GetVertices());
             interfaceObjects.Add(healthPanel);
 
-            blocksPanel.GenerateMenuElement(typeof(SolidWall).Name, 0);
-            blocksPanel.GenerateMenuElement(typeof(BackWall).Name, 3);
-            blocksPanel.GenerateMenuElement(typeof(Stone).Name, 4);
-            blocksPanel.GenerateMenuElement(typeof(Player).Name, 15);
-            blocksPanel.GenerateMenuElement(typeof(Coin).Name, 6);
-            blocksPanel.GenerateMenuElement(typeof(ExitDoor).Name, 7);
-            blocksPanel.GenerateMenuElement(typeof(Dragon).Name, 5);
-            blocksPanel.GenerateMenuElement(typeof(Monkey).Name, 10);
-            blocksPanel.GenerateMenuElement(typeof(FireWheel).Name, 9);
-            blocksPanel.GenerateMenuElement(typeof(Thorn).Name, 20);
+            // Стены и камни
+            blocksPanel.GenerateMenuElement(typeof(SolidWall).Name, Resources.SolidWall);
+            blocksPanel.GenerateMenuElement(typeof(BackWall).Name, Resources.BackWall);
+            blocksPanel.GenerateMenuElement(typeof(Stone).Name, Resources.Stone);
+
+            // Не знаю как класифицировать
+            blocksPanel.GenerateMenuElement(typeof(Player).Name, Resources.PlayerDefault);
+            blocksPanel.GenerateMenuElement(typeof(Coin).Name, Resources.Coin);
+
+            // Монстры
+            blocksPanel.GenerateMenuElement(typeof(Dragon).Name, Resources.DragonRight);
+            blocksPanel.GenerateMenuElement(typeof(FireWheel).Name, Resources.FireWhell);
+            blocksPanel.GenerateMenuElement(typeof(Monkey).Name, Resources.MonkeyUp);
+
+            // Doors
+            blocksPanel.GenerateMenuElement(typeof(StartDoor).Name, Resources.StartDoor);
+            blocksPanel.GenerateMenuElement(typeof(ExitDoor).Name, Resources.ExitDoor);
+
+            // Ловушки
+            blocksPanel.GenerateMenuElement(typeof(Thorn).Name, Resources.ActiveThorn);
+            blocksPanel.GenerateMenuElement(typeof(TrapFire).Name, Resources.TrapFire);
+
+            // Просто так
+            blocksPanel.GenerateMenuElement(typeof(Player).Name, Resources.SolidWall);
+            blocksPanel.GenerateMenuElement(typeof(Coin).Name, Resources.SolidWall);
+            blocksPanel.GenerateMenuElement(typeof(ExitDoor).Name, Resources.SolidWall);
+            blocksPanel.GenerateMenuElement(typeof(Dragon).Name, Resources.SolidWall);
+            blocksPanel.GenerateMenuElement(typeof(Monkey).Name, Resources.SolidWall);
+
             _textureCurrentPosition = Texture.LoadFromFile(@"data\textureForInterface\redsqrt.png");
             blocksPanel.GenerateTexturViborObj(_textureCurrentPosition);
 
@@ -219,7 +239,6 @@ namespace Coin_Wave_Lib
                 (GameObjectData[,] first, GameObjectData[,] second) temporaryLayers;
                 temporaryLayers.first = new GameObjectData[layers.first.GetLength(0), layers.first.GetLength(1)];
                 temporaryLayers.second = new GameObjectData[layers.second.GetLength(0), layers.second.GetLength(1)];
-                int indexTextureAir = 24;
                 // Если имеются в массиве незаполненные элементы массива, то заполнить их объктом воздух
                 // Для того, чтобы в массиве не было null объектов
                 for (int i = 0; i < temporaryLayers.first.GetLength(0); i++)
@@ -230,7 +249,7 @@ namespace Coin_Wave_Lib
                             RectangleWithTexture = new RectangleWithTexture
                                 (
                                     new Rectangle(mg.RectangleWithTextures[i, j].Rectangle.TopLeft, mg.units.X, mg.units.Y),
-                                    textureMap.GetTexturePoints(indexTextureAir)
+                                    textureMap.GetTexturePoints(Resources.Air)
                                 ),
                             Index = (j,i),
                             Name = typeof(Air).Name,

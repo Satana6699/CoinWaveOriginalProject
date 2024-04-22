@@ -6,7 +6,7 @@ namespace Coin_Wave_Lib
         public List<ElementMenu> MenuElements { get; private set; } = new List<ElementMenu>(0);
         public override string Name { get => typeof(BlocksPanel).Name; set { } }
 
-        int numberOCell;
+        int numberOfCell;
         public ChoiceObj choiceObj;
         private TextureMap _textureMap;
         double unitX; //ширина одного контейнра
@@ -14,21 +14,33 @@ namespace Coin_Wave_Lib
         double xPos;
         double yPos;
         double zPos;
+        int lines;
+        int objectInLine;
         public BlocksPanel
             (
                 RectangleWithTexture rectangleWithTexture,
                 int numberOfCell,
+                int lines,
                 Texture texture,
                 TextureMap textureMap
             ) : base(rectangleWithTexture, texture)
         {
-            // Если войдёт нечетное число, то сделать его чётным
-            if (numberOfCell % 2 != 0) numberOfCell++;
-            this.numberOCell = numberOfCell;
+            this.lines = lines;
+
+            while (true)
+            {
+                // Если войдёт некратное число, то сделать его кратным
+                if (numberOfCell % lines != 0) numberOfCell++;
+                else break;
+            }
+
+            this.numberOfCell = numberOfCell;
+            objectInLine = numberOfCell / lines;
             _textureMap = textureMap;
             CountDimensions();
         }
         public BlocksPanel() { }
+
         public void GenerateMenuElement(string name, int indexTexture)
         {
             MenuElements.Add(new ElementMenu
@@ -71,7 +83,7 @@ namespace Coin_Wave_Lib
                 ));
 
             xPos = xPos + 2 * unitX;
-            if (MenuElements.Count == numberOCell / 2)
+            if (MenuElements.Count % objectInLine == 0)
             {
                 xPos = RectangleWithTexture.Rectangle.TopLeft.X + unitX;
                 yPos = yPos - 2 * unitY;
@@ -103,9 +115,8 @@ namespace Coin_Wave_Lib
         }
         public void CountDimensions()
         {
-            int row = numberOCell + 1;
-            unitX = RectangleWithTexture.Rectangle.GetWidth() / row; //ширина одного контейнра
-            unitY = RectangleWithTexture.Rectangle.GetHeight() / 5;
+            unitX = RectangleWithTexture.Rectangle.GetWidth() / (objectInLine * 2 + 1); //ширина одного контейнра
+            unitY = RectangleWithTexture.Rectangle.GetHeight() / (lines * 2 + 1);
             xPos = RectangleWithTexture.Rectangle.TopLeft.X + unitX;
             yPos = RectangleWithTexture.Rectangle.TopLeft.Y - unitY;
             zPos = 0.0;
