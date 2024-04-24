@@ -6,16 +6,15 @@
         xmlns:local="clr-namespace:Coin_Wave"
         mc:Ignorable="d"
         Title="MainWindow" Height="600" Width="1000">
-    <Grid>
+    <Grid x:Name="grid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition Width="0*"/>
         </Grid.ColumnDefinitions>
         <Button x:Name="Play_Button" Content="Играть" HorizontalAlignment="Center" Margin="0,489,0,0" VerticalAlignment="Top" Height="47" Width="220" Click="Play_Button_Click"/>
         <Button Content="Генератор карт" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="37" Width="122" Click="MapGenerator_Click"/>
-        <Label x:Name="levelLabel" Content="Level" HorizontalAlignment="Left" Margin="52,52,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="levelDownButtonClick" Content="-" HorizontalAlignment="Left" Margin="10,52,0,0" VerticalAlignment="Top" Height="26" Width="26" FontWeight="Bold"/>
+        <Label x:Name="levelLabel" Content="0" HorizontalAlignment="Left" Margin="63,52,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="levelDownButtonClick" Content="-" HorizontalAlignment="Left" Margin="10,52,0,0" VerticalAlignment="Top" Height="26" Width="26" FontWeight="Bold" Click="levelDownButtonClick_Click"/>
         <Button x:Name="levelUpButtonClick" Content="+" HorizontalAlignment="Left" Margin="106,52,0,0" VerticalAlignment="Top" Height="26" Width="26" Click="levelUpButtonClick_Click"/>
-
     </Grid>
 </Window>

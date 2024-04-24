@@ -23,12 +23,11 @@ namespace Coin_Wave
     /// </summary>
     public partial class MainWindow : Window
     {
-        int level = 1;
+        int level = 0;
         private int _windowSize = 50;
         // размер карты 34 на 15
         private int _windowSizeX = 34;
         private int _windowSizeY = 15;
-
         public MainWindow()
         {
         }
@@ -89,6 +88,14 @@ namespace Coin_Wave
         private void levelUpButtonClick_Click(object sender, RoutedEventArgs e)
         {
             level++;
+            levelLabel.Content = level.ToString();
+        }
+
+        private void levelDownButtonClick_Click(object sender, RoutedEventArgs e)
+        {
+            level--;
+            if (level < 0) { level = 0; }
+            levelLabel.Content = level.ToString();
         }
     }
 }
