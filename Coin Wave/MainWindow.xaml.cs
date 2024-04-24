@@ -23,6 +23,7 @@ namespace Coin_Wave
     /// </summary>
     public partial class MainWindow : Window
     {
+        int level = 1;
         private int _windowSize = 50;
         // размер карты 34 на 15
         private int _windowSizeX = 34;
@@ -51,8 +52,8 @@ namespace Coin_Wave
                 NumberOfSamples = 0
             };
 
-            string fileFirst = @"data\maps\lvl1\first.xml";
-            string fileSecond = @"data\maps\lvl1\second.xml";
+            string fileFirst = @"data\maps\lvl" + level + @"\first.xml";
+            string fileSecond = @"data\maps\lvl" + level + @"\second.xml";
             CoinWaveWindow game = new CoinWaveWindow(GameWindowSettings.Default, nativeWinSettings, fileFirst, fileSecond);
             using (game)
             {
@@ -79,10 +80,15 @@ namespace Coin_Wave
             };
 
 
-            using (MapGenerateWindow game = new MapGenerateWindow(GameWindowSettings.Default, nativeWinSettings))
+            using (MapGenerateWindow game = new MapGenerateWindow(GameWindowSettings.Default, nativeWinSettings, level))
             {
                 game.Run();
             }
+        }
+
+        private void levelUpButtonClick_Click(object sender, RoutedEventArgs e)
+        {
+            level++;
         }
     }
 }

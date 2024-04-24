@@ -13,7 +13,7 @@ namespace Coin_Wave_Lib
     public class CoinWaveWindow : GameWindow
     {
         // --- Данные для родительского окна --- 
-        public string MESSAGE = string.Empty;
+        public string MESSAGE = "Уровень не пройден";
         public bool levelIsComplieted = false;
         // --- Данные для родительского окна---
 
