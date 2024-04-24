@@ -12,7 +12,7 @@ namespace Coin_Wave_Lib.Objects.Factories.ConcreteFactory
         {
         }
 
-        public override GameObject GetGameObject() => new Thorn(_rectangleWithTexture, _texture, _index, 1)
+        public override GameObject GetGameObject() => new TrapFire(_rectangleWithTexture, _texture, _index, 1)
         {
             Name = _name
         };

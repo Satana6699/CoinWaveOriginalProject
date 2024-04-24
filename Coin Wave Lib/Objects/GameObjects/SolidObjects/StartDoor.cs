@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Coin_Wave_Lib
 {
-    public class StartDoor : SolidObject, IMembership, IGameMembership
+    public class StartDoor : SolidObject, IObjectCore, IGameCore
     {
         public StartDoor()
         {

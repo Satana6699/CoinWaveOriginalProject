@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Coin_Wave_Lib
 {
-    public class SolidWall : SolidObject, IMembership, IGameMembership
+    public class SolidWall : SolidObject, IObjectCore, IGameCore
     {
 
         public SolidWall()

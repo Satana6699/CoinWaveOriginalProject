@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Coin_Wave_Lib
 {
-    public class ExitDoor : SolidObject, IMembership, IGameMembership
+    public class ExitDoor : SolidObject, IObjectCore, IGameCore
     {
         public ExitDoor()
         {

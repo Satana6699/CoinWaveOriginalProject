@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Coin_Wave_Lib
 {
-    public interface IMembership
+    public interface IObjectCore
     {
         string Name { get; set; }
         double[] Vertices { get; set; }

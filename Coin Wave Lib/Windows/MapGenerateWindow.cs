@@ -169,9 +169,11 @@ namespace Coin_Wave_Lib
             blocksPanel.GenerateMenuElement(typeof(Thorn).Name, Resources.ActiveThorn);
             blocksPanel.GenerateMenuElement(typeof(TrapFire).Name, Resources.TrapFire);
 
+            // Бонусы
+            blocksPanel.GenerateMenuElement(typeof(Thorn).Name, Resources.HealthBonus);
+            blocksPanel.GenerateMenuElement(typeof(TrapFire).Name, Resources.SpeedBonus);
+
             // Просто так
-            blocksPanel.GenerateMenuElement(typeof(Player).Name, Resources.SolidWall);
-            blocksPanel.GenerateMenuElement(typeof(Coin).Name, Resources.SolidWall);
             blocksPanel.GenerateMenuElement(typeof(ExitDoor).Name, Resources.SolidWall);
             blocksPanel.GenerateMenuElement(typeof(Dragon).Name, Resources.SolidWall);
             blocksPanel.GenerateMenuElement(typeof(Monkey).Name, Resources.SolidWall);

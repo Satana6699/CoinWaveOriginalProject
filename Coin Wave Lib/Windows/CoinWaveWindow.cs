@@ -8,10 +8,11 @@ using Coin_Wave_Lib.Objects.GameObjects.DynamicEntity;
 
 namespace Coin_Wave_Lib
 {
-    public class ExampleWindow : GameWindow
+    public class CoinWaveWindow : GameWindow
     {
         KeyboardState lastKeyboardState, currentKeyboardState;
         private float frameTime = 0.0f;
+        private float timer = 0.0f;
         private int fps = 0;
         private (int widht, int hidth) sides = (32, 18);
         private (int x, int y) _numObj = (0, 0);
@@ -22,7 +23,10 @@ namespace Coin_Wave_Lib
         List<DynamicObject> dynamicObjects = new List<DynamicObject>();
         int speedObj = 15;
         HealthPanel healthPanel;
-        public ExampleWindow(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings)
+
+        List<TrapFire> trapFires = new List<TrapFire>(0);
+        List<Thorn> thorns = new List<Thorn>(0);
+        public CoinWaveWindow(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings)
             : base(gameWindowSettings, nativeWindowSettings)
         {
             NameExampleWindow = "Coin Wave";
@@ -73,21 +77,37 @@ namespace Coin_Wave_Lib
             //Камень упасть
             FallStone();
 
+            if (timer >= 1)
+            {
+                foreach (var trapFire in trapFires)
+                {
+                    trapFire.ActiveOneFire();
+                }
+                foreach (var thorn in thorns)
+                {
+                    ((Thorn)layers.second[thorn.Index.y, thorn.Index.x]).Activate();
+                    if(((Thorn)layers.second[thorn.Index.y, thorn.Index.x]).IsActine()) layers.second[thorn.Index.y, thorn.Index.x].RectangleWithTexture.TexturePoints = textureMap.GetTexturePoints(Resources.ActiveThorn);
+                    else layers.second[thorn.Index.y, thorn.Index.x].RectangleWithTexture.TexturePoints = textureMap.GetTexturePoints(Resources.DeActiveThorn);
+                    layers.second[thorn.Index.y, thorn.Index.x].UpdateDate(layers.second[thorn.Index.y, thorn.Index.x].GetVertices());
+
+                }
+                timer = 0;
+            }
+
             MonsterMove();
+
 
             // Проверка на пересечение с монстрами для получения игроком урона от них
             DamagePlayer();
 
             UpdateHealthPanel();
+
             // Проверка на проигрыш
             GameOver();
 
-            // Новое движение
-            {
-                FoolMove();
-            }
+            
             if (currentKeyboardState.IsKeyPressed(Keys.Escape)) Close();
-            if (currentKeyboardState.IsKeyPressed(Keys.R)) RestarrtGame();
+            if (currentKeyboardState.IsKeyPressed(Keys.R)) RestartGame();
         }
 
 
@@ -329,6 +349,7 @@ namespace Coin_Wave_Lib
         private void UpdateFPS(FrameEventArgs args)
         {
             frameTime += (float)args.Time;
+            timer += (float)args.Time;
             fps++;
             if (frameTime >= 1.0f)
             {
@@ -429,11 +450,37 @@ namespace Coin_Wave_Lib
                 textureForMap
             );
 
-
+            // Поиск огненных ловушек и шипов
+            {
+                foreach (var obj in layers.first)
+                {
+                    if (obj is TrapFire trapFire)
+                    {
+                        trapFire.GenerateFires(textureMap, layers.first);
+                        trapFires.Add(trapFire);
+                    }
+                    if (obj is Thorn thorn)
+                    {
+                        thorns.Add(thorn);
+                    }
+                }
+                foreach (var obj in layers.second)
+                {
+                    if (obj is TrapFire trapFire)
+                    {
+                        trapFire.GenerateFires(textureMap, layers.first);
+                        trapFires.Add(trapFire);
+                    }
+                    if (obj is Thorn thorn)
+                    {
+                        thorns.Add(thorn);
+                    }
+                }
+            }
             dynamicObjects = SearchDynamicObjects(layers.second);
         }
 
-        private void RestarrtGame()
+        private void RestartGame()
         {
             for (int i = 0; i < layers.first.GetLength(0); i++)
                 for(int j = 0; j < layers.first.GetLength(1); j++)
@@ -520,12 +567,24 @@ namespace Coin_Wave_Lib
             {
                 player.Damage(thorn.Damage());
             }
+
             foreach (var obj in dynamicObjects)
             {
-                if (obj is Monster && player.RectangleWithTexture.Rectangle.Intersects(obj.RectangleWithTexture.Rectangle))
+                if (obj is Monster monster && player.RectangleWithTexture.Rectangle.Intersects(obj.RectangleWithTexture.Rectangle))
                 {
                     player.Damage(1);
 ;               }
+            }
+
+            foreach (var obj in trapFires)
+            {
+                foreach (var fire in obj.Fires)
+                {
+                    if (player.Index == fire.Index)
+                    {
+                        player.Damage(fire.Damage());
+                    }
+                }
             }
         }
     }

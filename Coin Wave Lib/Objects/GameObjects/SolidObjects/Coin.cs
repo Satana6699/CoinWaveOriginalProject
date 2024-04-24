@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Coin_Wave_Lib
 {
-    public class Coin : SolidObject, IMembership, IGameMembership, ICollectable
+    public class Coin : SolidObject, IObjectCore, IGameCore, ICollectable
     {
         public Coin()
         {

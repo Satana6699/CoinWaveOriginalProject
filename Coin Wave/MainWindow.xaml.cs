@@ -52,7 +52,7 @@ namespace Coin_Wave
             };
 
 
-            using (ExampleWindow game = new ExampleWindow(GameWindowSettings.Default, nativeWinSettings))
+            using (CoinWaveWindow game = new CoinWaveWindow(GameWindowSettings.Default, nativeWinSettings))
             {
                 game.Run();
             }

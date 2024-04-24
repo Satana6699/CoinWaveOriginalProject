@@ -8,7 +8,7 @@ using System.Xml.Serialization;
 
 namespace Coin_Wave_Lib
 {
-    public abstract class Obj : IMembership
+    public abstract class Obj : IObjectCore
     {
         public abstract string Name{ get; set; }
         public double[] Vertices { get; set; }
@@ -16,7 +16,7 @@ namespace Coin_Wave_Lib
         [XmlIgnore]  public Texture Texture {  get; set; }
         [XmlIgnore]  public Buffer Buffer { get; set; }
 
-        
+        public bool Visible { get; set; } = true;
         public Obj(RectangleWithTexture rectangleWithTexture, Texture texture)
         {
             this.RectangleWithTexture = rectangleWithTexture;
@@ -76,7 +76,11 @@ namespace Coin_Wave_Lib
         public void SetTexturePoints(TexturePoint[] texturePoints) =>  RectangleWithTexture.TexturePoints = texturePoints;
         public Rectangle GetRectangle() => RectangleWithTexture.Rectangle;
         public TexturePoint[] GetTexturePoints() => RectangleWithTexture.TexturePoints;
-        public void Render() => Buffer.Render(Texture);
+        public virtual void Render()
+        {
+            if (Visible)
+                Buffer.Render(Texture);
+        }
         public void UpdateDate(double[] vertieces) => Buffer.UpdateDate(vertieces);
         public void SetBuffer(Buffer buffer) => Buffer = buffer;
     }

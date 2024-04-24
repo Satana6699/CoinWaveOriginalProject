@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Coin_Wave_Lib
 {
-    public abstract class SolidObject : GameObject, IMembership, IGameMembership
+    public abstract class SolidObject : GameObject, IObjectCore, IGameCore
     {
         public SolidObject ()
         {

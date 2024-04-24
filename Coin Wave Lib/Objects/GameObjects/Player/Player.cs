@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Coin_Wave_Lib
 {
-    public class Player : DynamicObject, IMembership, IGameMembership
+    public class Player : DynamicObject, IObjectCore, IGameCore
     {
         public int CountCoins { get; private set; } = 0;
         public override string Name { get => typeof(Player).Name; set { } }
