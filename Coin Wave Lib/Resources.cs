@@ -39,8 +39,6 @@ namespace Coin_Wave_Lib
         public const int BackWall = 1;
         public const int Stone = 2;
         public const int Coin = 12;
-        public const int StartDoor = 13;
-        public const int ExitDoor = 14;
         public const int HealthPanel = 15;
     }
 }

@@ -51,11 +51,15 @@ namespace Coin_Wave
                 NumberOfSamples = 0
             };
 
-
-            using (CoinWaveWindow game = new CoinWaveWindow(GameWindowSettings.Default, nativeWinSettings))
+            string fileFirst = @"data\maps\lvl1\first.xml";
+            string fileSecond = @"data\maps\lvl1\second.xml";
+            CoinWaveWindow game = new CoinWaveWindow(GameWindowSettings.Default, nativeWinSettings, fileFirst, fileSecond);
+            using (game)
             {
                 game.Run();
             }
+
+            MessageBox.Show(game.MESSAGE);
         }
 
         private void MapGenerator_Click(object sender, RoutedEventArgs e)

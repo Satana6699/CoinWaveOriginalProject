@@ -36,8 +36,8 @@ namespace Coin_Wave_Lib
                 "TrapFire" => new TrapFireFactory(n, rwc, t, i),
 
                 // Бонусы
-                "SpeedUp" => new SpeedUpFactory(n, rwc, t, i),
-                "HealthUp" => new HealthUpFactory(n, rwc, t, i),
+                "SpeedUpBonus" => new SpeedUpFactory(n, rwc, t, i),
+                "HealthUpBonus" => new HealthUpFactory(n, rwc, t, i),
 
                 // Воздух
                 "Air" => new AirFactory(n, rwc, t, i),

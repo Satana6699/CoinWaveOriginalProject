@@ -16,6 +16,7 @@ using System.Numerics;
 using Coin_Wave_Lib.Objects.InterfaceObjects;
 using System.Diagnostics;
 using Coin_Wave_Lib.Objects.GameObjects.DynamicEntity;
+using Coin_Wave_Lib.Objects.GameObjects.Boneses;
 
 namespace Coin_Wave_Lib
 {
@@ -161,17 +162,17 @@ namespace Coin_Wave_Lib
             blocksPanel.GenerateMenuElement(typeof(FireWheel).Name, Resources.FireWhell);
             blocksPanel.GenerateMenuElement(typeof(Monkey).Name, Resources.MonkeyUp);
 
-            // Doors
-            blocksPanel.GenerateMenuElement(typeof(StartDoor).Name, Resources.StartDoor);
-            blocksPanel.GenerateMenuElement(typeof(ExitDoor).Name, Resources.ExitDoor);
 
             // Ловушки
             blocksPanel.GenerateMenuElement(typeof(Thorn).Name, Resources.ActiveThorn);
             blocksPanel.GenerateMenuElement(typeof(TrapFire).Name, Resources.TrapFire);
 
             // Бонусы
-            blocksPanel.GenerateMenuElement(typeof(Thorn).Name, Resources.HealthBonus);
-            blocksPanel.GenerateMenuElement(typeof(TrapFire).Name, Resources.SpeedBonus);
+            blocksPanel.GenerateMenuElement(typeof(HealthUpBonus).Name, Resources.HealthBonus);
+            blocksPanel.GenerateMenuElement(typeof(SpeedUpBonus).Name, Resources.SpeedBonus);
+
+            //blocksPanel.GenerateMenuElement(typeof(Thorn).Name, Resources.HealthBonus);
+            //blocksPanel.GenerateMenuElement(typeof(TrapFire).Name, Resources.SpeedBonus);
 
             // Просто так
             blocksPanel.GenerateMenuElement(typeof(ExitDoor).Name, Resources.SolidWall);

@@ -28,5 +28,11 @@ namespace Coin_Wave_Lib
         {
             HealthPoint -= damage;
         }
+
+        public void Heal(int heal)
+        {
+            HealthPoint += heal;
+            if (HealthPoint >= MaxHealthPoint) HealthPoint = MaxHealthPoint;
+        }
     }
 }
