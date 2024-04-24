@@ -23,13 +23,22 @@ namespace Coin_Wave
     /// </summary>
     public partial class MainWindow : Window
     {
+        int levelForGenerator = 0;
         int level = 0;
-        private int _windowSize = 50;
+
+        private int _windowSize = 56;
         // размер карты 34 на 15
         private int _windowSizeX = 34;
         private int _windowSizeY = 15;
         public MainWindow()
         {
+            InitializeComponent();
+            Loaded += MainWindow_Loaded;
+        }
+
+        private void MainWindow_Loaded(object? sender, RoutedEventArgs e)
+        {
+            labelLavelForGame.Content = "Уровень: " + level;
         }
 
         private void Play_Button_Click(object sender, RoutedEventArgs e)
@@ -37,7 +46,7 @@ namespace Coin_Wave
             var nativeWinSettings = new NativeWindowSettings()
             {
                 Size = new Vector2i(_windowSizeX * _windowSize, _windowSizeY * _windowSize),
-                Location = new Vector2i(100, 100),
+                Location = new Vector2i(5, 30),
                 WindowBorder = WindowBorder.Resizable,
                 //WindowState = OpenTK.Windowing.Common.WindowState.Fullscreen,
 
@@ -51,8 +60,8 @@ namespace Coin_Wave
                 NumberOfSamples = 0
             };
 
-            string fileFirst = @"data\maps\lvl" + level + @"\first.xml";
-            string fileSecond = @"data\maps\lvl" + level + @"\second.xml";
+            string fileFirst = @"..\..\..\..\Coin Wave Lib\data\maps\lvl" + level + @"\first.xml";
+            string fileSecond = @"..\..\..\..\Coin Wave Lib\data\maps\lvl" + level + @"\second.xml";
             CoinWaveWindow game = new CoinWaveWindow(GameWindowSettings.Default, nativeWinSettings, fileFirst, fileSecond);
             using (game)
             {
@@ -60,6 +69,11 @@ namespace Coin_Wave
             }
 
             MessageBox.Show(game.MESSAGE);
+            if (game.levelIsComplieted)
+            {
+                level++;
+                labelLavelForGame.Content = "Уровень: " + level;
+            }
         }
 
         private void MapGenerator_Click(object sender, RoutedEventArgs e)
@@ -67,7 +81,7 @@ namespace Coin_Wave
             var nativeWinSettings = new NativeWindowSettings()
             {
                 Size = new Vector2i(Convert.ToInt32(1920/1.1), Convert.ToInt32(1080 / 1.1)),
-                Location = new Vector2i(10, 10),
+                Location = new Vector2i(5, 30),
                 WindowBorder = WindowBorder.Resizable,
                 //WindowState = OpenTK.Windowing.Common.WindowState.Fullscreen,
 
@@ -79,23 +93,40 @@ namespace Coin_Wave
             };
 
 
-            using (MapGenerateWindow game = new MapGenerateWindow(GameWindowSettings.Default, nativeWinSettings, level))
+            string fileFirst = @"..\..\..\..\Coin Wave Lib\data\maps\lvl" + levelForGenerator + @"\first.xml";
+            string fileSecond = @"..\..\..\..\Coin Wave Lib\data\maps\lvl" + levelForGenerator + @"\second.xml";
+            using (MapGenerateWindow game = new MapGenerateWindow(GameWindowSettings.Default, nativeWinSettings, fileFirst, fileSecond))
             {
                 game.Run();
             }
         }
 
-        private void levelUpButtonClick_Click(object sender, RoutedEventArgs e)
+        private void levelUpForGenerateButtonClick_Click(object sender, RoutedEventArgs e)
         {
-            level++;
-            levelLabel.Content = level.ToString();
+            levelForGenerator++;
+            if (levelForGenerator >= 6) { levelForGenerator = 0; }
+            levelLabel.Content = levelForGenerator.ToString();
+        }
+
+        private void levelDownForGenerateButtonClick_Click(object sender, RoutedEventArgs e)
+        {
+            levelForGenerator--;
+            if (levelForGenerator < 0) { levelForGenerator = 0; }
+            levelLabel.Content = levelForGenerator.ToString();
         }
 
         private void levelDownButtonClick_Click(object sender, RoutedEventArgs e)
         {
             level--;
             if (level < 0) { level = 0; }
-            levelLabel.Content = level.ToString();
+            labelLavelForGame.Content = "Уровень: " + level;
+        }
+
+        private void levelUpButtonClick_Click(object sender, RoutedEventArgs e)
+        {
+            level++;
+            if (level >= 6) { level = 0; }
+            labelLavelForGame.Content = "Уровень: " + level;
         }
     }
 }

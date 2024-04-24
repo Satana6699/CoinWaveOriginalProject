@@ -6,15 +6,138 @@
         xmlns:local="clr-namespace:Coin_Wave"
         mc:Ignorable="d"
         Title="MainWindow" Height="600" Width="1000">
+    <Window.Resources>
+
+        <!-- Стиль для кнопки играть -->
+        <Style x:Key="CustomButtonStyle" TargetType="Button">
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="Black" Offset="0"/>
+                        <GradientStop Color="#FF0055FF" Offset="1"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="BorderBrush" Value="#FF0055FF"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Foreground" Value="Yellow"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" CornerRadius="10" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="RenderTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="1.1" ScaleY="1.1"/>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter TargetName="border" Property="RenderTransformOrigin" Value="0.5,0.5"/>
+                                <Setter Property="Foreground" Value="Green"/>
+                                <Setter Property="FontSize" Value="18"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#57D7E3"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+
+
+        <!-- Стиль для генератора -->
+        <Style x:Key="CustomButtonStyle2" TargetType="Button">
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="Black" Offset="0"/>
+                        <GradientStop Color="#FF5500FF" Offset="1"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="BorderBrush" Value="#FF5500FF"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Foreground" Value="Yellow"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border CornerRadius="10" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#FF57D7E3"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Стиль для уровень добавить -->
+        <Style x:Key="CustomButtonStyle3" TargetType="Button">
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="Black" Offset="0"/>
+                        <GradientStop Color="#FF00FF55" Offset="1"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="BorderBrush" Value="#FF00FF55"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Foreground" Value="Yellow"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border CornerRadius="10" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#FF57E357"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+
+
+    </Window.Resources>
     <Grid x:Name="grid">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition Width="0*"/>
-        </Grid.ColumnDefinitions>
-        <Button x:Name="Play_Button" Content="Играть" HorizontalAlignment="Center" Margin="0,489,0,0" VerticalAlignment="Top" Height="47" Width="220" Click="Play_Button_Click"/>
-        <Button Content="Генератор карт" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="37" Width="122" Click="MapGenerator_Click"/>
-        <Label x:Name="levelLabel" Content="0" HorizontalAlignment="Left" Margin="63,52,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="levelDownButtonClick" Content="-" HorizontalAlignment="Left" Margin="10,52,0,0" VerticalAlignment="Top" Height="26" Width="26" FontWeight="Bold" Click="levelDownButtonClick_Click"/>
-        <Button x:Name="levelUpButtonClick" Content="+" HorizontalAlignment="Left" Margin="106,52,0,0" VerticalAlignment="Top" Height="26" Width="26" Click="levelUpButtonClick_Click"/>
+
+        <Grid.Background>
+            <ImageBrush ImageSource="pack://application:,,,/Coin Wave;component/data/dungeon.png"/>
+        </Grid.Background>
+
+        <!-- КНОПКА ИГРАТЬ -->
+        <Button Content="Играть" Style="{StaticResource CustomButtonStyle}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="220" Height="47" Margin="378,484,0,0" Click="Play_Button_Click"/>
+
+
+
+
+
+        <Button Content="Генератор карт" Style="{StaticResource CustomButtonStyle2}" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="37" Width="122" Click="MapGenerator_Click"/>
+        <Button x:Name="levelDownForGenerateButtonClick" Style="{StaticResource CustomButtonStyle2}" Content="-" HorizontalAlignment="Left" Margin="10,52,0,0" VerticalAlignment="Top" Height="26" Width="26" FontWeight="Bold" Click="levelDownForGenerateButtonClick_Click"/>
+        <Button x:Name="levelUpForGenerateButtonClick" Style="{StaticResource CustomButtonStyle2}" Content="+" HorizontalAlignment="Left" Margin="106,52,0,0" VerticalAlignment="Top" Height="26" Width="26" Click="levelUpForGenerateButtonClick_Click"/>
+        <Label x:Name="labelLavelForGame" Content="Уровень: " HorizontalAlignment="Left" Margin="441,449,0,0" VerticalAlignment="Top" Width="113" FontSize="16" Height="30" Foreground="#FF8ACE0B" FontWeight="Bold"/>
+
+
+        <Label x:Name="levelLabel" Content="0" HorizontalAlignment="Left" Margin="63,52,0,0" VerticalAlignment="Top" Height="26" Width="16" Foreground="#FF80C60F"/>
+        <Button x:Name="levelDownButtonClick" Content="-" Style="{StaticResource CustomButtonStyle3}" HorizontalAlignment="Left" Margin="399,453,0,0" VerticalAlignment="Top" Height="26" Width="26" FontWeight="Bold" Click="levelDownButtonClick_Click"/>
+        <Button x:Name="levelUpButtonClick" Content="+" Style="{StaticResource CustomButtonStyle3}" HorizontalAlignment="Left" Margin="559,453,0,0" VerticalAlignment="Top" Height="26" Width="26" Click="levelUpButtonClick_Click"/>
     </Grid>
 </Window>

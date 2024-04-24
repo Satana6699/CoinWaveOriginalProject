@@ -17,6 +17,9 @@ namespace Coin_Wave_Lib
         public bool levelIsComplieted = false;
         // --- Данные для родительского окна---
 
+        string filePathFirstLayer;
+        string filePathSecondLayer;
+
 
         KeyboardState currentKeyboardState;
         private float frameTime = 0.0f;
@@ -36,9 +39,6 @@ namespace Coin_Wave_Lib
 
         List<TrapFire> trapFires = new List<TrapFire>(0);
         List<Thorn> thorns = new List<Thorn>(0);
-
-        string filePathFirstLayer;
-        string filePathSecondLayer;
         public CoinWaveWindow(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings, string fileFirst, string fileSecond)
             : base(gameWindowSettings, nativeWindowSettings)
         {

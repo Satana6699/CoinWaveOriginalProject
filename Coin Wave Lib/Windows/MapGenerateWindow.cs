@@ -28,7 +28,6 @@ namespace Coin_Wave_Lib
         private int fps = 0;
         int frameCounter = 0;
         int layer = 1;
-        private int level = 0;
         // размер карты 34 на 18 и разрешение экрана 1920 на 1080
         private (int width, int height) sidesMaps = (32, 18);
         private bool IsTherePlayer = false;
@@ -56,7 +55,11 @@ namespace Coin_Wave_Lib
         Texture textureLayerInt;
         bool ifSaved;
         int procentHealth = 100;
-        public MapGenerateWindow(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings, int level)
+
+
+        string filePathFirstLayer;
+        string filePathSecondLayer;
+        public MapGenerateWindow(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings, string filePathFirstLayer, string filePathSecondLayer)
             : base(gameWindowSettings, nativeWindowSettings)
         {
             NameExampleWindow = "Coin Wave Map Generator";
@@ -68,7 +71,8 @@ namespace Coin_Wave_Lib
             Console.WriteLine(GL.GetString(StringName.ShadingLanguageVersion));
 
             VSync = VSyncMode.On;
-            this.level = level;
+            this.filePathFirstLayer = filePathFirstLayer;
+            this.filePathSecondLayer = filePathSecondLayer;
         }
         public string NameExampleWindow { private set; get; }
 
@@ -281,9 +285,9 @@ namespace Coin_Wave_Lib
                         }
                     }
 
-                ifSaved = FileSave.SerializeObjectsToXml(temporaryLayers.first.Cast<GameObjectData>().ToArray(), @"data\maps\lvl" + level + @"\first.xml");
+                ifSaved = FileSave.SerializeObjectsToXml(temporaryLayers.first.Cast<GameObjectData>().ToArray(), filePathFirstLayer);
                 if (ifSaved)
-                    ifSaved = FileSave.SerializeObjectsToXml(temporaryLayers.second.Cast<GameObjectData>().ToArray(), @"data\maps\lvl" + level + @"\second.xml");
+                    ifSaved = FileSave.SerializeObjectsToXml(temporaryLayers.second.Cast<GameObjectData>().ToArray(), filePathSecondLayer);
                
             }
             if (ifSaved) ifSaved = save.IsLive((float)args.Time);
