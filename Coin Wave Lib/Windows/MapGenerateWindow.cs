@@ -175,15 +175,9 @@ namespace Coin_Wave_Lib
 
             // Бонусы
             blocksPanel.GenerateMenuElement(typeof(HealthUpBonus).Name, Resources.HealthBonus);
-            blocksPanel.GenerateMenuElement(typeof(SpeedUpBonus).Name, Resources.SpeedBonus);
+            blocksPanel.GenerateMenuElement(typeof(SpeedUpBonus).Name, Resources.SpeedUpBonus);
+            blocksPanel.GenerateMenuElement(typeof(SpeedDownBonus).Name, Resources.SpeedDownBonus);
 
-            //blocksPanel.GenerateMenuElement(typeof(Thorn).Name, Resources.HealthBonus);
-            //blocksPanel.GenerateMenuElement(typeof(TrapFire).Name, Resources.SpeedBonus);
-
-            // Просто так
-            blocksPanel.GenerateMenuElement(typeof(ExitDoor).Name, Resources.SolidWall);
-            blocksPanel.GenerateMenuElement(typeof(Dragon).Name, Resources.SolidWall);
-            blocksPanel.GenerateMenuElement(typeof(Monkey).Name, Resources.SolidWall);
 
             _textureCurrentPosition = Texture.LoadFromFile(@"data\textureForInterface\redsqrt.png");
             blocksPanel.GenerateTexturViborObj(_textureCurrentPosition);
@@ -311,7 +305,7 @@ namespace Coin_Wave_Lib
             foreach (EmptyElement eE in _emptyElements) eE.Render();
             foreach (var gO in layers.first) if (gO != null) gO.Render();
             foreach (var gO in layers.second) if (gO != null) gO.Render();
-            foreach (var interfaceObj in interfaceObjects) if (interfaceObj != null) interfaceObj.Render();
+            //foreach (var interfaceObj in interfaceObjects) if (interfaceObj != null) interfaceObj.Render();
             _currentPosition.Render();
 
             if (keyboardState.current.IsKeyDown(Keys.LeftShift))

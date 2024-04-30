@@ -31,10 +31,5 @@ namespace Coin_Wave_Lib
         {
             return new double[] { X, Y, Z };
         }
-
-        public object Clone()
-        {
-            return new Point(X, Y, Z);
-        }
     }
 }

@@ -15,7 +15,7 @@ namespace Coin_Wave_Lib
         Right,
         Left,
     }
-    public abstract class Monster : DynamicObject, IObjectCore, IGameCore, IDynamic
+    public abstract class Monster : DynamicObject, IDynamic
     {
         public MoveHelper viewDirection = MoveHelper.Right;
         public int Damage { get; set; }
@@ -27,7 +27,7 @@ namespace Coin_Wave_Lib
 
         public void Move((GameObject[,] first, GameObject[,] second) layers, List<DynamicObject> dynamicObjects)
         {
-            (int x, int y) index = (0,0);
+            (int x, int y) index = (0, 0);
             switch (viewDirection)
             {
                 case MoveHelper.Down:

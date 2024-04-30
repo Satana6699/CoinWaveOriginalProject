@@ -91,21 +91,5 @@ namespace Coin_Wave_Lib
                      (other.TopLeft.Y - other.GetHeight() * correctNum) < BottomLeft.Y ||
                      (other.BottomLeft.Y + other.GetHeight() * correctNum) > TopLeft.Y);
         }
-
-        public void MoveX(double X)
-        {
-            foreach (var point in Points)
-            {
-                point.X += X;
-            }
-        }
-
-        public void MoveY(double Y)
-        {
-            foreach (var point in Points)
-            {
-                point.Y += Y;
-            }
-        }
     }
 }

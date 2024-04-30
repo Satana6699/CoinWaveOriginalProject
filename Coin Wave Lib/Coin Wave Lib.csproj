@@ -63,9 +63,6 @@
     <None Update="data\maps\Ознакомительный\second.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="data\textureForGame\texMapFalse.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Update="data\textureForGame\texMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

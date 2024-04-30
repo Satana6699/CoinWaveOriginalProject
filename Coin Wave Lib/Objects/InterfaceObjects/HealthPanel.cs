@@ -17,7 +17,7 @@ namespace Coin_Wave_Lib.Objects.InterfaceObjects
         }
         public HealthPanel()
         {
-            
+
         }
 
         public void RealTexturePoints(int procentHP)
@@ -28,10 +28,10 @@ namespace Coin_Wave_Lib.Objects.InterfaceObjects
             if (procentHP <= 100 && procentHP >= 0)
             {
                 double posS = FoolTexturePoinys[0].S + (100 - procentHP) * unitS;
-                RectangleWithTexture.TexturePoints[0] = new (posS, RectangleWithTexture.TexturePoints[0].T);
-                RectangleWithTexture.TexturePoints[1] = new (posS + width, RectangleWithTexture.TexturePoints[1].T);
-                RectangleWithTexture.TexturePoints[2] = new (posS + width, RectangleWithTexture.TexturePoints[2].T);
-                RectangleWithTexture.TexturePoints[3] = new (posS, RectangleWithTexture.TexturePoints[3].T);
+                RectangleWithTexture.TexturePoints[0] = new(posS, RectangleWithTexture.TexturePoints[0].T);
+                RectangleWithTexture.TexturePoints[1] = new(posS + width, RectangleWithTexture.TexturePoints[1].T);
+                RectangleWithTexture.TexturePoints[2] = new(posS + width, RectangleWithTexture.TexturePoints[2].T);
+                RectangleWithTexture.TexturePoints[3] = new(posS, RectangleWithTexture.TexturePoints[3].T);
             }
         }
     }

@@ -25,6 +25,7 @@ namespace Coin_Wave_Lib
         private float frameTime = 0.0f;
         private float timerForTraps = 0f;
         private float timerSpeedUpBonus = 0f;
+        private float timerSpeedDownBonus = 0f;
         private int fps = 0;
         private int countCoinInTheLevel = 0;
         private (int widht, int hidth) sides = (32, 18);
@@ -106,6 +107,17 @@ namespace Coin_Wave_Lib
             {
                 player.SetSpeed(speedObj);
                 timerSpeedUpBonus = 0f;
+            }
+
+            if (timerSpeedDownBonus >= 0.1f)
+            {
+                timerSpeedDownBonus -= (float)args.Time;
+            }
+
+            if (timerSpeedDownBonus >= 0.1 && timerSpeedDownBonus <= 0.2 && player.ContinueMove())
+            {
+                player.SetSpeed(speedObj);
+                timerSpeedDownBonus = 0f;
             }
 
             UpdateHealthPanel();
@@ -248,12 +260,17 @@ namespace Coin_Wave_Lib
         {
             if (layers.second[_numObj.y, _numObj.x] is ICollectable)
             {
-                if (layers.second[_numObj.y, _numObj.x] is Coin) 
+                if (layers.second[_numObj.y, _numObj.x] is Coin)
                     player.ColletCoins(1);
                 if (layers.second[_numObj.y, _numObj.x] is SpeedUpBonus)
                 {
                     timerSpeedUpBonus = 5f;
                     player.SetSpeed(speedObj/2);
+                }
+                if (layers.second[_numObj.y, _numObj.x] is SpeedDownBonus)
+                {
+                    timerSpeedDownBonus = 5f;
+                    player.SetSpeed(speedObj*2);
                 }
                 if (layers.second[_numObj.y, _numObj.x] is HealthUpBonus)
                     player.Heal(50);

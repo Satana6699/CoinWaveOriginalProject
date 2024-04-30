@@ -37,6 +37,7 @@ namespace Coin_Wave_Lib
 
                 // Бонусы
                 "SpeedUpBonus" => new SpeedUpFactory(n, rwc, t, i),
+                "SpeedDownBonus" => new SpeedDownFactory(n, rwc, t, i),
                 "HealthUpBonus" => new HealthUpFactory(n, rwc, t, i),
 
                 // Воздух

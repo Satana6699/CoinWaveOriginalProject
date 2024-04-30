@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Coin_Wave_Lib
 {
-    public class BackWall : GameObject, IObjectCore, IGameCore
+    public class BackWall : GameObject
     {
         public BackWall()
         {

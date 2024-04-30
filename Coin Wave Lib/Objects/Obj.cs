@@ -45,32 +45,6 @@ namespace Coin_Wave_Lib
             Vertices = vertices;
             return vertices;
         }
-        public static double[] GetVertices(Obj[] objects, int offset)
-        {
-            // Предварительно вычисляем общее количество вершин
-            int totalVertices = objects.Sum(obj => obj.RectangleWithTexture.Rectangle.Points.Length);
-
-            // Создаем один массив для всех вершин
-            double[] vertices = new double[totalVertices * offset];
-
-            // Индекс для отслеживания текущей позиции в массиве вершин
-            int vertexIndex = 0;
-
-            foreach (var obj in objects)
-            {
-                int numPoints = obj.RectangleWithTexture.Rectangle.Points.Length;
-                for (int i = 0; i < numPoints; i++)
-                {
-                    vertices[vertexIndex] = obj.RectangleWithTexture.Rectangle.Points[i].X;
-                    vertices[vertexIndex + 1] = obj.RectangleWithTexture.Rectangle.Points[i].Y;
-                    vertices[vertexIndex + 2] = obj.RectangleWithTexture.Rectangle.Points[i].Z;
-                    vertices[vertexIndex + 3] = obj.RectangleWithTexture.TexturePoints[i].S;
-                    vertices[vertexIndex + 4] = obj.RectangleWithTexture.TexturePoints[i].T;
-                    vertexIndex += offset;
-                }
-            }
-            return vertices;
-        }
         public void SetPoints(Rectangle rctng) => RectangleWithTexture.Rectangle = new(rctng.TopLeft, rctng.GetWidth(), rctng.GetHeight());
         public void SetPoints(Point leftTop, double width, double heidth) => RectangleWithTexture.Rectangle = new Rectangle(leftTop, width, heidth);
         public void SetTexturePoints(TexturePoint[] texturePoints) =>  RectangleWithTexture.TexturePoints = texturePoints;

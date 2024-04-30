@@ -21,7 +21,7 @@ namespace Coin_Wave
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class CoinWaveWindow : Window
     {
         int levelForGenerator = 0;
         int level = 0;
@@ -30,7 +30,7 @@ namespace Coin_Wave
         // размер карты 34 на 15
         private int _windowSizeX = 34;
         private int _windowSizeY = 15;
-        public MainWindow()
+        public CoinWaveWindow()
         {
             InitializeComponent();
             Loaded += MainWindow_Loaded;
@@ -39,6 +39,7 @@ namespace Coin_Wave
         private void MainWindow_Loaded(object? sender, RoutedEventArgs e)
         {
             labelLavelForGame.Content = "Уровень: " + level;
+            levelEndCanvas.Visibility = Visibility.Collapsed;
         }
 
         private void Play_Button_Click(object sender, RoutedEventArgs e)
@@ -62,13 +63,24 @@ namespace Coin_Wave
 
             string fileFirst = @"..\..\..\..\Coin Wave Lib\data\maps\lvl" + level + @"\first.xml";
             string fileSecond = @"..\..\..\..\Coin Wave Lib\data\maps\lvl" + level + @"\second.xml";
-            CoinWaveWindow game = new CoinWaveWindow(GameWindowSettings.Default, nativeWinSettings, fileFirst, fileSecond);
+            Coin_Wave_Lib.CoinWaveWindow game = new Coin_Wave_Lib.CoinWaveWindow(GameWindowSettings.Default, nativeWinSettings, fileFirst, fileSecond);
             using (game)
             {
                 game.Run();
             }
 
-            MessageBox.Show(game.MESSAGE);
+            levelEndLabel.Content = game.MESSAGE;
+            levelEndCanvas.Visibility = Visibility.Visible;
+
+            foreach (var child in ((Grid)Content).Children)
+            {
+                if (child is UIElement uiElement && uiElement != levelEndCanvas)
+                {
+                    uiElement.IsEnabled = false;
+                }
+            }
+            levelEndCanvas.IsEnabled = true;
+
             if (game.levelIsComplieted)
             {
                 level++;
@@ -127,6 +139,19 @@ namespace Coin_Wave
             level++;
             if (level >= 6) { level = 0; }
             labelLavelForGame.Content = "Уровень: " + level;
+        }
+
+        private void levelEndButton_Click(object sender, RoutedEventArgs e)
+        {
+            levelEndCanvas.Visibility = Visibility.Collapsed;
+            foreach (var child in ((Grid)Content).Children)
+            {
+                if (child is UIElement uiElement && uiElement != levelEndCanvas)
+                {
+                    uiElement.IsEnabled = true;
+                }
+            }
+            levelEndCanvas.IsEnabled = false;
         }
     }
 }

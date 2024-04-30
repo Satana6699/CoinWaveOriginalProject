@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Coin_Wave_Lib
 {
-    public class Player : DynamicObject, IObjectCore, IGameCore
+    public class Player : DynamicObject
     {
         public int CountCoins { get; private set; } = 0;
         public override string Name { get => typeof(Player).Name; set { } }
@@ -18,13 +18,13 @@ namespace Coin_Wave_Lib
         {
             HealthPoint = MaxHealthPoint;
         }
-        
+
         public void ColletCoins(int coins)
         {
             CountCoins += coins;
         }
 
-        public void Damage(int damage) 
+        public void Damage(int damage)
         {
             HealthPoint -= damage;
         }

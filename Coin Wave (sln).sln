@@ -12,7 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Консольный проектик", "Консольный проектик\Консольный проектик.csproj", "{C0FB7EE9-A1AB-48C7-BA06-903FE8949A1D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestsCoinWave", "UnitTestsCoinWave\UnitTestsCoinWave.csproj", "{A62E58D1-3430-4B55-BE45-E5F9A576A4AF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -28,10 +28,10 @@ Global
 		{EC4C8D3A-E726-4CF3-8945-05B1D78C5012}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EC4C8D3A-E726-4CF3-8945-05B1D78C5012}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EC4C8D3A-E726-4CF3-8945-05B1D78C5012}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C0FB7EE9-A1AB-48C7-BA06-903FE8949A1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C0FB7EE9-A1AB-48C7-BA06-903FE8949A1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C0FB7EE9-A1AB-48C7-BA06-903FE8949A1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C0FB7EE9-A1AB-48C7-BA06-903FE8949A1D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A62E58D1-3430-4B55-BE45-E5F9A576A4AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A62E58D1-3430-4B55-BE45-E5F9A576A4AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A62E58D1-3430-4B55-BE45-E5F9A576A4AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A62E58D1-3430-4B55-BE45-E5F9A576A4AF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

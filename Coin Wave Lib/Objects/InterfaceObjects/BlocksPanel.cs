@@ -96,7 +96,7 @@ namespace Coin_Wave_Lib
                     new RectangleWithTexture
                     (
                         new Rectangle(RectangleWithTexture.Rectangle.TopLeft, 0, 0),
-                        [new TexturePoint(0,1), new TexturePoint(1, 1), new TexturePoint(1, 0), new TexturePoint(0, 0)]
+                        [new TexturePoint(0, 1), new TexturePoint(1, 1), new TexturePoint(1, 0), new TexturePoint(0, 0)]
                     ),
                     texture
                 );
@@ -105,13 +105,28 @@ namespace Coin_Wave_Lib
         {
             if (MenuElements[index] == null)
                 return;
-            double percanteX = 0.03;
-            double percanteY = 0.08;
-            double xPos = MenuElements[index].GetRectangle().TopLeft.X - Math.Abs(MenuElements[index].GetRectangle().TopLeft.X * percanteX);
-            double yPos = MenuElements[index].GetRectangle().TopLeft.Y + Math.Abs(MenuElements[index].GetRectangle().TopLeft.Y * percanteY);
-            double width = MenuElements[index].GetRectangle().GetWidth() * 1.1;
-            double hidth = MenuElements[index].GetRectangle().GetHeight() * 1.1;
-            choiceObj.SetPoints(new Rectangle(new Point(xPos, yPos, zPos), width, hidth));
+            double percante = 0.08;
+            //double xPos = MenuElements[index].GetRectangle().TopLeft.X - Math.Abs(MenuElements[index].GetRectangle().TopLeft.X * percanteX);
+            //double yPos = MenuElements[index].GetRectangle().TopLeft.Y + Math.Abs(MenuElements[index].GetRectangle().TopLeft.Y * percanteY);
+            //double width = MenuElements[index].GetRectangle().GetWidth() * 1.1;
+            //double hidth = MenuElements[index].GetRectangle().GetHeight() * 1.1;
+
+            // --- Top Left ---
+            choiceObj.RectangleWithTexture.Rectangle.TopLeft.X = MenuElements[index].GetRectangle().TopLeft.X - MenuElements[index].GetRectangle().GetWidth() * percante;
+            choiceObj.RectangleWithTexture.Rectangle.TopLeft.Y = MenuElements[index].GetRectangle().TopLeft.Y + MenuElements[index].GetRectangle().GetHeight() * percante;
+
+            // --- Top Right ---
+            choiceObj.RectangleWithTexture.Rectangle.TopRight.X = MenuElements[index].GetRectangle().TopRight.X + MenuElements[index].GetRectangle().GetWidth() * percante;
+            choiceObj.RectangleWithTexture.Rectangle.TopRight.Y = MenuElements[index].GetRectangle().TopRight.Y + MenuElements[index].GetRectangle().GetHeight() * percante;
+
+            // --- Bottom Right ---
+            choiceObj.RectangleWithTexture.Rectangle.BottomRight.X = MenuElements[index].GetRectangle().BottomRight.X + MenuElements[index].GetRectangle().GetWidth() * percante;
+            choiceObj.RectangleWithTexture.Rectangle.BottomRight.Y = MenuElements[index].GetRectangle().BottomRight.Y - MenuElements[index].GetRectangle().GetHeight() * percante;
+
+            // --- Bottom Left ---
+            choiceObj.RectangleWithTexture.Rectangle.BottomLeft.X = MenuElements[index].GetRectangle().BottomLeft.X - MenuElements[index].GetRectangle().GetWidth() * percante;
+            choiceObj.RectangleWithTexture.Rectangle.BottomLeft.Y = MenuElements[index].GetRectangle().BottomLeft.Y - MenuElements[index].GetRectangle().GetHeight() * percante;
+            //choiceObj.SetPoints(new Rectangle(new Point(xPos, yPos, zPos), width, hidth));
         }
         public void CountDimensions()
         {

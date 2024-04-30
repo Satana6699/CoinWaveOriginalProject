@@ -1,0 +1,701 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Coin_Wave_Lib.AirFactory" Collapsed="true">
+    <Position X="32" Y="19.5" Width="1.5" />
+    <InheritanceLine Type="Coin_Wave_Lib.GameObjectFactory" FixedToPoint="true">
+      <Path>
+        <Point X="31.5" Y="12.941" />
+        <Point X="31.5" Y="19.875" />
+        <Point X="32" Y="19.875" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>Objects\Factories\ConcreteFactory\AirFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Coin_Wave_Lib.PlayerFactory" Collapsed="true">
+    <Position X="32" Y="17.5" Width="1.5" />
+    <InheritanceLine Type="Coin_Wave_Lib.GameObjectFactory" FixedToPoint="true">
+      <Path>
+        <Point X="31.5" Y="12.941" />
+        <Point X="31.5" Y="17.75" />
+        <Point X="32" Y="17.75" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>Objects\Factories\ConcreteFactory\PlayerFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Coin_Wave_Lib.GameObjectFactory" Collapsed="true">
+    <Position X="30.75" Y="12.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAQAAIAAAAAAgAAAAAAAAACAAAAgAAAAAAAA=</HashCode>
+      <FileName>Objects\Factories\GameObjectFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Coin_Wave_Lib.ObjectFactory" Collapsed="true">
+    <Position X="30.75" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAIAAAAAAAAACAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Objects\Factories\ObjectFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Coin_Wave_Lib.Dragon" Collapsed="true">
+    <Position X="6.75" Y="33" Width="1.5" />
+    <InheritanceLine Type="Coin_Wave_Lib.Monster" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="9.25" Y="30.691" />
+        <Point X="9.25" Y="33.375" />
+        <Point X="8.25" Y="33.375" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Objects\GameObjects\DynamicEntity\Dragon.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Coin_Wave_Lib.Monkey" Collapsed="true">
+    <Position X="6.75" Y="32" Width="1.5" />
+    <InheritanceLine Type="Coin_Wave_Lib.Monster" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="9.25" Y="30.691" />
+        <Point X="9.25" Y="32.375" />
+        <Point X="8.25" Y="32.375" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Objects\GameObjects\DynamicEntity\Monkey.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Coin_Wave_Lib.Monster" Collapsed="true">
+    <Position X="8.5" Y="30" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAIAAAAAAAAAAAAAAAAAJAAAAAIAAAAAAAAA=</HashCode>
+      <FileName>Objects\GameObjects\DynamicEntity\Monster.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Orientation="Bottom" Position="0.105" />
+  </Class>
+  <Class Name="Coin_Wave_Lib.Stone" Collapsed="true">
+    <Position X="10.5" Y="30" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Objects\GameObjects\DynamicEntity\Stone.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Orientation="Bottom" Position="0.2" />
+  </Class>
+  <Class Name="Coin_Wave_Lib.Air" Collapsed="true">
+    <Position X="17.75" Y="28.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Objects\GameObjects\NoSolidObjects\Air.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Coin_Wave_Lib.BackWall" Collapsed="true">
+    <Position X="10.25" Y="28.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Objects\GameObjects\NoSolidObjects\BackWall.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Coin_Wave_Lib.GameObjectData" Collapsed="true">
+    <Position X="12" Y="28.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>FileOperations\GameObjectData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Coin_Wave_Lib.Player" Collapsed="true">
+    <Position X="6.5" Y="30" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAQAQAAACAAAAAAAQAAAAAAAACAAAAAAAAAAE=</HashCode>
+      <FileName>Objects\GameObjects\Player\Player.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Coin_Wave_Lib.Coin" Collapsed="true">
+    <Position X="18" Y="31" Width="1.5" />
+    <InheritanceLine Type="Coin_Wave_Lib.SolidObject" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="20.25" Y="29.191" />
+        <Point X="20.25" Y="31.312" />
+        <Point X="19.5" Y="31.312" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Objects\GameObjects\SolidObjects\Coin.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Orientation="Bottom" Position="0.1" />
+  </Class>
+  <Class Name="Coin_Wave_Lib.SolidObject" Collapsed="true">
+    <Position X="19.5" Y="28.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Objects\GameObjects\SolidObjects\SolidObject.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Coin_Wave_Lib.SolidWall" Collapsed="true">
+    <Position X="18" Y="30" Width="1.5" />
+    <InheritanceLine Type="Coin_Wave_Lib.SolidObject" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="20.25" Y="29.191" />
+        <Point X="20.25" Y="30.375" />
+        <Point X="19.5" Y="30.375" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Objects\GameObjects\SolidObjects\SolidWall.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Coin_Wave_Lib.Fire" Collapsed="true">
+    <Position X="14.75" Y="31" Width="1.5" />
+    <InheritanceLine Type="Coin_Wave_Lib.Trap" FixedToPoint="true">
+      <Path>
+        <Point X="16.75" Y="29.191" />
+        <Point X="16.75" Y="31.312" />
+        <Point X="16.25" Y="31.312" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAABAAABAAAAAAAQAAAAAAAAAAAAQAAAAAAA=</HashCode>
+      <FileName>Objects\GameObjects\Traps\Fire.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Coin_Wave_Lib.Thorn" Collapsed="true">
+    <Position X="14.75" Y="32" Width="1.5" />
+    <InheritanceLine Type="Coin_Wave_Lib.Trap" FixedToPoint="true">
+      <Path>
+        <Point X="16.75" Y="29.191" />
+        <Point X="16.75" Y="32.375" />
+        <Point X="16.25" Y="32.375" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAABAAABAAAAAEAQAAAAAAAAAAAAQAAAAAAA=</HashCode>
+      <FileName>Objects\GameObjects\Traps\Thorn.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Coin_Wave_Lib.Trap" Collapsed="true">
+    <Position X="16" Y="28.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Objects\GameObjects\Traps\Trap.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Coin_Wave_Lib.TrapFire" Collapsed="true">
+    <Position X="14.75" Y="33" Width="1.5" />
+    <InheritanceLine Type="Coin_Wave_Lib.Trap" FixedToPoint="true">
+      <Path>
+        <Point X="16.75" Y="29.191" />
+        <Point X="16.75" Y="33.375" />
+        <Point X="16.25" Y="33.375" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAAgAAAAAIAAQAAEAAAAAAABAEAAAAAIA=</HashCode>
+      <FileName>Objects\GameObjects\Traps\TrapFire.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Coin_Wave_Lib.DynamicObject" Collapsed="true">
+    <Position X="8.5" Y="28.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAAAAAAAAAARAAAAAEAAAAQAAAAAAAAQI=</HashCode>
+      <FileName>Objects\GameObjects\DynamicObject.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Orientation="Left" Position="0.1" />
+  </Class>
+  <Class Name="Coin_Wave_Lib.GameObject" Collapsed="true">
+    <Position X="18.25" Y="24.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAEAAAAAAAA=</HashCode>
+      <FileName>Objects\GameObjects\GameObject.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Orientation="Left" Position="0.1" />
+  </Class>
+  <Class Name="Coin_Wave_Lib.BlocksPanel" Collapsed="true">
+    <Position X="12.5" Y="26" Width="1.5" />
+    <InheritanceLine Type="Coin_Wave_Lib.InterfaceObject" FixedFromPoint="true">
+      <Path>
+        <Point X="11.5" Y="25.191" />
+        <Point X="11.5" Y="25.625" />
+        <Point X="13.25" Y="25.625" />
+        <Point X="13.25" Y="26" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AgAAQAAAAAAIAAAQAAAghAQAAEIEAIAAQAAAAQQAACA=</HashCode>
+      <FileName>Objects\InterfaceObjects\BlocksPanel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Coin_Wave_Lib.ChoiceObj" Collapsed="true">
+    <Position X="10" Y="26" Width="1.5" />
+    <InheritanceLine Type="Coin_Wave_Lib.InterfaceObject" FixedFromPoint="true">
+      <Path>
+        <Point X="11.5" Y="25.191" />
+        <Point X="11.5" Y="25.625" />
+        <Point X="10.75" Y="25.625" />
+        <Point X="10.75" Y="26" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Objects\InterfaceObjects\ChoiceObj.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Coin_Wave_Lib.InterfaceObject" Collapsed="true">
+    <Position X="10.75" Y="24.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Objects\InterfaceObjects\InterfaceObject.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Coin_Wave_Lib.Obj" Collapsed="true">
+    <Position X="12.5" Y="23.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAEAIwAAAAAAAAAAAAQAAAAIAEAIEBIAAAAAQEA=</HashCode>
+      <FileName>Objects\Obj.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.1" />
+  </Class>
+  <Class Name="Coin_Wave_Lib.Objects.Factories.ConcreteFactory.BackWallFactory" Collapsed="true">
+    <Position X="29.5" Y="19.75" Width="1.5" />
+    <InheritanceLine Type="Coin_Wave_Lib.GameObjectFactory" FixedToPoint="true">
+      <Path>
+        <Point X="31.5" Y="12.941" />
+        <Point X="31.5" Y="20.125" />
+        <Point X="31" Y="20.125" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>Objects\Factories\ConcreteFactory\BackWallFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Coin_Wave_Lib.Objects.Factories.ConcreteFactory.ChestFactory" Collapsed="true">
+    <Position X="32" Y="18.5" Width="1.5" />
+    <InheritanceLine Type="Coin_Wave_Lib.GameObjectFactory" FixedToPoint="true">
+      <Path>
+        <Point X="31.5" Y="12.941" />
+        <Point X="31.5" Y="18.812" />
+        <Point X="32" Y="18.812" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>Objects\Factories\ConcreteFactory\ChestFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Coin_Wave_Lib.Objects.Factories.ConcreteFactory.CoinFactory" Collapsed="true">
+    <Position X="32" Y="16.5" Width="1.5" />
+    <InheritanceLine Type="Coin_Wave_Lib.GameObjectFactory" FixedToPoint="true">
+      <Path>
+        <Point X="31.5" Y="12.941" />
+        <Point X="31.5" Y="16.812" />
+        <Point X="32" Y="16.812" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>Objects\Factories\ConcreteFactory\CoinFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Coin_Wave_Lib.Objects.Factories.ConcreteFactory.DragonFactory" Collapsed="true">
+    <Position X="34.5" Y="14.75" Width="1.5" />
+    <InheritanceLine Type="Coin_Wave_Lib.Objects.Factories.DynamicFactory" FixedToPoint="true">
+      <Path>
+        <Point X="34" Y="14.191" />
+        <Point X="34" Y="15.125" />
+        <Point X="34.5" Y="15.125" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>Objects\Factories\ConcreteFactory\DragonFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Coin_Wave_Lib.Objects.Factories.ConcreteFactory.ExitDoorFactory" Collapsed="true">
+    <Position X="27" Y="16" Width="1.5" />
+    <InheritanceLine Type="Coin_Wave_Lib.Objects.Factories.SolidObjectFactory" FixedToPoint="true">
+      <Path>
+        <Point X="29.25" Y="14.191" />
+        <Point X="29.25" Y="16.438" />
+        <Point X="28.5" Y="16.438" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>Objects\Factories\ConcreteFactory\ExitDoorFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Coin_Wave_Lib.Objects.Factories.ConcreteFactory.FireWheelFactory" Collapsed="true">
+    <Position X="29.5" Y="14.75" Width="1.5" />
+    <InheritanceLine Type="Coin_Wave_Lib.GameObjectFactory" FixedToPoint="true">
+      <Path>
+        <Point X="31.5" Y="12.941" />
+        <Point X="31.5" Y="15.062" />
+        <Point X="31" Y="15.062" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>Objects\Factories\ConcreteFactory\FireWheelFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Coin_Wave_Lib.Objects.Factories.ConcreteFactory.HealthUpFactory" Collapsed="true">
+    <Position X="29.5" Y="15.75" Width="1.5" />
+    <InheritanceLine Type="Coin_Wave_Lib.GameObjectFactory" FixedToPoint="true">
+      <Path>
+        <Point X="31.5" Y="12.941" />
+        <Point X="31.5" Y="16.125" />
+        <Point X="31" Y="16.125" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>Objects\Factories\ConcreteFactory\HealthUp.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Coin_Wave_Lib.Objects.Factories.ConcreteFactory.MonkeyFactory" Collapsed="true">
+    <Position X="29.5" Y="17.75" Width="1.5" />
+    <InheritanceLine Type="Coin_Wave_Lib.GameObjectFactory" FixedToPoint="true">
+      <Path>
+        <Point X="31.5" Y="12.941" />
+        <Point X="31.5" Y="18.125" />
+        <Point X="31" Y="18.125" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>Objects\Factories\ConcreteFactory\MonkeyFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Coin_Wave_Lib.Objects.Factories.ConcreteFactory.MonsterFactory" Collapsed="true">
+    <Position X="29.5" Y="20.75" Width="1.5" />
+    <InheritanceLine Type="Coin_Wave_Lib.GameObjectFactory" FixedToPoint="true">
+      <Path>
+        <Point X="31.5" Y="12.941" />
+        <Point X="31.5" Y="21.125" />
+        <Point X="31" Y="21.125" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Objects\Factories\ConcreteFactory\MonsterFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Coin_Wave_Lib.Objects.Factories.ConcreteFactory.SolidWallFactory" Collapsed="true">
+    <Position X="27" Y="17" Width="1.5" />
+    <InheritanceLine Type="Coin_Wave_Lib.Objects.Factories.SolidObjectFactory" FixedToPoint="true">
+      <Path>
+        <Point X="29.25" Y="14.191" />
+        <Point X="29.25" Y="17.375" />
+        <Point X="28.5" Y="17.375" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>Objects\Factories\ConcreteFactory\SolidWallFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Coin_Wave_Lib.Objects.Factories.ConcreteFactory.SpeedDownFactory" Collapsed="true">
+    <Position X="32" Y="15.5" Width="1.5" />
+    <InheritanceLine Type="Coin_Wave_Lib.GameObjectFactory" FixedToPoint="true">
+      <Path>
+        <Point X="31.5" Y="12.941" />
+        <Point X="31.5" Y="15.75" />
+        <Point X="32" Y="15.75" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>Objects\Factories\ConcreteFactory\SpeedDownFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Coin_Wave_Lib.Objects.Factories.ConcreteFactory.SpeedUpFactory" Collapsed="true">
+    <Position X="32" Y="14.5" Width="1.5" />
+    <InheritanceLine Type="Coin_Wave_Lib.GameObjectFactory" FixedToPoint="true">
+      <Path>
+        <Point X="31.5" Y="12.941" />
+        <Point X="31.5" Y="14.812" />
+        <Point X="32" Y="14.812" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>Objects\Factories\ConcreteFactory\SpeedUbFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Coin_Wave_Lib.Objects.Factories.ConcreteFactory.StartDoorFactory" Collapsed="true">
+    <Position X="27" Y="15" Width="1.5" />
+    <InheritanceLine Type="Coin_Wave_Lib.Objects.Factories.SolidObjectFactory" FixedToPoint="true">
+      <Path>
+        <Point X="29.25" Y="14.191" />
+        <Point X="29.25" Y="15.438" />
+        <Point X="28.5" Y="15.438" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>Objects\Factories\ConcreteFactory\StartDoorFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Coin_Wave_Lib.Objects.Factories.ConcreteFactory.StoneFactory" Collapsed="true">
+    <Position X="34.5" Y="15.75" Width="1.5" />
+    <InheritanceLine Type="Coin_Wave_Lib.Objects.Factories.DynamicFactory" FixedToPoint="true">
+      <Path>
+        <Point X="34" Y="14.191" />
+        <Point X="34" Y="16.125" />
+        <Point X="34.5" Y="16.125" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>Objects\Factories\ConcreteFactory\StoneFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Coin_Wave_Lib.Objects.Factories.ConcreteFactory.ThornFactory" Collapsed="true">
+    <Position X="29.5" Y="16.75" Width="1.5" />
+    <InheritanceLine Type="Coin_Wave_Lib.GameObjectFactory" FixedToPoint="true">
+      <Path>
+        <Point X="31.5" Y="12.941" />
+        <Point X="31.5" Y="17.125" />
+        <Point X="31" Y="17.125" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>Objects\Factories\ConcreteFactory\ThornFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Coin_Wave_Lib.Objects.Factories.ConcreteFactory.TrapFireFactory" Collapsed="true">
+    <Position X="29.5" Y="18.75" Width="1.5" />
+    <InheritanceLine Type="Coin_Wave_Lib.GameObjectFactory" FixedToPoint="true">
+      <Path>
+        <Point X="31.5" Y="12.941" />
+        <Point X="31.5" Y="19.062" />
+        <Point X="31" Y="19.062" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>Objects\Factories\ConcreteFactory\TrapFireFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Coin_Wave_Lib.Objects.Factories.DynamicFactory" Collapsed="true">
+    <Position X="33.25" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Objects\Factories\DynamicFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Coin_Wave_Lib.Objects.Factories.SolidObjectFactory" Collapsed="true">
+    <Position X="28.5" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Objects\Factories\SolidObjectFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Coin_Wave_Lib.Objects.GameObjects.Boneses.Bonus" Collapsed="true">
+    <Position X="13.75" Y="28.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Objects\GameObjects\Boneses\Bonus.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Coin_Wave_Lib.Objects.GameObjects.Boneses.HealthUpBonus" Collapsed="true">
+    <Position X="12" Y="31" Width="1.5" />
+    <InheritanceLine Type="Coin_Wave_Lib.Objects.GameObjects.Boneses.Bonus" FixedToPoint="true">
+      <Path>
+        <Point X="14.5" Y="29.191" />
+        <Point X="14.5" Y="31.375" />
+        <Point X="13.5" Y="31.375" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Objects\GameObjects\Boneses\HealthUpBonus.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Orientation="Bottom" Position="0.1" />
+  </Class>
+  <Class Name="Coin_Wave_Lib.Objects.GameObjects.Boneses.SpeedDownBonus" Collapsed="true">
+    <Position X="12" Y="33" Width="1.5" />
+    <InheritanceLine Type="Coin_Wave_Lib.Objects.GameObjects.Boneses.Bonus" FixedToPoint="true">
+      <Path>
+        <Point X="14.5" Y="29.191" />
+        <Point X="14.5" Y="33.438" />
+        <Point X="13.5" Y="33.438" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Objects\GameObjects\Boneses\SpeedDownBonus.cs</FileName>
+      <NewMemberFileName>Objects\GameObjects\Boneses\SpeedUpBonus.cs</NewMemberFileName>
+    </TypeIdentifier>
+    <Lollipop Orientation="Bottom" Position="0.1" />
+  </Class>
+  <Class Name="Coin_Wave_Lib.Objects.GameObjects.Boneses.SpeedUpBonus" Collapsed="true">
+    <Position X="12" Y="32" Width="1.5" />
+    <InheritanceLine Type="Coin_Wave_Lib.Objects.GameObjects.Boneses.Bonus" FixedToPoint="true">
+      <Path>
+        <Point X="14.5" Y="29.191" />
+        <Point X="14.5" Y="32.375" />
+        <Point X="13.5" Y="32.375" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Objects\GameObjects\Boneses\SpeedUpBonus.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Orientation="Bottom" Position="0.1" />
+  </Class>
+  <Class Name="Coin_Wave_Lib.Objects.GameObjects.DynamicEntity.FireWheel" Collapsed="true">
+    <Position X="6.75" Y="31" Width="1.5" />
+    <InheritanceLine Type="Coin_Wave_Lib.Monster" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="9.25" Y="30.691" />
+        <Point X="9.25" Y="31.375" />
+        <Point X="8.25" Y="31.375" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Objects\GameObjects\DynamicEntity\FireWheel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Coin_Wave_Lib.Objects.InterfaceObjects.CurrentPositionElement" Collapsed="true">
+    <Position X="16" Y="27" Width="1.5" />
+    <InheritanceLine Type="Coin_Wave_Lib.InterfaceObject" FixedFromPoint="true">
+      <Path>
+        <Point X="11.5" Y="25.191" />
+        <Point X="11.5" Y="25.613" />
+        <Point X="16.75" Y="25.613" />
+        <Point X="16.75" Y="27" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Objects\InterfaceObjects\CurrentPositionElement.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Coin_Wave_Lib.Objects.InterfaceObjects.ElementMenu" Collapsed="true">
+    <Position X="15" Y="26" Width="1.5" />
+    <InheritanceLine Type="Coin_Wave_Lib.InterfaceObject" FixedFromPoint="true">
+      <Path>
+        <Point X="11.5" Y="25.191" />
+        <Point X="11.5" Y="25.625" />
+        <Point X="15.75" Y="25.625" />
+        <Point X="15.75" Y="26" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Objects\InterfaceObjects\ElementMenu.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Coin_Wave_Lib.Objects.InterfaceObjects.EmptyElement" Collapsed="true">
+    <Position X="13.75" Y="27" Width="1.5" />
+    <InheritanceLine Type="Coin_Wave_Lib.InterfaceObject" FixedFromPoint="true">
+      <Path>
+        <Point X="11.5" Y="25.191" />
+        <Point X="11.5" Y="25.613" />
+        <Point X="14.5" Y="25.613" />
+        <Point X="14.5" Y="27" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Objects\InterfaceObjects\EmptyElement.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Coin_Wave_Lib.Objects.InterfaceObjects.HealthPanel" Collapsed="true">
+    <Position X="11.25" Y="27" Width="1.5" />
+    <InheritanceLine Type="Coin_Wave_Lib.InterfaceObject" ManuallyRouted="true" FixedFromPoint="true">
+      <Path>
+        <Point X="11.5" Y="25.191" />
+        <Point X="11.5" Y="25.613" />
+        <Point X="12" Y="25.613" />
+        <Point X="12" Y="27" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAAAAAAAAAAAAAAQAAAAAAAAAEAAAAAAAAAA=</HashCode>
+      <FileName>Objects\InterfaceObjects\HealthPanel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Coin_Wave_Lib.Objects.InterfaceObjects.InterfaceConcreteObj" Collapsed="true">
+    <Position X="7.5" Y="26" Width="1.5" />
+    <InheritanceLine Type="Coin_Wave_Lib.InterfaceObject" FixedFromPoint="true">
+      <Path>
+        <Point X="11.5" Y="25.191" />
+        <Point X="11.5" Y="25.625" />
+        <Point X="8.25" Y="25.625" />
+        <Point X="8.25" Y="26" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAgQAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Objects\InterfaceObjects\InterfaceConcreteObj.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Coin_Wave_Lib.Objects.InterfaceObjects.LayerInterface" Collapsed="true">
+    <Position X="8.75" Y="27" Width="1.5" />
+    <InheritanceLine Type="Coin_Wave_Lib.InterfaceObject" FixedFromPoint="true">
+      <Path>
+        <Point X="11.5" Y="25.191" />
+        <Point X="11.5" Y="25.625" />
+        <Point X="9.5" Y="25.625" />
+        <Point X="9.5" Y="27" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Objects\InterfaceObjects\LayerInterface.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="Coin_Wave_Lib.IDynamic" Collapsed="true">
+    <Position X="18.5" Y="23.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Objects\GameObjects\IDynamic.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Coin_Wave_Lib.IGameCore" Collapsed="true">
+    <Position X="10.5" Y="23.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAEAAAAAAAA=</HashCode>
+      <FileName>Objects\GameObjects\IGameObjectCore.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Coin_Wave_Lib.IObjectCore" Collapsed="true">
+    <Position X="8.25" Y="23.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAEAAEAIAAAAAQAA=</HashCode>
+      <FileName>Objects\IObjectCore.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Coin_Wave_Lib.Objects.GameObjects.ICollectable" Collapsed="true">
+    <Position X="14.5" Y="23.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Objects\GameObjects\ICollectable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Coin_Wave_Lib.Objects.GameObjects.IMoveable" Collapsed="true">
+    <Position X="16.5" Y="23.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Objects\GameObjects\IMoveable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="Coin_Wave_Lib.MoveHelper" Collapsed="true">
+    <Position X="21.25" Y="26.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAACACAAAAAAAI=</HashCode>
+      <FileName>Objects\GameObjects\DynamicEntity\Monster.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

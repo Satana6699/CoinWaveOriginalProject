@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Coin_Wave_Lib
 {
-    public class Monkey : Monster, IDynamic
+    public class Monkey : Monster
     {
         public Monkey(RectangleWithTexture rectangleWithTexture, Texture texture, (int x, int y) index, int damage) : base(rectangleWithTexture, texture, index, damage)
         {
