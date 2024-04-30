@@ -8,5 +8,6 @@ namespace Coin_Wave_Lib
 {
     public interface IDynamic
     {
+
     }
 }

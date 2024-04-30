@@ -76,7 +76,6 @@
       <HashCode>AAAAAACAAIAAAAAAAAAAAAAAAAAJAAAAAIAAAAAAAAA=</HashCode>
       <FileName>Objects\GameObjects\DynamicEntity\Monster.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Orientation="Bottom" Position="0.105" />
   </Class>
   <Class Name="Coin_Wave_Lib.Stone" Collapsed="true">
     <Position X="10.5" Y="30" Width="1.5" />
@@ -84,7 +83,6 @@
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Objects\GameObjects\DynamicEntity\Stone.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Orientation="Bottom" Position="0.2" />
   </Class>
   <Class Name="Coin_Wave_Lib.Air" Collapsed="true">
     <Position X="17.75" Y="28.5" Width="1.5" />
@@ -274,20 +272,6 @@
       <FileName>Objects\Factories\ConcreteFactory\BackWallFactory.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Coin_Wave_Lib.Objects.Factories.ConcreteFactory.ChestFactory" Collapsed="true">
-    <Position X="32" Y="18.5" Width="1.5" />
-    <InheritanceLine Type="Coin_Wave_Lib.GameObjectFactory" FixedToPoint="true">
-      <Path>
-        <Point X="31.5" Y="12.941" />
-        <Point X="31.5" Y="18.812" />
-        <Point X="32" Y="18.812" />
-      </Path>
-    </InheritanceLine>
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAA=</HashCode>
-      <FileName>Objects\Factories\ConcreteFactory\ChestFactory.cs</FileName>
-    </TypeIdentifier>
-  </Class>
   <Class Name="Coin_Wave_Lib.Objects.Factories.ConcreteFactory.CoinFactory" Collapsed="true">
     <Position X="32" Y="16.5" Width="1.5" />
     <InheritanceLine Type="Coin_Wave_Lib.GameObjectFactory" FixedToPoint="true">
@@ -314,20 +298,6 @@
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAA=</HashCode>
       <FileName>Objects\Factories\ConcreteFactory\DragonFactory.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="Coin_Wave_Lib.Objects.Factories.ConcreteFactory.ExitDoorFactory" Collapsed="true">
-    <Position X="27" Y="16" Width="1.5" />
-    <InheritanceLine Type="Coin_Wave_Lib.Objects.Factories.SolidObjectFactory" FixedToPoint="true">
-      <Path>
-        <Point X="29.25" Y="14.191" />
-        <Point X="29.25" Y="16.438" />
-        <Point X="28.5" Y="16.438" />
-      </Path>
-    </InheritanceLine>
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAA=</HashCode>
-      <FileName>Objects\Factories\ConcreteFactory\ExitDoorFactory.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Coin_Wave_Lib.Objects.Factories.ConcreteFactory.FireWheelFactory" Collapsed="true">
@@ -426,20 +396,6 @@
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAA=</HashCode>
       <FileName>Objects\Factories\ConcreteFactory\SpeedUbFactory.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="Coin_Wave_Lib.Objects.Factories.ConcreteFactory.StartDoorFactory" Collapsed="true">
-    <Position X="27" Y="15" Width="1.5" />
-    <InheritanceLine Type="Coin_Wave_Lib.Objects.Factories.SolidObjectFactory" FixedToPoint="true">
-      <Path>
-        <Point X="29.25" Y="14.191" />
-        <Point X="29.25" Y="15.438" />
-        <Point X="28.5" Y="15.438" />
-      </Path>
-    </InheritanceLine>
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAA=</HashCode>
-      <FileName>Objects\Factories\ConcreteFactory\StartDoorFactory.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Coin_Wave_Lib.Objects.Factories.ConcreteFactory.StoneFactory" Collapsed="true">

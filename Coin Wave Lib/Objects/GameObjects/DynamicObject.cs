@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Coin_Wave_Lib
 {
-    public abstract class DynamicObject : GameObject, IMoveable
+    public abstract class DynamicObject : GameObject, IMoveable, IDynamic
     {
         public int Time { get; private set; }
         public int FrameTime { get; private set; }

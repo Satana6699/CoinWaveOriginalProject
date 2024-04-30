@@ -17,10 +17,6 @@ namespace Coin_Wave_Lib
                 // Игрок
                 "Player" => new PlayerFactory(n, rwc, t, i),
 
-                // Двери
-                "ExitDoor" => new ExitDoorFactory(n, rwc, t, i),
-                "StartDoor" => new StartDoorFactory(n, rwc, t, i),
-
                 // Стены
                 "SolidWall" => new SolidWallFactory(n, rwc, t, i),
                 "BackWall" => new BackWallFactory(n, rwc, t, i),
@@ -45,7 +41,6 @@ namespace Coin_Wave_Lib
 
                 // Остальное
                 "Coin" => new CoinFactory(n, rwc, t, i),
-                "Chest" => new ChestFactory(n, rwc, t, i),
                 "Stone" => new StoneFactory(n, rwc, t, i),
 
                 // Если объект не определён, тогда создать воздух

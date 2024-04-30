@@ -15,7 +15,7 @@ namespace Coin_Wave_Lib
         Right,
         Left,
     }
-    public abstract class Monster : DynamicObject, IDynamic
+    public abstract class Monster : DynamicObject
     {
         public MoveHelper viewDirection = MoveHelper.Right;
         public int Damage { get; set; }
