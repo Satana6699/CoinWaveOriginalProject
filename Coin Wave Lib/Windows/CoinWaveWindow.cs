@@ -66,7 +66,78 @@ namespace Coin_Wave_Lib
             List<GameObject> gameObjects = new List<GameObject>();
             GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 
-            StartGame();
+            textureForMap = Texture.LoadFromFile(@"data\textureForGame\texMap.png");
+
+            List<GameObject> first = GameObjectsList.CreateListForXml(FileRead.DeserializeObjectsToXml(filePathFirstLayer), textureForMap);
+            List<GameObject> second = GameObjectsList.CreateListForXml(FileRead.DeserializeObjectsToXml(filePathSecondLayer), textureForMap);
+
+            layers.first = new GameObject[sides.hidth, sides.widht];
+            layers.second = new GameObject[sides.hidth, sides.widht];
+
+            textureMap = new TextureMap(Resources.textureMap.Width, Resources.textureMap.Height, 4, textureForMap);
+
+            foreach (GameObject obj in first)
+            {
+                layers.first[obj.Index.y, obj.Index.x] = obj;
+            }
+
+            player = CreateSecondLayer(second);
+            if (player is null) Close(); // Загрыть игру если нет игрока
+
+            player.SetSpeed
+                (
+                    speedObj
+                );
+            _numObj = player.Index;
+
+
+            healthPanel = new HealthPanel
+            (
+                new RectangleWithTexture
+                (
+                    new Rectangle
+                    (
+                        new Point(-0.9, 0.89, 0),
+                        0.4,
+                        0.06
+                    ),
+                    textureMap.GetTexturePoints(Resources.HealthPanel)
+                    ),
+                textureForMap
+            );
+
+            // Поиск огненных ловушек и шипов и монет
+            {
+                foreach (var obj in layers.first)
+                {
+                    if (obj is TrapFire trapFire)
+                    {
+                        trapFire.GenerateFires(textureMap, layers.first);
+                        trapFires.Add(trapFire);
+                    }
+                    if (obj is Thorn thorn)
+                    {
+                        thorns.Add(thorn);
+                    }
+                }
+                foreach (var obj in layers.second)
+                {
+                    if (obj is TrapFire trapFire)
+                    {
+                        trapFire.GenerateFires(textureMap, layers.first);
+                        trapFires.Add(trapFire);
+                    }
+                    if (obj is Thorn thorn)
+                    {
+                        thorns.Add(thorn);
+                    }
+                    if (obj is Coin)
+                    {
+                        countCoinInTheLevel++;
+                    }
+                }
+            }
+            dynamicObjects = DynamicObject.SearchDynamicObjects(layers.second, textureMap, speedObj);
         }
         protected override void OnUpdateFrame(FrameEventArgs args)
         {
@@ -75,13 +146,30 @@ namespace Coin_Wave_Lib
             currentKeyboardState = KeyboardState.GetSnapshot();
 
             // Обновить FPS
-            UpdateFPS(args);
+            frameTime += (float)args.Time;
+            timerForTraps += (float)args.Time;
+            fps++;
+            if (frameTime >= 1.0f)
+            {
+                Title = $"OpenTK {NameExampleWindow} : FPS - {fps}";
+                frameTime = 0.0f;
+                fps = 0;
+            }
 
             // Обновить позицию игрока
             PlayerMove();
 
             // Обновить состояние игрока (его текстуру)
-            PlayerSetTexture();
+            foreach (var obj in dynamicObjects)
+            {
+                if (player.Index == (obj.Index.x, obj.Index.y + 1) && obj is Stone)
+                {
+                    player.SetTexturePoints(textureMap.GetTexturePoints(Resources.PlayerAndStone));
+                    break;
+                }
+                else
+                    player.SetTexturePoints(textureMap.GetTexturePoints(Resources.PlayerDefault));
+            }
 
             //Камень упасть
             FallStone();
@@ -120,7 +208,7 @@ namespace Coin_Wave_Lib
                 timerSpeedDownBonus = 0f;
             }
 
-            UpdateHealthPanel();
+            healthPanel.UpdateBar(player.HealthPoint, player.MaxHealthPoint);
 
             // Проверка на проигрыш
             GameOver();
@@ -129,7 +217,7 @@ namespace Coin_Wave_Lib
             LevelComplieted();
 
             if (currentKeyboardState.IsKeyPressed(Keys.Escape)) Close();
-            if (currentKeyboardState.IsKeyPressed(Keys.R)) player.Damage(99999999);
+            if (currentKeyboardState.IsKeyPressed(Keys.R)) player.Kill();
         }
         protected override void OnRenderFrame(FrameEventArgs args)
         {
@@ -172,21 +260,7 @@ namespace Coin_Wave_Lib
                 timerForTraps = 0;
             }
         }
-        private void PlayerSetTexture()
-        {
-
-            foreach (var obj in dynamicObjects)
-            {
-                if (player.Index == (obj.Index.x, obj.Index.y + 1) && obj is Stone)
-                {
-                    player.SetTexturePoints(textureMap.GetTexturePoints(Resources.PlayerAndStone));
-                    break;
-                }
-                else 
-                    player.SetTexturePoints(textureMap.GetTexturePoints(Resources.PlayerDefault));
-            }
-
-        }
+        
         private void PlayerMove()
         {
             if (player.ContinueMove())
@@ -199,7 +273,7 @@ namespace Coin_Wave_Lib
                         break;
                     case var _ when KeyboardState.IsKeyDown(Keys.A):
                         numObjFuture.x -= 1;
-                        MoveStoneLeft(numObjFuture); 
+                        MoveStoneLeft(numObjFuture);
                         break;
                     case var _ when KeyboardState.IsKeyDown(Keys.S):
                         numObjFuture.y += 1;
@@ -290,18 +364,6 @@ namespace Coin_Wave_Lib
                 };
             }
         }
-        private void UpdateFPS(FrameEventArgs args)
-        {
-            frameTime += (float)args.Time;
-            timerForTraps += (float)args.Time;
-            fps++;
-            if (frameTime >= 1.0f)
-            {
-                Title = $"OpenTK {NameExampleWindow} : FPS - {fps}";
-                frameTime = 0.0f;
-                fps = 0;
-            }
-        }
         private void MonsterMove()
         {
             
@@ -342,12 +404,6 @@ namespace Coin_Wave_Lib
                 obj.MoveInOneFrame(layers.second[obj.Index.y, obj.Index.x]);
                 obj.UpdateDate(obj.GetVertices());
             }
-        }
-        private void UpdateHealthPanel()
-        {
-            int percanteHealthPoint = Convert.ToInt32(  ((double)player.HealthPoint / player.MaxHealthPoint) * 100);
-            healthPanel.RealTexturePoints(percanteHealthPoint);
-            healthPanel.UpdateDate(healthPanel.GetVertices());
         }
         private void DamagePlayer()
         {
@@ -453,82 +509,8 @@ namespace Coin_Wave_Lib
         }
         // --- Движение камня ---
         // ----------------------
-        // --- Загрузка карты ---
-        private void StartGame()
-        {
-            textureForMap = Texture.LoadFromFile(@"data\textureForGame\texMap.png");
-
-            List<GameObject> first = GameObjectsList.CreateListForXml(FileRead.DeserializeObjectsToXml(filePathFirstLayer), textureForMap);
-            List<GameObject> second = GameObjectsList.CreateListForXml(FileRead.DeserializeObjectsToXml(filePathSecondLayer), textureForMap);
-
-            layers.first = new GameObject[sides.hidth, sides.widht];
-            layers.second = new GameObject[sides.hidth, sides.widht];
-
-            textureMap = new TextureMap(Resources.textureMap.Width, Resources.textureMap.Height, 4, textureForMap);
-
-            foreach (GameObject obj in first)
-            {
-                layers.first[obj.Index.y, obj.Index.x] = obj;
-            }
-
-            player = CreateSecondLayer(second);
-            if (player is null) Close(); // Загрыть игру если нет игрока
-
-            player.SetSpeed
-                (
-                    speedObj
-                );
-            _numObj = player.Index;
-
-
-            healthPanel = new HealthPanel
-            (
-                new RectangleWithTexture
-                (
-                    new Rectangle
-                    (
-                        new Point(-0.9, 0.89, 0),
-                        0.4,
-                        0.06
-                    ),
-                    textureMap.GetTexturePoints(Resources.HealthPanel)
-                    ),
-                textureForMap
-            );
-
-            // Поиск огненных ловушек и шипов и монет
-            {
-                foreach (var obj in layers.first)
-                {
-                    if (obj is TrapFire trapFire)
-                    {
-                        trapFire.GenerateFires(textureMap, layers.first);
-                        trapFires.Add(trapFire);
-                    }
-                    if (obj is Thorn thorn)
-                    {
-                        thorns.Add(thorn);
-                    }
-                }
-                foreach (var obj in layers.second)
-                {
-                    if (obj is TrapFire trapFire)
-                    {
-                        trapFire.GenerateFires(textureMap, layers.first);
-                        trapFires.Add(trapFire);
-                    }
-                    if (obj is Thorn thorn)
-                    {
-                        thorns.Add(thorn);
-                    }
-                    if (obj is Coin)
-                    {
-                        countCoinInTheLevel++;
-                    }
-                }
-            }
-            dynamicObjects = SearchDynamicObjects(layers.second);
-        }
+        
+        
         private Player CreateSecondLayer(List<GameObject> second)
         {
             Player player = null;
@@ -631,6 +613,6 @@ namespace Coin_Wave_Lib
                 Close();
             }
         }
-        /// --- Конец игры ---
+        // --- Конец игры ---
     }
 }

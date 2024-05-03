@@ -15,29 +15,37 @@ using System;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using Coin_Wave_Lib;
+using System.Configuration;
 
 namespace Coin_Wave
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class CoinWaveWindow : Window
+    public partial class MainWaveWindow : Window
     {
-        int levelForGenerator = 0;
-        int level = 0;
+        private Dictionary<string, string> appSettings = new Dictionary<string, string>();
 
-        private int _windowSize = 56;
-        // размер карты 34 на 15
-        private int _windowSizeX = 34;
-        private int _windowSizeY = 15;
-        public CoinWaveWindow()
-        {
-            InitializeComponent();
-            Loaded += MainWindow_Loaded;
-        }
+        private int levelForGenerator = 0;
+        private int level = 0;
 
+        private int _windowSizeOneSquare;
+        private int _countSquaresInWidth;
+        private int _countSquaresInHeight;
+        private string _filePathForLevels;
+        
         private void MainWindow_Loaded(object? sender, RoutedEventArgs e)
         {
+            // Чтение параметров из файла конфигурации
+            foreach (string key in ConfigurationManager.AppSettings.AllKeys)
+            {
+                appSettings.Add(key, ConfigurationManager.AppSettings[key]);
+            }
+
+            _countSquaresInWidth = Convert.ToInt32(appSettings["CountSquaresInWidth"]);
+            _countSquaresInHeight = Convert.ToInt32(appSettings["CountSquaresInHeight"]);
+            _windowSizeOneSquare = Convert.ToInt32(appSettings["WindowSizeOneSquare"]);
+            _filePathForLevels = appSettings["FilePathForLevels"];
             labelLavelForGame.Content = "Уровень: " + level;
             levelEndCanvas.Visibility = Visibility.Collapsed;
         }
@@ -46,7 +54,7 @@ namespace Coin_Wave
         {
             var nativeWinSettings = new NativeWindowSettings()
             {
-                Size = new Vector2i(_windowSizeX * _windowSize, _windowSizeY * _windowSize),
+                Size = new Vector2i(_countSquaresInWidth * _windowSizeOneSquare, _countSquaresInHeight * _windowSizeOneSquare),
                 Location = new Vector2i(5, 30),
                 WindowBorder = WindowBorder.Resizable,
                 //WindowState = OpenTK.Windowing.Common.WindowState.Fullscreen,
@@ -61,8 +69,8 @@ namespace Coin_Wave
                 NumberOfSamples = 0
             };
 
-            string fileFirst = @"..\..\..\..\Coin Wave Lib\data\maps\lvl" + level + @"\first.xml";
-            string fileSecond = @"..\..\..\..\Coin Wave Lib\data\maps\lvl" + level + @"\second.xml";
+            string fileFirst = _filePathForLevels + level + @"\first.xml";
+            string fileSecond = _filePathForLevels + level + @"\second.xml";
             Coin_Wave_Lib.CoinWaveWindow game = new Coin_Wave_Lib.CoinWaveWindow(GameWindowSettings.Default, nativeWinSettings, fileFirst, fileSecond);
             using (game)
             {
@@ -105,8 +113,8 @@ namespace Coin_Wave
             };
 
 
-            string fileFirst = @"..\..\..\..\Coin Wave Lib\data\maps\lvl" + levelForGenerator + @"\first.xml";
-            string fileSecond = @"..\..\..\..\Coin Wave Lib\data\maps\lvl" + levelForGenerator + @"\second.xml";
+            string fileFirst = _filePathForLevels + levelForGenerator + @"\first.xml";
+            string fileSecond = _filePathForLevels + levelForGenerator + @"\second.xml";
             using (MapGenerateWindow game = new MapGenerateWindow(GameWindowSettings.Default, nativeWinSettings, fileFirst, fileSecond))
             {
                 game.Run();

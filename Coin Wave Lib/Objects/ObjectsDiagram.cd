@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="Coin_Wave_Lib.AirFactory" Collapsed="true">
-    <Position X="32" Y="19.5" Width="1.5" />
+    <Position X="32" Y="18.75" Width="1.5" />
     <InheritanceLine Type="Coin_Wave_Lib.GameObjectFactory" FixedToPoint="true">
       <Path>
-        <Point X="31.5" Y="12.941" />
-        <Point X="31.5" Y="19.875" />
-        <Point X="32" Y="19.875" />
+        <Point X="31.5" Y="13.441" />
+        <Point X="31.5" Y="19.125" />
+        <Point X="32" Y="19.125" />
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
@@ -15,12 +15,12 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Coin_Wave_Lib.PlayerFactory" Collapsed="true">
-    <Position X="32" Y="17.5" Width="1.5" />
+    <Position X="32" Y="17.75" Width="1.5" />
     <InheritanceLine Type="Coin_Wave_Lib.GameObjectFactory" FixedToPoint="true">
       <Path>
-        <Point X="31.5" Y="12.941" />
-        <Point X="31.5" Y="17.75" />
-        <Point X="32" Y="17.75" />
+        <Point X="31.5" Y="13.441" />
+        <Point X="31.5" Y="18.125" />
+        <Point X="32" Y="18.125" />
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
@@ -29,14 +29,14 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Coin_Wave_Lib.GameObjectFactory" Collapsed="true">
-    <Position X="30.75" Y="12.25" Width="1.5" />
+    <Position X="30.75" Y="12.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAIAAAAQAAIAAAAAAgAAAAAAAAACAAAAgAAAAAAAA=</HashCode>
       <FileName>Objects\Factories\GameObjectFactory.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Coin_Wave_Lib.ObjectFactory" Collapsed="true">
-    <Position X="30.75" Y="11.25" Width="1.5" />
+    <Position X="30.75" Y="11.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAIAAAAAAAAACAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Objects\Factories\ObjectFactory.cs</FileName>
@@ -85,7 +85,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Coin_Wave_Lib.Air" Collapsed="true">
-    <Position X="17.75" Y="28.5" Width="1.5" />
+    <Position X="17.5" Y="28.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Objects\GameObjects\NoSolidObjects\Air.cs</FileName>
@@ -108,19 +108,12 @@
   <Class Name="Coin_Wave_Lib.Player" Collapsed="true">
     <Position X="6.5" Y="30" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAACAQAQAAACAAAAAAAQAAAAAAAACAAAAAAAAAAE=</HashCode>
+      <HashCode>AAAAAACAQEQAAACAAAAAAAQAAAAAAAACAAAAAAAAAAE=</HashCode>
       <FileName>Objects\GameObjects\Player\Player.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Coin_Wave_Lib.Coin" Collapsed="true">
-    <Position X="18" Y="31" Width="1.5" />
-    <InheritanceLine Type="Coin_Wave_Lib.SolidObject" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="20.25" Y="29.191" />
-        <Point X="20.25" Y="31.312" />
-        <Point X="19.5" Y="31.312" />
-      </Path>
-    </InheritanceLine>
+    <Position X="17.75" Y="31" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Objects\GameObjects\SolidObjects\Coin.cs</FileName>
@@ -128,33 +121,26 @@
     <Lollipop Orientation="Bottom" Position="0.1" />
   </Class>
   <Class Name="Coin_Wave_Lib.SolidObject" Collapsed="true">
-    <Position X="19.5" Y="28.5" Width="1.5" />
+    <Position X="19.25" Y="28.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Objects\GameObjects\SolidObjects\SolidObject.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Coin_Wave_Lib.SolidWall" Collapsed="true">
-    <Position X="18" Y="30" Width="1.5" />
-    <InheritanceLine Type="Coin_Wave_Lib.SolidObject" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="20.25" Y="29.191" />
-        <Point X="20.25" Y="30.375" />
-        <Point X="19.5" Y="30.375" />
-      </Path>
-    </InheritanceLine>
+    <Position X="17.75" Y="30" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Objects\GameObjects\SolidObjects\SolidWall.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Coin_Wave_Lib.Fire" Collapsed="true">
-    <Position X="14.75" Y="31" Width="1.5" />
+    <Position X="14.75" Y="30" Width="1.5" />
     <InheritanceLine Type="Coin_Wave_Lib.Trap" FixedToPoint="true">
       <Path>
-        <Point X="16.75" Y="29.191" />
-        <Point X="16.75" Y="31.312" />
-        <Point X="16.25" Y="31.312" />
+        <Point X="16.5" Y="29.191" />
+        <Point X="16.5" Y="30.312" />
+        <Point X="16.25" Y="30.312" />
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
@@ -163,12 +149,12 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Coin_Wave_Lib.Thorn" Collapsed="true">
-    <Position X="14.75" Y="32" Width="1.5" />
+    <Position X="14.75" Y="31" Width="1.5" />
     <InheritanceLine Type="Coin_Wave_Lib.Trap" FixedToPoint="true">
       <Path>
-        <Point X="16.75" Y="29.191" />
-        <Point X="16.75" Y="32.375" />
-        <Point X="16.25" Y="32.375" />
+        <Point X="16.5" Y="29.191" />
+        <Point X="16.5" Y="31.375" />
+        <Point X="16.25" Y="31.375" />
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
@@ -177,19 +163,19 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Coin_Wave_Lib.Trap" Collapsed="true">
-    <Position X="16" Y="28.5" Width="1.5" />
+    <Position X="15.75" Y="28.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Objects\GameObjects\Traps\Trap.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Coin_Wave_Lib.TrapFire" Collapsed="true">
-    <Position X="14.75" Y="33" Width="1.5" />
+    <Position X="14.75" Y="32" Width="1.5" />
     <InheritanceLine Type="Coin_Wave_Lib.Trap" FixedToPoint="true">
       <Path>
-        <Point X="16.75" Y="29.191" />
-        <Point X="16.75" Y="33.375" />
-        <Point X="16.25" Y="33.375" />
+        <Point X="16.5" Y="29.191" />
+        <Point X="16.5" Y="32.375" />
+        <Point X="16.25" Y="32.375" />
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
@@ -262,7 +248,7 @@
     <Position X="29.5" Y="19.75" Width="1.5" />
     <InheritanceLine Type="Coin_Wave_Lib.GameObjectFactory" FixedToPoint="true">
       <Path>
-        <Point X="31.5" Y="12.941" />
+        <Point X="31.5" Y="13.441" />
         <Point X="31.5" Y="20.125" />
         <Point X="31" Y="20.125" />
       </Path>
@@ -273,12 +259,12 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Coin_Wave_Lib.Objects.Factories.ConcreteFactory.CoinFactory" Collapsed="true">
-    <Position X="32" Y="16.5" Width="1.5" />
+    <Position X="32" Y="16.75" Width="1.5" />
     <InheritanceLine Type="Coin_Wave_Lib.GameObjectFactory" FixedToPoint="true">
       <Path>
-        <Point X="31.5" Y="12.941" />
-        <Point X="31.5" Y="16.812" />
-        <Point X="32" Y="16.812" />
+        <Point X="31.5" Y="13.441" />
+        <Point X="31.5" Y="17.125" />
+        <Point X="32" Y="17.125" />
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
@@ -287,12 +273,13 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Coin_Wave_Lib.Objects.Factories.ConcreteFactory.DragonFactory" Collapsed="true">
-    <Position X="34.5" Y="14.75" Width="1.5" />
-    <InheritanceLine Type="Coin_Wave_Lib.Objects.Factories.DynamicFactory" FixedToPoint="true">
+    <Position X="34" Y="14.25" Width="1.5" />
+    <InheritanceLine Type="Coin_Wave_Lib.Objects.Factories.DynamicFactory" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="34" Y="14.191" />
-        <Point X="34" Y="15.125" />
-        <Point X="34.5" Y="15.125" />
+        <Point X="33.5" Y="14.125" />
+        <Point X="33.74" Y="14.125" />
+        <Point X="33.74" Y="14.625" />
+        <Point X="34" Y="14.625" />
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
@@ -304,7 +291,7 @@
     <Position X="29.5" Y="14.75" Width="1.5" />
     <InheritanceLine Type="Coin_Wave_Lib.GameObjectFactory" FixedToPoint="true">
       <Path>
-        <Point X="31.5" Y="12.941" />
+        <Point X="31.5" Y="13.441" />
         <Point X="31.5" Y="15.062" />
         <Point X="31" Y="15.062" />
       </Path>
@@ -318,7 +305,7 @@
     <Position X="29.5" Y="15.75" Width="1.5" />
     <InheritanceLine Type="Coin_Wave_Lib.GameObjectFactory" FixedToPoint="true">
       <Path>
-        <Point X="31.5" Y="12.941" />
+        <Point X="31.5" Y="13.441" />
         <Point X="31.5" Y="16.125" />
         <Point X="31" Y="16.125" />
       </Path>
@@ -332,7 +319,7 @@
     <Position X="29.5" Y="17.75" Width="1.5" />
     <InheritanceLine Type="Coin_Wave_Lib.GameObjectFactory" FixedToPoint="true">
       <Path>
-        <Point X="31.5" Y="12.941" />
+        <Point X="31.5" Y="13.441" />
         <Point X="31.5" Y="18.125" />
         <Point X="31" Y="18.125" />
       </Path>
@@ -343,12 +330,12 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Coin_Wave_Lib.Objects.Factories.ConcreteFactory.MonsterFactory" Collapsed="true">
-    <Position X="29.5" Y="20.75" Width="1.5" />
+    <Position X="32" Y="19.75" Width="1.5" />
     <InheritanceLine Type="Coin_Wave_Lib.GameObjectFactory" FixedToPoint="true">
       <Path>
-        <Point X="31.5" Y="12.941" />
-        <Point X="31.5" Y="21.125" />
-        <Point X="31" Y="21.125" />
+        <Point X="31.5" Y="13.441" />
+        <Point X="31.5" Y="20.125" />
+        <Point X="32" Y="20.125" />
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
@@ -357,12 +344,12 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Coin_Wave_Lib.Objects.Factories.ConcreteFactory.SolidWallFactory" Collapsed="true">
-    <Position X="27" Y="17" Width="1.5" />
-    <InheritanceLine Type="Coin_Wave_Lib.Objects.Factories.SolidObjectFactory" FixedToPoint="true">
+    <Position X="29.5" Y="13.75" Width="1.5" />
+    <InheritanceLine Type="Coin_Wave_Lib.GameObjectFactory" FixedToPoint="true">
       <Path>
-        <Point X="29.25" Y="14.191" />
-        <Point X="29.25" Y="17.375" />
-        <Point X="28.5" Y="17.375" />
+        <Point X="31.5" Y="13.441" />
+        <Point X="31.5" Y="14.062" />
+        <Point X="31" Y="14.062" />
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
@@ -371,12 +358,12 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Coin_Wave_Lib.Objects.Factories.ConcreteFactory.SpeedDownFactory" Collapsed="true">
-    <Position X="32" Y="15.5" Width="1.5" />
+    <Position X="32" Y="15.75" Width="1.5" />
     <InheritanceLine Type="Coin_Wave_Lib.GameObjectFactory" FixedToPoint="true">
       <Path>
-        <Point X="31.5" Y="12.941" />
-        <Point X="31.5" Y="15.75" />
-        <Point X="32" Y="15.75" />
+        <Point X="31.5" Y="13.441" />
+        <Point X="31.5" Y="16.125" />
+        <Point X="32" Y="16.125" />
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
@@ -385,12 +372,12 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Coin_Wave_Lib.Objects.Factories.ConcreteFactory.SpeedUpFactory" Collapsed="true">
-    <Position X="32" Y="14.5" Width="1.5" />
+    <Position X="32" Y="14.75" Width="1.5" />
     <InheritanceLine Type="Coin_Wave_Lib.GameObjectFactory" FixedToPoint="true">
       <Path>
-        <Point X="31.5" Y="12.941" />
-        <Point X="31.5" Y="14.812" />
-        <Point X="32" Y="14.812" />
+        <Point X="31.5" Y="13.441" />
+        <Point X="31.5" Y="15.062" />
+        <Point X="32" Y="15.062" />
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
@@ -399,12 +386,13 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Coin_Wave_Lib.Objects.Factories.ConcreteFactory.StoneFactory" Collapsed="true">
-    <Position X="34.5" Y="15.75" Width="1.5" />
-    <InheritanceLine Type="Coin_Wave_Lib.Objects.Factories.DynamicFactory" FixedToPoint="true">
+    <Position X="34" Y="13.25" Width="1.5" />
+    <InheritanceLine Type="Coin_Wave_Lib.Objects.Factories.DynamicFactory" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="34" Y="14.191" />
-        <Point X="34" Y="16.125" />
-        <Point X="34.5" Y="16.125" />
+        <Point X="33.5" Y="14.125" />
+        <Point X="33.74" Y="14.125" />
+        <Point X="33.74" Y="13.625" />
+        <Point X="34" Y="13.625" />
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
@@ -416,7 +404,7 @@
     <Position X="29.5" Y="16.75" Width="1.5" />
     <InheritanceLine Type="Coin_Wave_Lib.GameObjectFactory" FixedToPoint="true">
       <Path>
-        <Point X="31.5" Y="12.941" />
+        <Point X="31.5" Y="13.441" />
         <Point X="31.5" Y="17.125" />
         <Point X="31" Y="17.125" />
       </Path>
@@ -430,9 +418,9 @@
     <Position X="29.5" Y="18.75" Width="1.5" />
     <InheritanceLine Type="Coin_Wave_Lib.GameObjectFactory" FixedToPoint="true">
       <Path>
-        <Point X="31.5" Y="12.941" />
-        <Point X="31.5" Y="19.062" />
-        <Point X="31" Y="19.062" />
+        <Point X="31.5" Y="13.441" />
+        <Point X="31.5" Y="19.125" />
+        <Point X="31" Y="19.125" />
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
@@ -441,17 +429,17 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Coin_Wave_Lib.Objects.Factories.DynamicFactory" Collapsed="true">
-    <Position X="33.25" Y="13.5" Width="1.5" />
+    <Position X="32" Y="13.75" Width="1.5" />
+    <InheritanceLine Type="Coin_Wave_Lib.GameObjectFactory" FixedToPoint="true">
+      <Path>
+        <Point X="31.5" Y="13.441" />
+        <Point X="31.5" Y="14.062" />
+        <Point X="32" Y="14.062" />
+      </Path>
+    </InheritanceLine>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Objects\Factories\DynamicFactory.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="Coin_Wave_Lib.Objects.Factories.SolidObjectFactory" Collapsed="true">
-    <Position X="28.5" Y="13.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Objects\Factories\SolidObjectFactory.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Coin_Wave_Lib.Objects.GameObjects.Boneses.Bonus" Collapsed="true">
@@ -462,12 +450,12 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Coin_Wave_Lib.Objects.GameObjects.Boneses.HealthUpBonus" Collapsed="true">
-    <Position X="12" Y="31" Width="1.5" />
+    <Position X="12.5" Y="30" Width="1.5" />
     <InheritanceLine Type="Coin_Wave_Lib.Objects.GameObjects.Boneses.Bonus" FixedToPoint="true">
       <Path>
         <Point X="14.5" Y="29.191" />
-        <Point X="14.5" Y="31.375" />
-        <Point X="13.5" Y="31.375" />
+        <Point X="14.5" Y="30.375" />
+        <Point X="14" Y="30.375" />
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
@@ -477,12 +465,12 @@
     <Lollipop Orientation="Bottom" Position="0.1" />
   </Class>
   <Class Name="Coin_Wave_Lib.Objects.GameObjects.Boneses.SpeedDownBonus" Collapsed="true">
-    <Position X="12" Y="33" Width="1.5" />
+    <Position X="12.5" Y="32" Width="1.5" />
     <InheritanceLine Type="Coin_Wave_Lib.Objects.GameObjects.Boneses.Bonus" FixedToPoint="true">
       <Path>
         <Point X="14.5" Y="29.191" />
-        <Point X="14.5" Y="33.438" />
-        <Point X="13.5" Y="33.438" />
+        <Point X="14.5" Y="32.438" />
+        <Point X="14" Y="32.438" />
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
@@ -493,12 +481,12 @@
     <Lollipop Orientation="Bottom" Position="0.1" />
   </Class>
   <Class Name="Coin_Wave_Lib.Objects.GameObjects.Boneses.SpeedUpBonus" Collapsed="true">
-    <Position X="12" Y="32" Width="1.5" />
+    <Position X="12.5" Y="31" Width="1.5" />
     <InheritanceLine Type="Coin_Wave_Lib.Objects.GameObjects.Boneses.Bonus" FixedToPoint="true">
       <Path>
         <Point X="14.5" Y="29.191" />
-        <Point X="14.5" Y="32.375" />
-        <Point X="13.5" Y="32.375" />
+        <Point X="14.5" Y="31.375" />
+        <Point X="14" Y="31.375" />
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
@@ -577,7 +565,7 @@
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
-      <HashCode>AAAACAAAAAAAAAAAAAAAAAQAAAAAAAAAEAAAAAAAAAA=</HashCode>
+      <HashCode>AAAACAAAAAAAAAAAAAAAAAQAAAAAAAAAECAAAAAAAAA=</HashCode>
       <FileName>Objects\InterfaceObjects\HealthPanel.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -647,7 +635,7 @@
     </TypeIdentifier>
   </Interface>
   <Enum Name="Coin_Wave_Lib.MoveHelper" Collapsed="true">
-    <Position X="21.25" Y="26.25" Width="1.5" />
+    <Position X="26.5" Y="25.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAACACAAAAAAAI=</HashCode>
       <FileName>Objects\GameObjects\DynamicEntity\Monster.cs</FileName>

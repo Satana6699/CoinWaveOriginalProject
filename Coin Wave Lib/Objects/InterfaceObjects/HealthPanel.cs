@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
@@ -34,5 +35,13 @@ namespace Coin_Wave_Lib.Objects.InterfaceObjects
                 RectangleWithTexture.TexturePoints[3] = new(posS, RectangleWithTexture.TexturePoints[3].T);
             }
         }
+
+        public void UpdateBar(int healthPoint, int maxHealyhPoint)
+        {
+            int percanteHealthPoint = Convert.ToInt32(((double)healthPoint / maxHealyhPoint) * 100);
+            RealTexturePoints(percanteHealthPoint);
+            UpdateDate(GetVertices());
+        }
+
     }
 }

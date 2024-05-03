@@ -45,7 +45,7 @@ namespace Coin_Wave_Lib
 
             vertexBufferObject = GL.GenBuffer();
             GL.BindBuffer(BufferTarget.ArrayBuffer, vertexBufferObject);
-            GL.BufferData(BufferTarget.ArrayBuffer, vertices.Length * sizeof(double), vertices, BufferUsageHint.DynamicDraw);
+            GL.BufferData(BufferTarget.ArrayBuffer, vertices.Length * sizeof(double), vertices, BufferUsageHint.DynamicDraw);   
 
             shader = new Shader(@"data\shaders\shader.vert", @"data\shaders\shader.frag");
             shader.Use();

@@ -1,4 +1,5 @@
 ﻿using Coin_Wave_Lib.Objects.GameObjects;
+using Coin_Wave_Lib.Objects.GameObjects.DynamicEntity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Coin_Wave_Lib
 {
-    public abstract class DynamicObject : GameObject, IMoveable, IDynamic
+    public abstract class DynamicObject : GameObject, IDynamic
     {
         public int Time { get; private set; }
         public int FrameTime { get; private set; }
@@ -103,6 +104,54 @@ namespace Coin_Wave_Lib
             {
                 Time = FrameTime;
             }
+        }
+
+        public static List<DynamicObject> SearchDynamicObjects(GameObject[,] gameObjects, TextureMap textureMap, int speedDynamicObject)
+        {
+            List<DynamicObject> dynamicObjects = new List<DynamicObject>();
+
+            foreach (GameObject obj in gameObjects)
+            {
+                if (obj is IDynamic)
+                {
+                    GameObjectFactory objFactory = ObjectFactory.GetFactory
+                        (
+                            obj.Name,
+                                new RectangleWithTexture
+                                    (
+                                        obj.RectangleWithTexture.Rectangle,
+                                        obj.RectangleWithTexture.TexturePoints
+                                    ),
+                            textureMap.Texture,
+                            obj.Index
+                        );
+
+                    DynamicObject gameObject = (DynamicObject)objFactory.GetGameObject();
+                    if (gameObject is Stone)
+                        gameObject.SetSpeed(speedDynamicObject);
+                    else if (gameObject is FireWheel)
+                        gameObject.SetSpeed(speedDynamicObject);
+                    else if (gameObject is Monster)
+                        gameObject.SetSpeed(speedDynamicObject * 3);
+                    dynamicObjects.Add(gameObject);
+
+                    gameObjects[obj.Index.y, obj.Index.x] = new Air
+                        (
+                            new RectangleWithTexture
+                            (
+                                obj.RectangleWithTexture.Rectangle,
+                                textureMap.GetTexturePoints(Resources.Air)
+                            ),
+                            textureMap.Texture,
+                            obj.Index
+                        )
+                    {
+                        Name = typeof(Air).Name
+                    };
+                }
+            }
+
+            return dynamicObjects;
         }
     }
 }

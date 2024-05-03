@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Coin_Wave_Lib.Objects.Factories.ConcreteFactory
 {
-    public class SolidWallFactory : SolidObjectFactory
+    public class SolidWallFactory : GameObjectFactory
     {
         public SolidWallFactory(string name, RectangleWithTexture rectangleWithTexture, Texture texture, (int x, int y) index) : base(name, rectangleWithTexture, texture, index)
         {

@@ -8,6 +8,7 @@ namespace Coin_Wave_Lib
 {
     public interface IDynamic
     {
-
+        void MoveInOneFrame(GameObject gameObject);
+        void SetSpeed(int frameTime);
     }
 }

@@ -7,14 +7,16 @@ using System.Threading.Tasks;
 
 namespace Coin_Wave_Lib
 {
-    public class Coin : SolidObject, ICollectable
+    public class Coin : GameObject, ICollectable
     {
         public Coin()
         {
+            IsSolid = true;
         }
 
         public Coin(RectangleWithTexture rectangleWithTexture, Texture texture, (int x, int y) index) : base(rectangleWithTexture, texture, index)
         {
+            IsSolid = true;
         }
 
         public override string Name { get => typeof(Coin).Name; set { } }
