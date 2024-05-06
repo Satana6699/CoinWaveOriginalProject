@@ -12,10 +12,20 @@ namespace Coin_Wave_Lib.Objects.Factories.ConcreteFactory
         {
         }
 
-        public override GameObject GetGameObject() => new Dragon(_rectangleWithTexture, _texture, _index, 1)
+        public DragonFactory(string name, RectangleWithTexture rectangleWithTexture, (int x, int y) index) : base(name, rectangleWithTexture, index)
+        {
+        }
+
+        public override GameObject GetGameObjectWithTexture() => new Dragon(_rectangleWithTexture, _texture, _index, 1)
         {
             Name = _name,
             IsSolid = true,
+        };
+        public override GameObject GetGameObject() => new Dragon()
+        {
+            RectangleWithTexture = _rectangleWithTexture,
+            Index = _index,
+            Name = _name,
         };
     }
 }

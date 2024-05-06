@@ -7,6 +7,7 @@ using Coin_Wave_Lib.Objects.GameObjects;
 using Coin_Wave_Lib.Objects.GameObjects.DynamicEntity;
 using Coin_Wave_Lib.Objects.GameObjects.Boneses;
 using System.Numerics;
+using Coin_Wave_Lib.Programs;
 
 namespace Coin_Wave_Lib
 {
@@ -66,25 +67,21 @@ namespace Coin_Wave_Lib
             List<GameObject> gameObjects = new List<GameObject>();
             GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 
-            textureForMap = Texture.LoadFromFile(@"data\textureForGame\texMap.png");
+            GenerateLevel generateLevel = new GenerateLevel(filePathFirstLayer, filePathSecondLayer, @"data\textureForGame\texMap.png", speedObj, sides);
+            layers.first = generateLevel.layers.first;
+            layers.second = generateLevel.layers.second;
+            textureForMap = generateLevel.textureForMap;
+            textureMap = generateLevel.textureMap;
+            player = generateLevel.player;
+            dynamicObjects = generateLevel.dynamicObjects;
 
-            List<GameObject> first = GameObjectsList.CreateListForXml(FileRead.DeserializeObjectsToXml(filePathFirstLayer), textureForMap);
-            List<GameObject> second = GameObjectsList.CreateListForXml(FileRead.DeserializeObjectsToXml(filePathSecondLayer), textureForMap);
-
-            layers.first = new GameObject[sides.hidth, sides.widht];
-            layers.second = new GameObject[sides.hidth, sides.widht];
-
-            textureMap = new TextureMap(Resources.textureMap.Width, Resources.textureMap.Height, 4, textureForMap);
-
-            foreach (GameObject obj in first)
+            if (player is null)
             {
-                layers.first[obj.Index.y, obj.Index.x] = obj;
+                MESSAGE = "На карте нет игрока, ошибка карты";
+                Close(); // Загрыть игру если нет игрока
             }
 
-            player = CreateSecondLayer(second);
-            if (player is null) Close(); // Загрыть игру если нет игрока
-
-            player.SetSpeed
+                player.SetSpeed
                 (
                     speedObj
                 );
@@ -137,7 +134,6 @@ namespace Coin_Wave_Lib
                     }
                 }
             }
-            dynamicObjects = DynamicObject.SearchDynamicObjects(layers.second, textureMap, speedObj);
         }
         protected override void OnUpdateFrame(FrameEventArgs args)
         {
@@ -511,38 +507,7 @@ namespace Coin_Wave_Lib
         // ----------------------
         
         
-        private Player CreateSecondLayer(List<GameObject> second)
-        {
-            Player player = null;
-            foreach (GameObject obj in second)
-            {
-
-                if (obj.Name == typeof(Player).Name)
-                {
-                    player = new Player
-                    (
-                        obj.RectangleWithTexture,
-                        obj.Texture,
-                        obj.Index
-                    );
-
-
-                    layers.second[obj.Index.y, obj.Index.x] = new Air
-                    (
-                        new RectangleWithTexture
-                        (
-                            obj.RectangleWithTexture.Rectangle,
-                            textureMap.GetTexturePoints(Resources.Air)
-                        ),
-                        textureForMap,
-                        obj.Index
-                    );
-                }
-                else layers.second[obj.Index.y, obj.Index.x] = obj;
-            }
-
-            return player;
-        }
+        
         private List<DynamicObject> SearchDynamicObjects(GameObject[,] gameObjects)
         {
             List<DynamicObject> dynamicObjects = new List<DynamicObject>();
@@ -563,7 +528,7 @@ namespace Coin_Wave_Lib
                             obj.Index
                         );
 
-                    DynamicObject gameObject = (DynamicObject)objFactory.GetGameObject();
+                    DynamicObject gameObject = (DynamicObject)objFactory.GetGameObjectWithTexture();
                     if (gameObject is Stone) 
                         gameObject.SetSpeed(speedObj);
                     else if (gameObject is FireWheel) 

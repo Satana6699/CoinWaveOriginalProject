@@ -14,10 +14,13 @@ namespace Coin_Wave_Lib
         public int FrameTime { get; private set; }
         private (double x, double y) _unit = (0, 0);
 
-        protected DynamicObject(RectangleWithTexture rectangleWithTexture, Texture texture, (int x, int y) index) : base(rectangleWithTexture, texture, index)
+        public DynamicObject(RectangleWithTexture rectangleWithTexture, Texture texture, (int x, int y) index) : base(rectangleWithTexture, texture, index)
         {
         }
-
+        public DynamicObject()
+        {
+            
+        }
         public void SetSpeed(int frameTime)
         {
             double x = RectangleWithTexture.Rectangle.GetWidth();
@@ -126,7 +129,7 @@ namespace Coin_Wave_Lib
                             obj.Index
                         );
 
-                    DynamicObject gameObject = (DynamicObject)objFactory.GetGameObject();
+                    DynamicObject gameObject = (DynamicObject)objFactory.GetGameObjectWithTexture();
                     if (gameObject is Stone)
                         gameObject.SetSpeed(speedDynamicObject);
                     else if (gameObject is FireWheel)

@@ -11,7 +11,10 @@ namespace Coin_Wave_Lib.Objects.GameObjects.Boneses
         public SpeedDownBonus(RectangleWithTexture rectangleWithTexture, Texture texture, (int x, int y) index) : base(rectangleWithTexture, texture, index)
         {
         }
-
+        public SpeedDownBonus()
+        {
+            
+        }
         public override string Name { get => typeof(SpeedDownBonus).Name; set { } }
     }
 }

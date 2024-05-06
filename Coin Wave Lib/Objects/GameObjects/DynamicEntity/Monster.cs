@@ -23,7 +23,10 @@ namespace Coin_Wave_Lib
         {
             Damage = damage;
         }
-
+        protected Monster()
+        {
+            
+        }
 
         public void Move((GameObject[,] first, GameObject[,] second) layers, List<DynamicObject> dynamicObjects)
         {

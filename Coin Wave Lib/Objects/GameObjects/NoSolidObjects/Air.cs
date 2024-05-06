@@ -8,6 +8,10 @@ namespace Coin_Wave_Lib
 {
     public class Air : GameObject
     {
+        public Air()
+        {
+            
+        }
         public Air(RectangleWithTexture rectangleWithTexture, Texture texture, (int x, int y) index) : base(rectangleWithTexture, texture, index)
         {
         }

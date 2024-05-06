@@ -20,7 +20,10 @@ namespace Coin_Wave_Lib
             _fireCount = 3;
             Fires = new List<Fire>(_fireCount);
         }
-
+        public TrapFire()
+        {
+            
+        }
 
         public void ActiveOneFire()
         {

@@ -13,5 +13,9 @@ namespace Coin_Wave_Lib
         {
             Damage = damage;
         }
+        protected Trap()
+        {
+            
+        }
     }
 }

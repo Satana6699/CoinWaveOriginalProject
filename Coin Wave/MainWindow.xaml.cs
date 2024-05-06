@@ -16,13 +16,14 @@ using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using Coin_Wave_Lib;
 using System.Configuration;
+using OpenTK.Windowing.GraphicsLibraryFramework;
 
 namespace Coin_Wave
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWaveWindow : Window
+    public partial class MainWaveWindow : System.Windows.Window
     {
         private Dictionary<string, string> appSettings = new Dictionary<string, string>();
 
@@ -160,6 +161,12 @@ namespace Coin_Wave
                 }
             }
             levelEndCanvas.IsEnabled = false;
+        }
+
+        private void buttonRools_Click(object sender, RoutedEventArgs e)
+        {
+            WindowRools windowRools = new WindowRools(this);
+            windowRools.ShowDialog();
         }
     }
 }

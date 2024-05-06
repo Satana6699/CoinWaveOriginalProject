@@ -20,7 +20,16 @@ namespace Coin_Wave_Lib
             _texture = texture;
             _index = index;
         }
+
+        public GameObjectFactory(string name, RectangleWithTexture rectangleWithTexture, (int x, int y) index)
+        {
+            _name = name;
+            _rectangleWithTexture = rectangleWithTexture;
+            _index = index;
+        }
+        public abstract GameObject GetGameObjectWithTexture();
         public abstract GameObject GetGameObject();
+        public override Obj GetObjectWithTexture() => GetGameObjectWithTexture();
         public override Obj GetObject() => GetGameObject();
     }
 }

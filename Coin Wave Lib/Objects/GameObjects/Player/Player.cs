@@ -13,7 +13,10 @@ namespace Coin_Wave_Lib
         public override string Name { get => typeof(Player).Name; set { } }
         public int HealthPoint { get; private set; }
         public int MaxHealthPoint { get; private set; } = 200;
-
+        public Player()
+        {
+            HealthPoint = MaxHealthPoint;
+        }
         public Player(RectangleWithTexture rectangleWithTexture, Texture texture, (int x, int y) index) : base(rectangleWithTexture, texture, index)
         {
             HealthPoint = MaxHealthPoint;

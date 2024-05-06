@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Coin_Wave"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="1000"
+        Title="Coin Wave" Height="600" Width="1000"
         Loaded="MainWindow_Loaded">
         
     <Window.Resources>
@@ -156,7 +156,10 @@
         <Canvas x:Name="levelEndCanvas" Width="376" Height="174" Style="{StaticResource LevelEndCanvasStyle}" >
             <Button x:Name="levelEndButton" Style="{StaticResource GameButtonStyle}" Content="Ок" Canvas.Left="147" Canvas.Top="138" HorizontalAlignment="Center" VerticalAlignment="Top" Width="82" Click="levelEndButton_Click"/>
             <Label x:Name="levelEndLabel" Content="EndLevel" Canvas.Left="96" Canvas.Top="23" HorizontalAlignment="Left" Height="49" VerticalAlignment="Center" Width="218" Foreground="#FFFBDA02" FontWeight="Bold" FontSize="18"/>
-            <Border BorderBrush="AliceBlue" BorderThickness="4" Height="174" Width="376"/>
+            <Border BorderBrush="AliceBlue" BorderThickness="4" Height="174" Width="376">
+                <StackPanel/>
+            </Border>
         </Canvas>
+        <Button x:Name="buttonRools" Content="Правила" Style="{StaticResource GameButtonStyle}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="220" Height="47" Margin="378,397,0,0" Click="buttonRools_Click" />
     </Grid>
 </Window>

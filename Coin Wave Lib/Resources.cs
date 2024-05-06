@@ -30,7 +30,7 @@ namespace Coin_Wave_Lib
         // Бонусы
         public const int HealthBonus = 18;
         public const int SpeedUpBonus = 19;
-        public const int SpeedDownBonus = 15;
+        public const int SpeedDownBonus = 20;
 
         // Воздух
         public const int Air = 60;

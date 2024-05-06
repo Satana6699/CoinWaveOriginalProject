@@ -10,7 +10,27 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="data\coin.png" />
+    <None Remove="data\dragon.png" />
     <None Remove="data\dungeon.png" />
+    <None Remove="data\fire_wheel.png" />
+    <None Remove="data\monkey.png" />
+    <None Remove="data\wasd.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="data\coin.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="data\dragon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="data\dungeon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="data\fire_wheel.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
   <ItemGroup>
@@ -31,7 +51,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="data\dungeon.png">
+    <Resource Include="data\monkey.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="data\wasd.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>

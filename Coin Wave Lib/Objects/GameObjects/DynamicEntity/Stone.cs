@@ -12,6 +12,10 @@ namespace Coin_Wave_Lib
         public Stone(RectangleWithTexture rectangleWithTexture, Texture texture, (int x, int y) index) : base(rectangleWithTexture, texture, index)
         {
         }
+        public Stone()
+        {
+            
+        }
         public override string Name { get => typeof(Stone).Name; set { } }
 
     }

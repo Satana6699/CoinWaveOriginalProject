@@ -31,6 +31,33 @@ namespace Coin_Wave_Lib
                             gameObjectData.Index
                         );
 
+                    GameObject gameObject = objectFactoy.GetGameObjectWithTexture();
+                    gameObjects.Add( gameObject );
+                }
+            }
+
+            return gameObjects;
+        }
+
+        public static List<GameObject> CreateListForXml(GameObjectData[] gameObjectDatas)
+        {
+            List<GameObject> gameObjects = new List<GameObject>(0);
+
+            foreach (var gameObjectData in gameObjectDatas) 
+            {
+                if (gameObjectData != null)
+                {
+                    GameObjectFactory objectFactoy = ObjectFactory.GetFactory
+                        (
+                            gameObjectData.Name,
+                            new RectangleWithTexture
+                                (
+                                    gameObjectData.RectangleWithTexture.Rectangle,
+                                    gameObjectData.RectangleWithTexture.TexturePoints
+                                ),
+                            gameObjectData.Index
+                        );
+
                     GameObject gameObject = objectFactoy.GetGameObject();
                     gameObjects.Add( gameObject );
                 }

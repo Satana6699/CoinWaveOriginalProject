@@ -17,7 +17,6 @@ namespace Coin_Wave_Lib
             this.Index = index;
             IsSolid = false;
         }
-
         protected GameObject()
         {
             IsSolid = false;

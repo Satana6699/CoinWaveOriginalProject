@@ -12,7 +12,10 @@ namespace Coin_Wave_Lib.Objects.GameObjects.DynamicEntity
         public FireWheel(RectangleWithTexture rectangleWithTexture, Texture texture, (int x, int y) index, int damage) : base(rectangleWithTexture, texture, index, damage)
         {
         }
-
+        public FireWheel()
+        {
+            
+        }
         protected override void ReverseMove()
         {
             Random random = new Random();

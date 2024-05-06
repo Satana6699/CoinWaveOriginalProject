@@ -14,7 +14,10 @@ namespace Coin_Wave_Lib
         public Thorn(RectangleWithTexture rectangleWithTexture, Texture texture, (int x, int y) index, int damage) : base(rectangleWithTexture, texture, index, damage)
         {
         }
-
+        public Thorn()
+        {
+            
+        }
         public int Damage()
         {
             if (_active)

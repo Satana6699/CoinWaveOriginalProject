@@ -13,7 +13,10 @@ namespace Coin_Wave_Lib
         {
             viewDirection = MoveHelper.Down;
         }
-
+        public Monkey()
+        {
+            
+        }
         public override string Name { get => typeof(Monkey).Name; set { } }
     }
 }

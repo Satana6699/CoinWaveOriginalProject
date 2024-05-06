@@ -8,7 +8,10 @@ namespace Coin_Wave_Lib
 {
     public class Dragon : Monster
     {
-
+        public Dragon()
+        {
+            
+        }
         public Dragon(RectangleWithTexture rectangleWithTexture, Texture texture, (int x, int y) index, int damage) : base(rectangleWithTexture, texture, index, damage)
         {
             viewDirection = MoveHelper.Right;
