@@ -12,6 +12,7 @@ using Coin_Wave_Lib.Objects.GameObjects.Player;
 using Coin_Wave_Lib.Objects.GameObjects.SolidObjects;
 using Coin_Wave_Lib.Objects.GameObjects.NoSolidObjects;
 using Coin_Wave_Lib.Objects.GameObjects.Traps;
+using Coin_Wave_Lib.Objects.Factories;
 
 namespace Coin_Wave_Lib.Windows
 {

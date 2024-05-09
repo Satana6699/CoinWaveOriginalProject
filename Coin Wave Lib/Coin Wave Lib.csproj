@@ -8,6 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Decorators\**" />
+    <EmbeddedResource Remove="Decorators\**" />
+    <None Remove="Decorators\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="FileOperations\InterfaceObjectData.cs" />
   </ItemGroup>
 
@@ -90,10 +96,6 @@
     <None Update="data\shaders\shader.vert">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Decorators\" />
   </ItemGroup>
 
 </Project>

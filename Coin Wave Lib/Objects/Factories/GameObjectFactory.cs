@@ -1,7 +1,7 @@
 ﻿using Coin_Wave_Lib.Programs;
 using Coin_Wave_Lib.Objects.GameObjects;
 
-namespace Coin_Wave_Lib
+namespace Coin_Wave_Lib.Objects.Factories
 {
     public abstract class GameObjectFactory : ObjectFactory
     {

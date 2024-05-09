@@ -7,7 +7,7 @@ using Coin_Wave_Lib.Programs;
 using Coin_Wave_Lib.Objects.GameObjects;
 using Coin_Wave_Lib.Objects.GameObjects.NoSolidObjects;
 
-namespace Coin_Wave_Lib
+namespace Coin_Wave_Lib.Objects.Factories.ConcreteFactory
 {
     public class AirFactory : GameObjectFactory
     {

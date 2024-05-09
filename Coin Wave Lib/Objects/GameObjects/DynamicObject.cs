@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Coin_Wave_Lib.Programs;
 using Coin_Wave_Lib.Objects.GameObjects.NoSolidObjects;
+using Coin_Wave_Lib.Objects.Factories;
 
 namespace Coin_Wave_Lib.Objects.GameObjects
 {
