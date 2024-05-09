@@ -19,7 +19,7 @@ using SixLabors.ImageSharp.Processing;
 using System.IO;
 using System.Numerics;
 
-namespace Coin_Wave_Lib
+namespace Coin_Wave_Lib.Programs
 {
     public class Buffer
     {

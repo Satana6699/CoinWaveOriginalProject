@@ -5,8 +5,10 @@ using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Coin_Wave_Lib.Programs;
+using DynamicObject = Coin_Wave_Lib.Objects.GameObjects.DynamicObject;
 
-namespace Coin_Wave_Lib
+namespace Coin_Wave_Lib.Objects.GameObjects.DynamicEntity
 {
     public enum MoveHelper
     {

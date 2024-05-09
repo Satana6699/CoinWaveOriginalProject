@@ -16,49 +16,178 @@ using System.Numerics;
 using Coin_Wave_Lib.Objects.InterfaceObjects;
 using System.Diagnostics;
 using Coin_Wave_Lib.Objects.GameObjects.DynamicEntity;
+using Coin_Wave_Lib.Programs;
+using Buffer = Coin_Wave_Lib.Programs.Buffer;
 using Coin_Wave_Lib.Objects.GameObjects.Boneses;
+using Coin_Wave_Lib.Objects.GameObjects.NoSolidObjects;
+using Coin_Wave_Lib.Objects.GameObjects.Traps;
+using Coin_Wave_Lib.Objects.GameObjects.Player;
+using Coin_Wave_Lib.Objects.GameObjects.SolidObjects;
 
-namespace Coin_Wave_Lib
+namespace Coin_Wave_Lib.Windows
 {
+    /// <summary>
+    /// Класс описывающий окно, которое позволяет пользователю генерировать игровую карту
+    /// </summary>
     public class MapGenerateWindow : GameWindow
     {
+        /// <summary>
+        /// Статус нажатий клавиш клавиатуры
+        /// </summary>
         public (KeyboardState last, KeyboardState current) keyboardState;
+
+        /// <summary>
+        /// Время пройденое от показа одного кадра до другого
+        /// </summary>
         private float frameTime = 0.0f;
+
+        /// <summary>
+        /// Время, которое необходимо для подсчета количества кадров в секунду
+        /// </summary>
         private float _time = 0.0f;
+
+        /// <summary>
+        /// Количество fps
+        /// </summary>
         private int fps = 0;
+
+        /// <summary>
+        /// Счётчик кадров
+        /// </summary>
         int frameCounter = 0;
+
+        /// <summary>
+        /// Активный слой в данный момент
+        /// </summary>
         int layer = 1;
-        // размер карты 34 на 18 и разрешение экрана 1920 на 1080
+        
+        /// <summary>
+        /// Размер карты
+        /// </summary>
         private (int width, int height) sidesMaps = (32, 18);
+
+        /// <summary>
+        /// Переменная отвечающая за то, стоит ли игрок на игровой карте
+        /// </summary>
         private bool IsTherePlayer = false;
 
-        // Создание всех списков и массивов тут
+        /// <summary>
+        /// Массивы слоёв карты
+        /// </summary>
         private (GameObjectData[,] first, GameObjectData[,] second) layers;
+
+        /// <summary>
+        /// Лист для объектов, которые не являются объектами 
+        /// игровой карты и которые описывают игровой интерфейс
+        /// </summary>
         private List<InterfaceObject> interfaceObjects = new List<InterfaceObject>(0);
 
+        /// <summary>
+        /// Объект, описывающий объекта-выбора на панели редактора карты
+        /// </summary>
         private CurrentPositionElement _currentPosition;
+
+        /// <summary>
+        /// Текстура для объекта-выбора
+        /// </summary>
         Texture _textureCurrentPosition;
+
+        /// <summary>
+        /// Текстура для текстурной карты
+        /// </summary>
         Texture _textureForMap;
+
+        /// <summary>
+        /// Массив пустых элементов
+        /// </summary>
         private EmptyElement[,] _emptyElements;
 
 
         private float timeOfMoment;
+
+        /// <summary>
+        /// Текущее местоположения объекта-выбора относительно индекса игровой карты
+        /// </summary>
         private (int x, int y) _numObj = (0, 0);
+
+        /// <summary>
+        /// Текущий индекс для выбора объекта в выборочной панели
+        /// </summary>
         int currentIndex = 0;
         int index = 0;
+
+        /// <summary>
+        /// Объект, упрощающий создание игровой карты
+        /// </summary>
         MapGenerate mg;
+
+        /// <summary>
+        /// Панель, описывающая панель, которая предоставляет выбор объекта. который далее можно 
+        /// будет установить на какой либо слой игровой карты
+        /// </summary>
         BlocksPanel blocksPanel;
+
+        /// <summary>
+        /// Объект для генерации текстурной карты, которая 
+        /// позволяет получить текстурные координаты по индексу текстуры
+        /// </summary>
         TextureMap textureMap;
+
+        /// <summary>
+        /// Объект, отображающийся на экране, если игровая карта 
+        /// была успешно сохранена в файл
+        /// </summary>
         InterfaceConcreteObj save;
+
+        /// <summary>
+        /// Объект, отображающийся на экране, 
+        /// который показывает активный слов
+        /// </summary>
         LayerInterface layerInterface;
+
+        /// <summary>
+        /// Текстурная карта для объектов конкретного слоя
+        /// </summary>
         TextureMap textureMapLayerInt;
+
+        /// <summary>
+        /// Текстура
+        /// </summary>
         Texture textureLayerInt;
+
+        /// <summary>
+        /// Переменная которая описывает успешное
+        /// либо нет сохранения файла
+        /// </summary>
         bool ifSaved;
+
+        /// <summary>
+        /// Значение описывающее оставшее количество 
+        /// жизненных очков игрока в процентах
+        /// </summary>
         int procentHealth = 100;
 
-
+        /// <summary>
+        /// Путь к XML файлу для первого слоя.
+        /// Файл по этому пути будет полностью перезаписан
+        /// или создан при его отсутствии
+        /// </summary>
         string filePathFirstLayer;
+
+        /// <summary>
+        /// Путь к XML файлу для второго слоя.
+        /// Файл по этому пути будет полностью перезаписан
+        /// или создан при его отсутствии
+        /// </summary>
         string filePathSecondLayer;
+
+        /// <summary>
+        /// Конструктор для генерации игрового окна
+        /// </summary>
+        /// <param name="gameWindowSettings"> Настройки игрового окна </param>
+        /// <param name="nativeWindowSettings"> Параметры игрового окна </param>
+        /// <param name="filePathFirstLayer"> Путь к файлу, в котором хранится первый слой карты </param>
+        /// <param name="filePathSecondLayer"> Путь к файлу, в котором хранится второй слой карты </param>
         public MapGenerateWindow(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings, string filePathFirstLayer, string filePathSecondLayer)
             : base(gameWindowSettings, nativeWindowSettings)
         {
@@ -74,9 +203,14 @@ namespace Coin_Wave_Lib
             this.filePathFirstLayer = filePathFirstLayer;
             this.filePathSecondLayer = filePathSecondLayer;
         }
+        /// <summary>
+        /// Имя окна
+        /// </summary>
         public string NameExampleWindow { private set; get; }
 
-
+        /// <summary>
+        /// Метод, отвечающий за загрузку всех необходимых ресурсов
+        /// </summary>
         protected override void OnLoad()
         {
             
@@ -184,6 +318,11 @@ namespace Coin_Wave_Lib
 
         }
 
+        /// <summary>
+        /// Метод, который циклически вызывается.
+        /// В данном методе реализована вся математическая логика
+        /// </summary>
+        /// <param name="args"> Аргументы игрового окна, необходимые для коректной работы данного метода </param>
         protected override void OnUpdateFrame(FrameEventArgs args)
         {
             base.OnUpdateFrame(args);
@@ -292,7 +431,11 @@ namespace Coin_Wave_Lib
 
         }
 
-
+        /// <summary>
+        /// Метод, вызывающий циклически после метода OnLoadFrame.
+        /// Данный метод отвечает за отрисовку объектов в каждом кадре
+        /// </summary>
+        /// <param name="args"></param>
         protected override void OnRenderFrame(FrameEventArgs args)
         {
             base.OnRenderFrame(args);
@@ -322,6 +465,10 @@ namespace Coin_Wave_Lib
             SwapBuffers();
         }
 
+            /// <summary>
+            /// Здесь проиходит выгрузка всех ресурсов.
+            /// Метод вызывается во время закрытия окна
+            /// </summary>
         protected override void OnUnload()
         {
             base.OnUnload();
@@ -331,6 +478,11 @@ namespace Coin_Wave_Lib
             base.OnResize(e);
             GL.Viewport(0, 0, Size.X, Size.Y);
         }
+
+        /// <summary>
+        /// Метод, отслеживающий нажатие клавиш, для управления объектом выбора
+        /// </summary>
+        /// <param name="keyboardState"></param>
         private async void ClickWASD(KeyboardState keyboardState)
         {
             float pressingTime = 0.6f;
@@ -401,6 +553,12 @@ namespace Coin_Wave_Lib
             _currentPosition.UpdateDate(_currentPosition.GetVertices());
         }
 
+        /// <summary>
+        /// Метод, который отслеживает нажатие клавиши Enter
+        /// В данном методе прописана логика, которая будет исполена, 
+        /// если клавиша Enter, будет нажата
+        /// </summary>
+        /// <param name="gameObjectData"> Массив игровых объекто, которые лежат в каком либо слое </param>
         private void ClickEnter(GameObjectData[,] gameObjectData)
         {
             GameObjectData ob = new GameObjectData
@@ -426,6 +584,13 @@ namespace Coin_Wave_Lib
                 IsTherePlayer = true;
             }
         }
+
+        /// <summary>
+        /// Метод, который отслеживает нажатие клавиши Delete
+        /// В данном методе прописана логика, которая будет исполена, 
+        /// если клавиша Delete, будет нажата
+        /// </summary>
+        /// <param name="gameObjectData"> Массив игровых объекто, которые лежат в каком либо слое </param>
         private void ClickDelete(GameObjectData[,] gameObjectData)
         {
             if (gameObjectData[_numObj.y, _numObj.x] != null &&
@@ -436,6 +601,12 @@ namespace Coin_Wave_Lib
             }
             gameObjectData[_numObj.y, _numObj.x] = null;
         }
+
+        /// <summary>
+        /// Метод, который отслеживает нажатие клавиши Shift
+        /// В данном методе прописана логика, которая будет исполена, 
+        /// если клавиша Shift, будет нажата
+        /// </summary>
         private void ClickShift()
         {
             if (
@@ -462,6 +633,11 @@ namespace Coin_Wave_Lib
                 currentIndex = index;
             }
         }
+
+        /// <summary>
+        /// Метод отвечающий за обновление полоски прогресса,
+        /// которая показывает текущие жизненные очки персонажа
+        /// </summary>
         public void UpdateHealth()
         {
             if (frameTime >= 0.0f && frameTime <= 0.05)

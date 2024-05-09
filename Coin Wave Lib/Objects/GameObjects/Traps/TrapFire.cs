@@ -4,8 +4,11 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using Coin_Wave_Lib.Programs;
+using static Coin_Wave_Lib.IMovement;
 
-namespace Coin_Wave_Lib
+
+namespace Coin_Wave_Lib.Objects.GameObjects.Traps
 {
     public class TrapFire : Trap
     {
@@ -13,7 +16,7 @@ namespace Coin_Wave_Lib
         private int _fireCount;
         private int _activeFireCount = 0;
         public List<Fire> Fires { get; private set; } = new List<Fire>(0);
-        public MoveHelper MoveHelper { get; set; } = MoveHelper.Right;
+        public MovementHelp MoveHelper { get; set; } = MovementHelp.Right;
 
         public TrapFire(RectangleWithTexture rectangleWithTexture, Texture texture, (int x, int y) index, int damage) : base(rectangleWithTexture, texture, index, damage)
         {
@@ -57,10 +60,10 @@ namespace Coin_Wave_Lib
 
             for (int i = 0; i < _fireCount; i++)
             {
-                if (MoveHelper == MoveHelper.Right) index.x++;
-                else if (MoveHelper == MoveHelper.Left) index.x++;
-                else if (MoveHelper == MoveHelper.Up) index.x++;
-                else if (MoveHelper == MoveHelper.Down) index.x++;
+                if (MoveHelper == MovementHelp.Right) index.x++;
+                else if (MoveHelper == MovementHelp.Left) index.x++;
+                else if (MoveHelper == MovementHelp.Up) index.x++;
+                else if (MoveHelper == MovementHelp.Down) index.x++;
 
                 rectangleWithTex.Rectangle = gameObjects[index.y, index.x].RectangleWithTexture.Rectangle;
 

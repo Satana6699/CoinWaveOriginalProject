@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Coin_Wave_Lib.Programs;
 
-namespace Coin_Wave_Lib
+
+namespace Coin_Wave_Lib.Objects.GameObjects.Traps
 {
     public class Fire : Trap
     {

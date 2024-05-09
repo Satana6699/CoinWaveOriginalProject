@@ -8,39 +8,136 @@ using Coin_Wave_Lib.Objects.GameObjects.DynamicEntity;
 using Coin_Wave_Lib.Objects.GameObjects.Boneses;
 using System.Numerics;
 using Coin_Wave_Lib.Programs;
+using Coin_Wave_Lib.Objects.GameObjects.Player;
+using Coin_Wave_Lib.Objects.GameObjects.SolidObjects;
+using Coin_Wave_Lib.Objects.GameObjects.NoSolidObjects;
+using Coin_Wave_Lib.Objects.GameObjects.Traps;
 
-namespace Coin_Wave_Lib
+namespace Coin_Wave_Lib.Windows
 {
     public class CoinWaveWindow : GameWindow
     {
-        // --- Данные для родительского окна --- 
+        /// <summary>
+        /// Сообщение, которое будет выведено, после закрытия игрового окна
+        /// </summary>
         public string MESSAGE = "Уровень не пройден";
-        public bool levelIsComplieted = false;
-        // --- Данные для родительского окна---
 
+        /// <summary>
+        /// Пройден уровень или нет
+        /// </summary>
+        public bool levelIsComplieted = false;
+
+        /// <summary>
+        /// Путь к файлу с уровнем для первого слоя
+        /// </summary>
         string filePathFirstLayer;
+
+        /// <summary>
+        /// Путь к файлу с уровнем для второго слоя
+        /// </summary>
         string filePathSecondLayer;
 
-
+        /// <summary>
+        /// Активные действия клавиатуры
+        /// </summary>
         KeyboardState currentKeyboardState;
+
+        /// <summary>
+        /// Время, пройденное от кадра к кадру
+        /// </summary>
         private float frameTime = 0.0f;
+
+        /// <summary>
+        /// Время, с помощью которого задается активация ловушек
+        /// </summary>
         private float timerForTraps = 0f;
+
+        /// <summary>
+        /// Время, с помощью которого отслеживается 
+        /// время активности бонуса скорости
+        /// </summary>
         private float timerSpeedUpBonus = 0f;
+
+        /// <summary>
+        /// Время, с помощью которого отслеживается 
+        /// время активности бонуса замедлени
+        /// </summary>
         private float timerSpeedDownBonus = 0f;
+
+        /// <summary>
+        /// FPS
+        /// </summary>
         private int fps = 0;
+
+        /// <summary>
+        /// Количество монет в уровне. Монеты, необходимые
+        /// для прохождения уровня
+        /// </summary>
         private int countCoinInTheLevel = 0;
+
+        /// <summary>
+        /// Размер карты
+        /// </summary>
         private (int widht, int hidth) sides = (32, 18);
+
+        /// <summary>
+        /// Индекс объекта на карте. Данный объект не отрисовывется
+        /// и представляет собой будущую позицию игрока
+        /// </summary>
         private (int x, int y) _numObj = (0, 0);
+
+        /// <summary>
+        /// Игровые слои, где хранится игровая карта
+        /// </summary>
         private (GameObject[,] first, GameObject[,] second) layers;
+
+        /// <summary>
+        /// Текстурная карта игровых объектов
+        /// </summary>
         TextureMap textureMap;
+
+        /// <summary>
+        /// Текстура, для текстурной карты
+        /// </summary>
         Texture textureForMap;
+
+        /// <summary>
+        /// Игрок
+        /// </summary>
         Player player;
+
+        /// <summary>
+        /// Список динамических объектов, которые существуют в данном уровне
+        /// </summary>
         List<DynamicObject> dynamicObjects = new List<DynamicObject>();
-        int speedObj = 15;
+
+        /// <summary>
+        /// Скорость для игрока и динамических объектов
+        /// </summary>
+        private readonly int speedObj = 15;
+
+        /// <summary>
+        /// Интерфейсный элемент. Панель жизненных очков персонажа
+        /// </summary>
         HealthPanel healthPanel;
 
+        /// <summary>
+        /// Список огненных ловушек на уровне
+        /// </summary>
         List<TrapFire> trapFires = new List<TrapFire>(0);
+
+        /// <summary>
+        /// Список ловушек на уровне
+        /// </summary>
         List<Thorn> thorns = new List<Thorn>(0);
+
+        /// <summary>
+        /// Конструктор для генерации игрового окна
+        /// </summary>
+        /// <param name="gameWindowSettings"> Настройки игрового окна </param>
+        /// <param name="nativeWindowSettings"> Параметры игрового окна </param>
+        /// <param name="fileFirst"> Путь к файлу, в котором хранится первый слой карты </param>
+        /// <param name="fileSecond"> Путь к файлу, в котором хранится второй слой карты </param>
         public CoinWaveWindow(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings, string fileFirst, string fileSecond)
             : base(gameWindowSettings, nativeWindowSettings)
         {
@@ -58,8 +155,14 @@ namespace Coin_Wave_Lib
             filePathSecondLayer = fileSecond;
         }
 
+        /// <summary>
+        /// Имя окна
+        /// </summary>
         public string NameExampleWindow { private set; get; }
 
+        /// <summary>
+        /// Метод, отвечающий за загрузку всех необходимых ресурсов
+        /// </summary>
         protected override void OnLoad()
         {
             base.OnLoad();
@@ -135,6 +238,12 @@ namespace Coin_Wave_Lib
                 }
             }
         }
+
+        /// <summary>
+        /// Метод, который циклически вызывается.
+        /// В данном методе реализована вся математическая логика
+        /// </summary>
+        /// <param name="args"> Аргументы игрового окна, необходимые для коректной работы данного метода </param>
         protected override void OnUpdateFrame(FrameEventArgs args)
         {
             base.OnUpdateFrame(args);
@@ -215,6 +324,12 @@ namespace Coin_Wave_Lib
             if (currentKeyboardState.IsKeyPressed(Keys.Escape)) Close();
             if (currentKeyboardState.IsKeyPressed(Keys.R)) player.Kill();
         }
+
+        /// <summary>
+        /// Метод, вызывающий циклически после метода OnLoadFrame.
+        /// Данный метод отвечает за отрисовку объектов в каждом кадре
+        /// </summary>
+        /// <param name="args"></param>
         protected override void OnRenderFrame(FrameEventArgs args)
         {
             base.OnRenderFrame(args);
@@ -228,15 +343,24 @@ namespace Coin_Wave_Lib
 
             SwapBuffers();
         }
+
+        /// <summary>
+        /// Здесь проиходит выгрузка всех ресурсов.
+        /// Метод вызывается во время закрытия окна
+        /// </summary>
         protected override void OnUnload()
         {
             base.OnUnload();
         }
+
+
         protected override void OnResize(ResizeEventArgs e)
         {
             base.OnResize(e);
             GL.Viewport(0, 0, Size.X, Size.Y);
         }
+
+
         private void TrapsActivateOrDeactivate()
         {
             if (timerForTraps >= 1)

@@ -17,6 +17,7 @@ using OpenTK.Graphics.OpenGL;
 using Coin_Wave_Lib;
 using System.Configuration;
 using OpenTK.Windowing.GraphicsLibraryFramework;
+using Coin_Wave_Lib.Windows;
 
 namespace Coin_Wave
 {
@@ -72,7 +73,7 @@ namespace Coin_Wave
 
             string fileFirst = _filePathForLevels + level + @"\first.xml";
             string fileSecond = _filePathForLevels + level + @"\second.xml";
-            Coin_Wave_Lib.CoinWaveWindow game = new Coin_Wave_Lib.CoinWaveWindow(GameWindowSettings.Default, nativeWinSettings, fileFirst, fileSecond);
+            CoinWaveWindow game = new CoinWaveWindow(GameWindowSettings.Default, nativeWinSettings, fileFirst, fileSecond);
             using (game)
             {
                 game.Run();

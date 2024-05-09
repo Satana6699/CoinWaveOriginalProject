@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 
-namespace Coin_Wave_Lib
+namespace Coin_Wave_Lib.Programs
 {
     public class Shader
     {

@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.Reflection;
 using Coin_Wave_Lib.Objects.Factories;
 using Coin_Wave_Lib.Objects.Factories.ConcreteFactory;
+using Coin_Wave_Lib.Programs;
+using Coin_Wave_Lib.Objects.GameObjects;
 
 namespace Coin_Wave_Lib
 {

@@ -1,10 +1,12 @@
 ﻿using Coin_Wave_Lib.Objects;
+using Coin_Wave_Lib.Programs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using Buffer = Coin_Wave_Lib.Programs.Buffer;
 
 namespace Coin_Wave_Lib
 {

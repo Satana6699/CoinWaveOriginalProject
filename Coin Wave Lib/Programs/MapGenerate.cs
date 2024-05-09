@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Coin_Wave_Lib
+namespace Coin_Wave_Lib.Programs
 {
     public class MapGenerate
     {

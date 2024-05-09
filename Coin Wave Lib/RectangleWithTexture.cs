@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using Coin_Wave_Lib.Programs;
 
 namespace Coin_Wave_Lib
 {

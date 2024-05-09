@@ -6,7 +6,8 @@ using Moq;
 using System.ComponentModel.DataAnnotations;
 using System.Numerics;
 using System.Reflection.Emit;
-
+using Coin_Wave_Lib.Objects.GameObjects;
+using Coin_Wave_Lib.Objects.GameObjects.Player;
 
 
 [TestClass]

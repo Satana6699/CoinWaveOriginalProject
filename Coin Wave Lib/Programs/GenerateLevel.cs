@@ -5,6 +5,10 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
+using Coin_Wave_Lib.Objects.GameObjects;
+using DynamicObject = Coin_Wave_Lib.Objects.GameObjects.DynamicObject;
+using Coin_Wave_Lib.Objects.GameObjects.Player;
+using Coin_Wave_Lib.Objects.GameObjects.NoSolidObjects;
 
 namespace Coin_Wave_Lib.Programs
 {

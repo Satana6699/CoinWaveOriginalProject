@@ -5,7 +5,8 @@ using PixelFormat = OpenTK.Graphics.OpenGL4.PixelFormat;
 using StbImageSharp;
 using System.IO;
 
-namespace Coin_Wave_Lib
+
+namespace Coin_Wave_Lib.Programs
 {
     public class Texture
     {

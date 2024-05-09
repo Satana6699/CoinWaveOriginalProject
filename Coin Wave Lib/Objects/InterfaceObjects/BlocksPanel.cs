@@ -1,5 +1,7 @@
 ﻿using Coin_Wave_Lib.Objects.InterfaceObjects;
-namespace Coin_Wave_Lib
+using Coin_Wave_Lib.Programs;
+
+namespace Coin_Wave_Lib.Objects.InterfaceObjects
 {
     public class BlocksPanel : InterfaceObject
     {
